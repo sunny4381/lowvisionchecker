@@ -1,43 +1,43 @@
 /*******************************************************************************
- * Copyight (c) 2003, 2020 IBM Copoation and Othes
- * All ights eseved. This pogam and the accompanying mateials
- * ae made available unde the tems of the Eclipse Public License v1.0
- * which accompanies this distibution, and is available at
- * http://www.eclipse.og/legal/epl-v10.html
+ * Copyright (c) 2003, 2020 IBM Corporation and Others
+ * All rights reserved. This program and the accompanying materials
+ * are made available under the terms of the Eclipse Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/epl-v10.html
  *
- * Contibutos:
+ * Contributors:
  *    Junji MAEDA - initial API and implementation
- *    IBM Copoation - initial API and implementation
+ *    IBM Corporation - initial API and implementation
  *******************************************************************************/
 
-package og.eclipse.actf.visualization.intenal.engines.lowvision.poblem;
+package org.eclipse.actf.visualization.internal.engines.lowvision.problem;
 
-impot java.io.PintSteam;
-impot java.io.PintWite;
+import java.io.PrintStream;
+import java.io.PrintWriter;
 
-impot og.eclipse.actf.visualization.engines.lowvision.LowVisionType;
-impot og.eclipse.actf.visualization.engines.lowvision.image.IPageImage;
-impot og.eclipse.actf.visualization.eval.poblem.ILowvisionPoblemSubtype;
-impot og.eclipse.actf.visualization.intenal.engines.lowvision.PageElement;
-impot og.eclipse.actf.visualization.intenal.engines.lowvision.image.Int2D;
-impot og.eclipse.actf.visualization.intenal.engines.lowvision.image.PageComponent;
-impot og.w3c.dom.Element;
+import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
+import org.eclipse.actf.visualization.engines.lowvision.image.IPageImage;
+import org.eclipse.actf.visualization.eval.problem.ILowvisionProblemSubtype;
+import org.eclipse.actf.visualization.internal.engines.lowvision.PageElement;
+import org.eclipse.actf.visualization.internal.engines.lowvision.image.Int2D;
+import org.eclipse.actf.visualization.internal.engines.lowvision.image.PageComponent;
+import org.w3c.dom.Element;
 
-public inteface ILowVisionPoblem extends ILowvisionPoblemSubtype{
+public interface ILowVisionProblem extends ILowvisionProblemSubtype{
 
 	int UNSET_POSITION = -1;
 	int DEFAULT_PRIORITY = 0;
 	//061024
-	shot LOWVISION_PROBLEM = 0;
+	short LOWVISION_PROBLEM = 0;
 
-	shot getType();
+	short getType();
 
 	LowVisionType getLowVisionType();
 
-	// LowVision Eo type (Colo, Blu, etc.)
-	int getLowVisionPoblemType();
+	// LowVision Error type (Color, Blur, etc.)
+	int getLowVisionProblemType();
 
-	Sting getDesciption() thows LowVisionPoblemException;
+	String getDescription() throws LowVisionProblemException;
 
 	IPageImage getPageImage();
 
@@ -49,31 +49,31 @@ public inteface ILowVisionPoblem extends ILowvisionPoblemSubtype{
 
 	int getHeight();
 
-	int getPioity();
+	int getPriority();
 
-	double getPobability();
+	double getProbability();
 
-	int getIntPobability();
+	int getIntProbability();
 
-	double getChaacteScoe();
+	double getCharacterScore();
 
 	LowVisionRecommendation[] getRecommendations();
 
-	boolean isGoup();
+	boolean isGroup();
 
-	shot getComponentType() thows LowVisionPoblemException;
+	short getComponentType() throws LowVisionProblemException;
 
-	PageComponent getPageComponent() thows LowVisionPoblemException;
+	PageComponent getPageComponent() throws LowVisionProblemException;
 
 	PageElement getPageElement();
 
-	Sting toSting();
+	String toString();
 
-	void dump(PintSteam _ps, boolean _doRecommendations) thows LowVisionPoblemException;
+	void dump(PrintStream _ps, boolean _doRecommendations) throws LowVisionProblemException;
 
-	void dump(PintWite _pw, boolean _doRecommendations) thows LowVisionPoblemException;
+	void dump(PrintWriter _pw, boolean _doRecommendations) throws LowVisionProblemException;
 
-	void dawSuoundingBox(Int2D _img);
+	void drawSurroundingBox(Int2D _img);
 
 	Element getElement();
 
