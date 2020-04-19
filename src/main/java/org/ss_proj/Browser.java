@@ -1,5 +1,6 @@
 package org.ss_proj;
 
+import io.webfolder.cdp.session.Session;
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.IModelServiceHolder;
 import org.eclipse.actf.model.ui.IModelServiceScrollManager;
@@ -14,6 +15,12 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import java.io.File;
 
 public class Browser implements IWebBrowserACTF, IModelService {
+    private final Session session;
+
+    public Browser(Session session) {
+        this.session = session;
+    }
+
     @Override
     public void setFocusAddressText(boolean selectAll) {
         throw new NotImplementedException();
@@ -26,17 +33,18 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void navigate(String url) {
-        throw new NotImplementedException();
+        this.session.navigate(url);
+        this.session.waitDocumentReady();
     }
 
     @Override
     public void goBackward() {
-        throw new NotImplementedException();
+        this.session.back();
     }
 
     @Override
     public void goForward() {
-        throw new NotImplementedException();
+        this.session.forward();
     }
 
     @Override
@@ -56,7 +64,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public boolean isReady() {
-        throw new NotImplementedException();
+        return this.session.isDomReady();
     }
 
     @Override
