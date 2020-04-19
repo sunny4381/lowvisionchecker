@@ -13,6 +13,8 @@ import org.w3c.dom.Node;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 
 public class Browser implements IWebBrowserACTF, IModelService {
     private final Session session;
@@ -49,17 +51,26 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void navigateStop() {
-        throw new NotImplementedException();
+        this.session.stop();
     }
 
     @Override
     public void navigateRefresh() {
-        throw new NotImplementedException();
+        this.session.reload();
     }
 
     @Override
     public int getReadyState() {
-        throw new NotImplementedException();
+        final String readyState = String.valueOf(this.session.evaluate("document.readyState"));
+        if ("complete".equals(readyState)) {
+            return READYSTATE_COMPLETE;
+        } else if ("loading".equals(readyState)) {
+            return READYSTATE_LOADING;
+        } else if ("interactive".equals(readyState)) {
+            return READYSTATE_INTERACTIVE;
+        }
+
+        return READYSTATE_UNINITIALIZED;
     }
 
     @Override
@@ -69,7 +80,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public String getLocationName() {
-        throw new NotImplementedException();
+        return this.getTitle();
     }
 
     @Override
@@ -169,7 +180,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void open(String url) {
-        throw new NotImplementedException();
+        this.navigate(url);
     }
 
     @Override
@@ -179,17 +190,17 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public String getURL() {
-        throw new NotImplementedException();
+        return this.session.getLocation();
     }
 
     @Override
     public String getTitle() {
-        throw new NotImplementedException();
+        return this.session.getTitle();
     }
 
     @Override
     public String getID() {
-        throw new NotImplementedException();
+        return this.session.getId();
     }
 
     @Override
@@ -199,7 +210,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Document getLiveDocument() {
-        throw new NotImplementedException();
+        return this.getDocument();
     }
 
     @Override
@@ -209,12 +220,22 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public File saveOriginalDocument(String file) {
-        throw new NotImplementedException();
+        if (file == null) {
+            return null;
+        }
+
+        try (FileWriter fileWrite = new FileWriter(file)) {
+            fileWrite.write(this.session.getContent());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new File(file);
     }
 
     @Override
     public File saveDocumentAsHTMLFile(String file) {
-        throw new NotImplementedException();
+        return saveOriginalDocument(file);
     }
 
     @Override
