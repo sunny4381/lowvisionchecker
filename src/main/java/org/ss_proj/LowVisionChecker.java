@@ -12,11 +12,17 @@ import org.eclipse.actf.visualization.engines.lowvision.image.PageImageFactory;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.actf.visualization.lowvision.util.LowVisionUtil;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 public class LowVisionChecker {
+    private Browser browser = null;
+    private String address = null;
+
     private IPageImage[] framePageImage;
     private ImagePositionInfo[][] imageInfoInHtmlArray;
     private ArrayList<Map<String, ICurrentStyles>> styleInfoArray;
@@ -24,16 +30,32 @@ public class LowVisionChecker {
     private LowVisionType lowVisionType;
     private List<IProblemItem> lowvisionProblemList;
 
-    public void run(String address) {
-        IWebBrowserACTF browser = null;
+    public LowVisionChecker(final Browser browser, final String address) {
+        this.browser = browser;
+        this.address = address;
+
+        this.dumpImageFile = System.getProperty("java.io.tmpdir") + Thread.currentThread().getId() + ".png";
+        this.framePageImage = new IPageImage[1];
+        this.imageInfoInHtmlArray = new ImagePositionInfo[1][];
+        this.styleInfoArray = new ArrayList<>(1);
+        this.styleInfoArray.add(Collections.emptyMap());
+    }
+
+    public List<IProblemItem> getProblemList() {
+        return this.lowvisionProblemList;
+    }
+
+    public void run() throws IOException {
         IModelService modelService = browser;
 
-        ModelServiceImageCreator imgCreator = new ModelServiceImageCreator(modelService);
-        imgCreator.getScreenImageAsBMP(dumpImageFile, true);
+//        ModelServiceImageCreator imgCreator = new ModelServiceImageCreator(modelService);
+//        imgCreator.getScreenImageAsBMP(dumpImageFile, true);
+        browser.saveScreenshot(dumpImageFile);
         final int frameId = 0;
         final int lastFrame = 0;
 
-        framePageImage[frameId] = PageImageFactory.createPageImage(dumpImageFile);
+//        framePageImage[frameId] = PageImageFactory.createPageImage(dumpImageFile);
+        framePageImage[frameId] = PageImageImpl.loadFromPng(dumpImageFile);
 
         imageInfoInHtmlArray[frameId] = browser.getAllImagePosition();
         styleInfoArray.set(frameId, browser.getStyleInfo().getCurrentStyles());

@@ -1,33 +1,37 @@
 package org.ss_proj;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.DeserializationFeature;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kklisura.cdt.protocol.commands.DOM;
+import com.github.kklisura.cdt.protocol.commands.Emulation;
 import com.github.kklisura.cdt.protocol.commands.Page;
 import com.github.kklisura.cdt.protocol.commands.Runtime;
 import com.github.kklisura.cdt.protocol.events.page.LifecycleEvent;
 import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextCreated;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.page.Navigate;
-import com.github.kklisura.cdt.protocol.types.page.NavigationEntry;
-import com.github.kklisura.cdt.protocol.types.page.NavigationHistory;
+import com.github.kklisura.cdt.protocol.types.dom.Node;
+import com.github.kklisura.cdt.protocol.types.page.*;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
-import org.eclipse.actf.model.ui.IModelService;
-import org.eclipse.actf.model.ui.IModelServiceHolder;
-import org.eclipse.actf.model.ui.IModelServiceScrollManager;
-import org.eclipse.actf.model.ui.ImagePositionInfo;
+import com.google.common.io.Resources;
+import org.eclipse.actf.model.ui.*;
+import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
+import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.w3c.dom.Document;
-import org.w3c.dom.Node;
+import org.xml.sax.SAXException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.Collections;
-import java.util.concurrent.CountDownLatch;
+import javax.xml.parsers.DocumentBuilder;
+import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
 public class Browser implements IWebBrowserACTF, IModelService {
     private final ChromeDevToolsService service;
@@ -247,7 +251,153 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public IWebBrowserStyleInfo getStyleInfo() {
-        throw new NotImplementedException();
+        return new IWebBrowserStyleInfo() {
+            @Override
+            public Map<String, ICurrentStyles> getCurrentStyles() {
+                return Browser.this.getCurrentStyles();
+            }
+
+            @Override
+            public ModelServiceSizeInfo getSizeInfo(boolean isWhole) {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public RGB getUnvisitedLinkColor() {
+                throw new NotImplementedException();
+            }
+
+            @Override
+            public RGB getVisitedLinkColor() {
+                throw new NotImplementedException();
+            }
+        };
+    }
+
+    public Map<String, ICurrentStyles> getCurrentStyles() {
+        final DOM dom = this.service.getDOM();
+        dom.enable();
+
+        final List<Integer> nodeIds = dom.querySelectorAll(dom.getDocument().getNodeId(), "*");
+        if (nodeIds.size() == 0) {
+            return Collections.emptyMap();
+        }
+
+        HashMap<String, ICurrentStyles> ret = new HashMap<>(nodeIds.size());
+        for (Integer nodeId : nodeIds) {
+            final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, null);
+            if (remoteObject == null) {
+                continue;
+            }
+
+            final String objectId = remoteObject.getObjectId();
+            if (objectId == null) {
+                continue;
+            }
+
+            String xpath = getFullXPath(objectId);
+            if (xpath.startsWith("html/head")) {
+                this.runtime.releaseObject(objectId);
+                continue;
+            }
+
+            Rect rect = getBoundingClientRect(objectId);
+            Style style = getStyle(objectId);
+
+            Node node = dom.describeNode(nodeId, null, null, null, Boolean.FALSE);
+
+            this.runtime.releaseObject(objectId);
+
+            ret.put(xpath, new CurrentStylesImpl(node, xpath, rect, style));
+        }
+
+        return ret;
+    }
+
+    private Style getStyle(final String objectId) {
+        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
+                "function() { return JSON.stringify(this.style); }",
+                objectId,
+                Collections.emptyList(),
+                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
+
+        if (callFunctionOn == null) {
+            return null;
+        }
+
+        Style style = null;
+        {
+            final RemoteObject remoteObject = callFunctionOn.getResult();
+            if (remoteObject != null) {
+                String value = (String) remoteObject.getValue();
+
+                try {
+                    ObjectMapper mapper = new ObjectMapper()
+                            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+                    style = mapper.readValue(value, Style.class);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        String error = null;
+        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
+        if (exceptionDetails != null) {
+            final RemoteObject remoteObject = exceptionDetails.getException();
+            if (remoteObject != null) {
+                error = remoteObject.getDescription();
+//                this.runtime.releaseObject(remoteObject.getObjectId());
+            }
+        }
+
+        if (error != null) {
+            throw new RuntimeException(error);
+        }
+
+        return style;
+    }
+
+    public String getFullXPath(final String objectId) {
+        final String js;
+        try {
+            js = Resources.toString(this.getClass().getResource("fullXPath.js"), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
+                js,
+                objectId,
+                Collections.emptyList(),
+                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
+
+        if (callFunctionOn == null) {
+            return null;
+        }
+
+        String xpath = null;
+        {
+            final RemoteObject remoteObject = callFunctionOn.getResult();
+            if (remoteObject != null) {
+                xpath = (String) remoteObject.getValue();
+            }
+        }
+
+        String error = null;
+        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
+        if (exceptionDetails != null) {
+            final RemoteObject remoteObject = exceptionDetails.getException();
+            if (remoteObject != null) {
+                error = remoteObject.getDescription();
+            }
+        }
+
+        if (error != null) {
+            throw new RuntimeException(error);
+        }
+
+        return xpath;
     }
 
     @Override
@@ -308,14 +458,21 @@ public class Browser implements IWebBrowserACTF, IModelService {
     @Override
     public String getTitle() {
         final DOM dom = this.service.getDOM();
+        dom.enable();
+
         final Integer nodeId = dom.getDocument().getNodeId();
         final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, this.getExecutionContextId());
         if (remoteObject == null) {
             return null;
         }
 
-        final Object title = getPropertyByObjectId(remoteObject.getObjectId(), "title");
-        this.runtime.releaseObject(remoteObject.getObjectId());
+        final String objectId = remoteObject.getObjectId();
+        if (objectId == null) {
+            return null;
+        }
+
+        final Object title = getPropertyByObjectId(objectId, "title");
+        this.runtime.releaseObject(objectId);
 
         return String.valueOf(title);
     }
@@ -339,7 +496,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             final RemoteObject remoteObject = callFunctionOn.getResult();
             if (remoteObject != null) {
                 ret = remoteObject.getValue();
-                this.runtime.releaseObject(remoteObject.getObjectId());
+//                this.runtime.releaseObject(remoteObject.getObjectId());
             }
         }
 
@@ -349,7 +506,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             final RemoteObject remoteObject = exceptionDetails.getException();
             if (remoteObject != null) {
                 error = remoteObject.getDescription();
-                this.runtime.releaseObject(remoteObject.getObjectId());
+//                this.runtime.releaseObject(remoteObject.getObjectId());
             }
         }
 
@@ -367,12 +524,23 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Document getDocument() {
-        throw new NotImplementedException();
+        try {
+            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+            DocumentBuilder builder = factory.newDocumentBuilder();
+            return builder.parse(new ByteArrayInputStream(this.getContent().getBytes()));
+        } catch (ParserConfigurationException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
     }
 
     @Override
     public Document getLiveDocument() {
-        throw new NotImplementedException();
+        return getDocument();
     }
 
     @Override
@@ -382,16 +550,18 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     public String getContent() {
         final DOM dom = this.service.getDOM();
+        dom.enable();
+
         final Integer nodeId = dom.getDocument().getNodeId();
         final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, this.getExecutionContextId());
         if (remoteObject == null) {
             return null;
         }
 
-        final Object title = getPropertyByObjectId(remoteObject.getObjectId(), "documentElement.outerHTML");
+        final Object html = getPropertyByObjectId(remoteObject.getObjectId(), "documentElement.outerHTML");
         this.runtime.releaseObject(remoteObject.getObjectId());
 
-        return String.valueOf(title);
+        return String.valueOf(html);
     }
 
     @Override
@@ -415,7 +585,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
     }
 
     @Override
-    public void jumpToNode(Node target) {
+    public void jumpToNode(org.w3c.dom.Node target) {
         throw new NotImplementedException();
     }
 
@@ -426,7 +596,84 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public ImagePositionInfo[] getAllImagePosition() {
-        throw new NotImplementedException();
+        final DOM dom = this.service.getDOM();
+        dom.enable();
+
+        final List<Integer> nodeIds = dom.querySelectorAll(dom.getDocument().getNodeId(), "img");
+        if (nodeIds.size() == 0) {
+            return new ImagePositionInfo[0];
+        }
+
+        final List<ImagePositionInfo> list = new ArrayList<>(nodeIds.size());
+        for (Integer nodeId : nodeIds) {
+            final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, null);
+            if (remoteObject == null) {
+                continue;
+            }
+
+            final String objectId = remoteObject.getObjectId();
+            if (objectId == null) {
+                continue;
+            }
+
+            Object src = getPropertyByObjectId(objectId, "src");
+            Rect rect = getBoundingClientRect(objectId);
+
+            this.runtime.releaseObject(objectId);
+
+            int x = rect.getX().intValue();
+            int y = rect.getY().intValue();
+            int width = rect.getWidth().intValue();
+            int height = rect.getHeight().intValue();
+
+            list.add(new ImagePositionInfo(x, y, width, height, String.valueOf(src)));
+        }
+
+        ImagePositionInfo[] result = new ImagePositionInfo[list.size()];
+        list.toArray(result);
+        return result;
+    }
+
+    private Rect getBoundingClientRect(final String objectId) {
+        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
+                "function() { return JSON.stringify(this.getBoundingClientRect()); }",
+                objectId,
+                Collections.emptyList(),
+                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
+
+        if (callFunctionOn == null) {
+            return null;
+        }
+
+        Rect rect = null;
+        {
+            final RemoteObject remoteObject = callFunctionOn.getResult();
+            if (remoteObject != null) {
+                String value = (String) remoteObject.getValue();
+
+                try {
+                    rect = new ObjectMapper().readValue(value, Rect.class);
+                } catch (JsonProcessingException e) {
+                    throw new RuntimeException(e);
+                }
+            }
+        }
+
+        String error = null;
+        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
+        if (exceptionDetails != null) {
+            final RemoteObject remoteObject = exceptionDetails.getException();
+            if (remoteObject != null) {
+                error = remoteObject.getDescription();
+//                this.runtime.releaseObject(remoteObject.getObjectId());
+            }
+        }
+
+        if (error != null) {
+            throw new RuntimeException(error);
+        }
+
+        return rect;
     }
 
     @Override
@@ -437,5 +684,31 @@ public class Browser implements IWebBrowserACTF, IModelService {
     @Override
     public Object getAttribute(String key) {
         throw new NotImplementedException();
+    }
+
+    public void saveScreenshot(final String outputFilename) throws IOException {
+        final LayoutMetrics layoutMetrics = this.page.getLayoutMetrics();
+
+        final Double width = layoutMetrics.getContentSize().getWidth();
+        final Double height = layoutMetrics.getContentSize().getHeight();
+
+        final Emulation emulation = this.service.getEmulation();
+        emulation.setDeviceMetricsOverride(width.intValue(), height.intValue(), 1.0d, Boolean.FALSE);
+
+        Viewport viewport = new Viewport();
+        viewport.setScale(1d);
+
+        // You can set offset with X, Y
+        viewport.setX(0d);
+        viewport.setY(0d);
+
+        // Set a width, height of a page to take screenshot at
+        viewport.setWidth(width);
+        viewport.setHeight(height);
+
+        final String base64ImageData = page.captureScreenshot(CaptureScreenshotFormat.PNG, 100, viewport, Boolean.TRUE);
+        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilename)) {
+            fileOutputStream.write(Base64.getDecoder().decode(base64ImageData));
+        }
     }
 }
