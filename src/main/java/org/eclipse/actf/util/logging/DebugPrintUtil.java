@@ -11,14 +11,13 @@
 
 package org.eclipse.actf.util.logging;
 
-import org.eclipse.core.runtime.Platform;
-
 /**
  * Utility class to print logs into console in debug or development mode.
  */
 public class DebugPrintUtil {
-	private static boolean IN_DEV_OR_DEBUG = (Platform.inDevelopmentMode() || Platform
-			.inDebugMode());
+	private static boolean IN_DEBUG = System.getProperty("debug") != null;
+	private static boolean IN_DEV = System.getProperty("develop") != null;
+	private static boolean IN_DEV_OR_DEBUG = IN_DEBUG || IN_DEV;
 
 	/**
 	 * Print target Object to console in debug mode.
@@ -27,7 +26,7 @@ public class DebugPrintUtil {
 	 *            the target Object to print
 	 */
 	public static void debugPrintln(Object target) {
-		if (Platform.inDebugMode()) {
+		if (IN_DEBUG) {
 			System.out.println(target);
 		}
 	}
@@ -39,7 +38,7 @@ public class DebugPrintUtil {
 	 *            the target Object to print
 	 */
 	public static void devPrintln(Object target) {
-		if (Platform.inDebugMode()) {
+		if (IN_DEBUG) {
 			System.out.println(target);
 		}
 	}
@@ -63,7 +62,7 @@ public class DebugPrintUtil {
 	 *            the target Exception
 	 */
 	public static void debugPrintStackTrace(Exception e) {
-		if (Platform.inDebugMode()) {
+		if (IN_DEBUG) {
 			e.printStackTrace();
 		}
 	}
@@ -75,7 +74,7 @@ public class DebugPrintUtil {
 	 *            the target Exception
 	 */
 	public static void devPrintStackTrace(Exception e) {
-		if (Platform.inDevelopmentMode()) {
+		if (IN_DEV) {
 			e.printStackTrace();
 		}
 	}
