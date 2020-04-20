@@ -1,8 +1,9 @@
 package org.ss_proj;
 
-import io.webfolder.cdp.Launcher;
-import io.webfolder.cdp.session.Session;
-import io.webfolder.cdp.session.SessionFactory;
+import com.github.kklisura.cdt.launch.ChromeLauncher;
+import com.github.kklisura.cdt.services.ChromeDevToolsService;
+import com.github.kklisura.cdt.services.ChromeService;
+import com.github.kklisura.cdt.services.types.ChromeTab;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -10,26 +11,28 @@ import org.junit.Test;
 import static org.junit.Assert.*;
 
 public class BrowserTest {
-    private Launcher launcher;
-    private SessionFactory factory;
+    private ChromeLauncher launcher;
+    private ChromeService chromeService;
 
     @Before
     public void setUp() throws Exception {
-        launcher = new Launcher();
-        factory = launcher.launch();
+        launcher = new ChromeLauncher();
+        chromeService = launcher.launch(false);
     }
 
     @After
     public void tearDown() throws Exception {
-        factory.close();
-        launcher.kill();
+        launcher.close();
     }
 
     @Test
     public void navigate() {
-        try (Session session = factory.create()) {
-            Browser browser = new Browser(session);
-            browser.navigate("https://www.yahoo.co.jp/");
-        }
+        final ChromeTab tab = chromeService.createTab();
+
+        final ChromeDevToolsService devToolsService = chromeService.createDevToolsService(tab);
+        Browser browser = new Browser(devToolsService, tab.getId());
+        browser.navigate("https://www.yahoo.co.jp/");
+
+        assertEquals(true, true);
     }
 }
