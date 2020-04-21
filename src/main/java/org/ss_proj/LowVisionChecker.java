@@ -2,17 +2,13 @@ package org.ss_proj;
 
 import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ImagePositionInfo;
-import org.eclipse.actf.model.ui.ModelServiceImageCreator;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
-import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
 import org.eclipse.actf.visualization.engines.lowvision.PageEvaluation;
 import org.eclipse.actf.visualization.engines.lowvision.image.IPageImage;
-import org.eclipse.actf.visualization.engines.lowvision.image.PageImageFactory;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.actf.visualization.lowvision.util.LowVisionUtil;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -20,17 +16,17 @@ import java.util.List;
 import java.util.Map;
 
 public class LowVisionChecker {
-    private Browser browser = null;
-    private String address = null;
+    private final Browser browser;
+    private final String address;
+    private final LowVisionType lowVisionType;
 
     private IPageImage[] framePageImage;
     private ImagePositionInfo[][] imageInfoInHtmlArray;
     private ArrayList<Map<String, ICurrentStyles>> styleInfoArray;
     private String dumpImageFile;
-    private LowVisionType lowVisionType;
     private List<IProblemItem> lowvisionProblemList;
 
-    public LowVisionChecker(final Browser browser, final String address) {
+    public LowVisionChecker(final Browser browser, final String address, final LowVisionType lowVisionType) {
         this.browser = browser;
         this.address = address;
 
@@ -39,6 +35,8 @@ public class LowVisionChecker {
         this.imageInfoInHtmlArray = new ImagePositionInfo[1][];
         this.styleInfoArray = new ArrayList<>(1);
         this.styleInfoArray.add(Collections.emptyMap());
+
+        this.lowVisionType = lowVisionType;
     }
 
     public List<IProblemItem> getProblemList() {
@@ -55,7 +53,7 @@ public class LowVisionChecker {
         final int lastFrame = 0;
 
 //        framePageImage[frameId] = PageImageFactory.createPageImage(dumpImageFile);
-        framePageImage[frameId] = PageImageImpl.loadFromPng(dumpImageFile);
+        framePageImage[frameId] = PageImageFactory.loadFromPng(dumpImageFile);
 
         imageInfoInHtmlArray[frameId] = browser.getAllImagePosition();
         styleInfoArray.set(frameId, browser.getStyleInfo().getCurrentStyles());
@@ -70,8 +68,7 @@ public class LowVisionChecker {
         }
 
         PageEvaluation targetPage = new PageEvaluation(framePageImage[frameId]);
-        targetPage
-                .setInteriorImagePosition(imageInfoInHtmlArray[frameId]);
+        targetPage.setInteriorImagePosition(imageInfoInHtmlArray[frameId]);
         targetPage.setCurrentStyles(styleInfoArray.get(frameId));
 
         lowvisionProblemList = targetPage.check(lowVisionType, address, frameId);

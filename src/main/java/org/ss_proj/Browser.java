@@ -11,7 +11,6 @@ import com.github.kklisura.cdt.protocol.events.page.LifecycleEvent;
 import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextCreated;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
 import com.github.kklisura.cdt.protocol.support.types.EventListener;
-import com.github.kklisura.cdt.protocol.types.dom.Node;
 import com.github.kklisura.cdt.protocol.types.page.*;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
@@ -176,17 +175,35 @@ public class Browser implements IWebBrowserACTF, IModelService {
             return null;
         }
 
-        RemoteObject remoteObject = evaluate.getResult();
-        if (remoteObject == null) {
-            return null;
+        final Object ret;
+        {
+            RemoteObject remoteObject = evaluate.getResult();
+            if (remoteObject == null) {
+                return null;
+            }
+
+            ret = remoteObject.getValue();
+
+            String objectId = remoteObject.getObjectId();
+            if (objectId != null) {
+                this.runtime.releaseObject(objectId);
+            }
         }
 
-        String objectId = remoteObject.getObjectId();
-        if (objectId != null) {
-            this.runtime.releaseObject(objectId);
+        String error = null;
+        final ExceptionDetails exceptionDetails = evaluate.getExceptionDetails();
+        if (exceptionDetails != null) {
+            final RemoteObject remoteObject = exceptionDetails.getException();
+            if (remoteObject != null) {
+                error = remoteObject.getDescription();
+            }
         }
 
-        return remoteObject.getValue();
+        if (error != null) {
+            throw new RuntimeException(error);
+        }
+
+        return ret;
     }
 
     @Override
@@ -275,129 +292,29 @@ public class Browser implements IWebBrowserACTF, IModelService {
     }
 
     public Map<String, ICurrentStyles> getCurrentStyles() {
-        final DOM dom = this.service.getDOM();
-        dom.enable();
-
-        final List<Integer> nodeIds = dom.querySelectorAll(dom.getDocument().getNodeId(), "*");
-        if (nodeIds.size() == 0) {
-            return Collections.emptyMap();
-        }
-
-        HashMap<String, ICurrentStyles> ret = new HashMap<>(nodeIds.size());
-        for (Integer nodeId : nodeIds) {
-            final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, null);
-            if (remoteObject == null) {
-                continue;
-            }
-
-            final String objectId = remoteObject.getObjectId();
-            if (objectId == null) {
-                continue;
-            }
-
-            String xpath = getFullXPath(objectId);
-            if (xpath.startsWith("html/head")) {
-                this.runtime.releaseObject(objectId);
-                continue;
-            }
-
-            Rect rect = getBoundingClientRect(objectId);
-            Style style = getStyle(objectId);
-
-            Node node = dom.describeNode(nodeId, null, null, null, Boolean.FALSE);
-
-            this.runtime.releaseObject(objectId);
-
-            ret.put(xpath, new CurrentStylesImpl(node, xpath, rect, style));
-        }
-
-        return ret;
-    }
-
-    private Style getStyle(final String objectId) {
-        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
-                "function() { return JSON.stringify(this.style); }",
-                objectId,
-                Collections.emptyList(),
-                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
-
-        if (callFunctionOn == null) {
-            return null;
-        }
-
-        Style style = null;
-        {
-            final RemoteObject remoteObject = callFunctionOn.getResult();
-            if (remoteObject != null) {
-                String value = (String) remoteObject.getValue();
-
-                try {
-                    ObjectMapper mapper = new ObjectMapper()
-                            .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-                    style = mapper.readValue(value, Style.class);
-                } catch (JsonProcessingException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-        }
-
-        String error = null;
-        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
-        if (exceptionDetails != null) {
-            final RemoteObject remoteObject = exceptionDetails.getException();
-            if (remoteObject != null) {
-                error = remoteObject.getDescription();
-//                this.runtime.releaseObject(remoteObject.getObjectId());
-            }
-        }
-
-        if (error != null) {
-            throw new RuntimeException(error);
-        }
-
-        return style;
-    }
-
-    public String getFullXPath(final String objectId) {
         final String js;
         try {
-            js = Resources.toString(this.getClass().getResource("fullXPath.js"), StandardCharsets.UTF_8);
+            js = Resources.toString(this.getClass().getResource("getCurrentStyles.js"), StandardCharsets.UTF_8);
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
 
-        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
-                js,
-                objectId,
-                Collections.emptyList(),
-                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
-
-        if (callFunctionOn == null) {
-            return null;
+        final String jsonArray = (String)this.evaluate(js);
+        final CurrentStylesImpl[] currentStylesArray;
+        try {
+            ObjectMapper mapper = new ObjectMapper()
+                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+            currentStylesArray = mapper.readValue(jsonArray, CurrentStylesImpl[].class);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
         }
 
-        String xpath = null;
-        {
-            final RemoteObject remoteObject = callFunctionOn.getResult();
-            if (remoteObject != null) {
-                xpath = (String) remoteObject.getValue();
-            }
+        HashMap<String, ICurrentStyles> ret = new HashMap<>(currentStylesArray.length);
+        for (CurrentStylesImpl currentStyles : currentStylesArray) {
+            ret.put(currentStyles.getXPath(), currentStyles);
         }
 
-        String error = null;
-        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
-        if (exceptionDetails != null) {
-            final RemoteObject remoteObject = exceptionDetails.getException();
-            if (remoteObject != null) {
-                error = remoteObject.getDescription();
-            }
-        }
-
-        if (error != null) {
-            throw new RuntimeException(error);
-        }
-
-        return xpath;
+        return ret;
     }
 
     @Override
@@ -496,7 +413,6 @@ public class Browser implements IWebBrowserACTF, IModelService {
             final RemoteObject remoteObject = callFunctionOn.getResult();
             if (remoteObject != null) {
                 ret = remoteObject.getValue();
-//                this.runtime.releaseObject(remoteObject.getObjectId());
             }
         }
 
@@ -506,7 +422,6 @@ public class Browser implements IWebBrowserACTF, IModelService {
             final RemoteObject remoteObject = exceptionDetails.getException();
             if (remoteObject != null) {
                 error = remoteObject.getDescription();
-//                this.runtime.releaseObject(remoteObject.getObjectId());
             }
         }
 
@@ -665,7 +580,6 @@ public class Browser implements IWebBrowserACTF, IModelService {
             final RemoteObject remoteObject = exceptionDetails.getException();
             if (remoteObject != null) {
                 error = remoteObject.getDescription();
-//                this.runtime.releaseObject(remoteObject.getObjectId());
             }
         }
 

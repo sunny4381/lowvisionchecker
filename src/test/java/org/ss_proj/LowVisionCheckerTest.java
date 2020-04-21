@@ -4,6 +4,7 @@ import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
 import com.github.kklisura.cdt.services.types.ChromeTab;
+import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,15 @@ public class LowVisionCheckerTest {
 
     @Test
     public void run() throws Exception {
-        LowVisionChecker checker = new LowVisionChecker(browser, URL);
+        LowVisionType lowVisionType = new LowVisionType();
+        lowVisionType.setEyesight(true);
+        lowVisionType.setEyesightDegree(0.5f);
+        lowVisionType.setCVD(true);
+        lowVisionType.setCVDType(2);
+        lowVisionType.setColorFilter(true);
+        lowVisionType.setColorFilterDegree(0.8f);
+
+        LowVisionChecker checker = new LowVisionChecker(browser, URL, lowVisionType);
         checker.run();
     }
 }

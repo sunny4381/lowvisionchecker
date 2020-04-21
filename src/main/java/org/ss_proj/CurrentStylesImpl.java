@@ -1,24 +1,23 @@
 package org.ss_proj;
 
-import com.github.kklisura.cdt.protocol.types.dom.Node;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.swt.graphics.Rectangle;
 import org.w3c.dom.Element;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import java.net.MalformedURLException;
 import java.net.URL;
 
 public class CurrentStylesImpl implements ICurrentStyles {
-    private final Node node;
-    private final String xpath;
-    private final Rect nodeRect;
-    private final Style style;
+    private String xpath;
+    private String tagName;
+    private Rect rect;
+    private Style style;
+    private Style computedStyle;
+    private String href;
+    private String[] texts;
 
-    public CurrentStylesImpl(final Node node, final String xpath, final Rect nodeRect, final Style style) {
-        this.node = node;
-        this.xpath = xpath;
-        this.nodeRect = nodeRect;
-        this.style = style;
+    public CurrentStylesImpl() {
     }
 
     @Override
@@ -26,35 +25,86 @@ public class CurrentStylesImpl implements ICurrentStyles {
         return this.xpath;
     }
 
+    public void setXPath(String xpath) {
+        this.xpath = xpath;
+    }
+
     @Override
     public String getTagName() {
-        return node.getNodeName();
+        return this.tagName;
+    }
+
+    public void setTagName(String tagName) {
+        this.tagName = tagName;
+    }
+
+    public Rect getRect() {
+        return rect;
+    }
+
+    public void setRect(Rect rect) {
+        this.rect = rect;
+    }
+
+    public Style getStyle() {
+        return this.style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
+    }
+
+    public Style getComputedStyle() {
+        return computedStyle;
+    }
+
+    public void setComputedStyle(Style computedStyle) {
+        this.computedStyle = computedStyle;
+    }
+
+    public String getHref() {
+        return href;
+    }
+
+    public void setHref(String href) {
+        this.href = href;
+    }
+
+    public String[] getTexts() {
+        return this.texts;
+    }
+
+    public void setTexts(String[] value) {
+        this.texts = value;
     }
 
     @Override
     public Rectangle getRectangle() {
-        return new Rectangle(nodeRect.getX().intValue(), nodeRect.getY().intValue(), nodeRect.getWidth().intValue(), nodeRect.getHeight().intValue());
+        if (this.rect == null) {
+            return null;
+        }
+
+        return new Rectangle(
+                this.rect.getX().intValue(), this.rect.getY().intValue(),
+                this.rect.getWidth().intValue(), this.rect.getHeight().intValue());
     }
 
     @Override
     public boolean isLink() {
-        if (!"a".equalsIgnoreCase(this.node.getNodeName())) {
-            return false;
-        }
-
-        String href = null;
-        for (String attribute : this.node.getAttributes()) {
-
-        }
-
-//        return href != null;
-        throw new NotImplementedException();
+        return this.href != null;
     }
 
     @Override
     public URL getLinkURL() {
-//        return null;
-        throw new NotImplementedException();
+        if (this.href == null) {
+            return null;
+        }
+
+        try {
+            return new URL(this.href);
+        } catch (MalformedURLException e) {
+            return null;
+        }
     }
 
     @Override
@@ -89,7 +139,7 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getFontSize() {
-        return this.style.fontSize;
+        return this.computedStyle.fontSize;
     }
 
     @Override
@@ -133,23 +183,18 @@ public class CurrentStylesImpl implements ICurrentStyles {
     }
 
     @Override
-    public Element getElement() {
-        throw new NotImplementedException();
-    }
-
-    @Override
     public String getComputedColor() {
-        return this.getColor();
+        return this.computedStyle.color;
     }
 
     @Override
     public String getComputedBackgroundColor() {
-        return this.getBackgroundColor();
+        return this.computedStyle.backgroundColor;
     }
 
     @Override
     public String getComputedBackgroundImage() {
-        return this.getBackgroundImage();
+        return this.computedStyle.backgroundImage;
     }
 
     @Override
@@ -159,21 +204,27 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public boolean hasChildText() {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public boolean hasDescendantTextWithBGImage() {
-        throw new NotImplementedException();
+        return this.texts != null && this.texts.length > 0;
     }
 
     @Override
     public String[] getChildTexts() {
-        throw new NotImplementedException();
+        return this.texts;
+    }
+
+    @Override
+    public boolean hasDescendantTextWithBGImage() {
+        return false;
     }
 
     @Override
     public String[] getDescendantTextsWithBGImage() {
-        throw new NotImplementedException();
+        return null;
+    }
+
+    @Override
+    public Element getElement() {
+//        throw new NotImplementedException();
+        return null;
     }
 }
