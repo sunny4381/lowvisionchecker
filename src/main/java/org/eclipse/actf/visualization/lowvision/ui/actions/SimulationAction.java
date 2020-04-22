@@ -11,39 +11,39 @@
 
 package org.eclipse.actf.visualization.lowvision.ui.actions;
 
-import org.eclipse.actf.visualization.ui.IVisualizationView;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.viewers.ISelection;
-import org.eclipse.ui.IViewPart;
-import org.eclipse.ui.IWorkbenchWindow;
-import org.eclipse.ui.IWorkbenchWindowActionDelegate;
-import org.eclipse.ui.PartInitException;
-
-public class SimulationAction implements IWorkbenchWindowActionDelegate {
-
-	private IWorkbenchWindow _window;
-
-	public void dispose() {
-	}
-
-	public void init(IWorkbenchWindow window) {
-		this._window = window;
-	}
-
-	public void run(IAction action) {
-		try {
-			IViewPart viewPart = this._window.getActivePage().showView(
-					IVisualizationView.ID_LOWVISIONVIEW);
-			if (viewPart instanceof IVisualizationView) {
-				((IVisualizationView) viewPart).doVisualize();
-			}
-
-		} catch (PartInitException pie) {
-			//pie.printStackTrace();
-		}
-	}
-
-	public void selectionChanged(IAction action, ISelection selection) {
-	}
-
-}
+//import org.eclipse.actf.visualization.ui.IVisualizationView;
+//import org.eclipse.jface.action.IAction;
+//import org.eclipse.jface.viewers.ISelection;
+//import org.eclipse.ui.IViewPart;
+//import org.eclipse.ui.IWorkbenchWindow;
+//import org.eclipse.ui.IWorkbenchWindowActionDelegate;
+//import org.eclipse.ui.PartInitException;
+//
+//public class SimulationAction implements IWorkbenchWindowActionDelegate {
+//
+//	private IWorkbenchWindow _window;
+//
+//	public void dispose() {
+//	}
+//
+//	public void init(IWorkbenchWindow window) {
+//		this._window = window;
+//	}
+//
+//	public void run(IAction action) {
+//		try {
+//			IViewPart viewPart = this._window.getActivePage().showView(
+//					IVisualizationView.ID_LOWVISIONVIEW);
+//			if (viewPart instanceof IVisualizationView) {
+//				((IVisualizationView) viewPart).doVisualize();
+//			}
+//
+//		} catch (PartInitException pie) {
+//			//pie.printStackTrace();
+//		}
+//	}
+//
+//	public void selectionChanged(IAction action, ISelection selection) {
+//	}
+//
+//}

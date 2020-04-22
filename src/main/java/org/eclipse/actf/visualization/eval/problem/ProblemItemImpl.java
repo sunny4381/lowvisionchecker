@@ -16,8 +16,9 @@ import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
 import org.eclipse.actf.visualization.internal.eval.EvaluationItemImpl;
 import org.eclipse.actf.visualization.util.html2view.Html2ViewMapData;
-import org.eclipse.swt.graphics.Image;
 import org.w3c.dom.Node;
+
+import java.awt.*;
 
 /**
  * Default implementation of {@link IProblemItem}

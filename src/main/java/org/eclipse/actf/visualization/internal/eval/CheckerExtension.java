@@ -11,16 +11,18 @@
 
 package org.eclipse.actf.visualization.internal.eval;
 
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.actf.visualization.eval.EvaluationUtil;
 import org.eclipse.actf.visualization.eval.IChecker;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.Platform;
+import org.eclipse.core.runtime.*;
+import org.ss_proj.HtmlCheckerInfoProvider;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class CheckerExtension {
 	private static final String EXTENSION_NAME = "checkers"; //$NON-NLS-1$
@@ -78,29 +80,131 @@ public class CheckerExtension {
 		return infoProviders;
 	}
 
-	private static CheckerExtension[] getExtensions() {
+//	private static CheckerExtension[] getExtensions() {
+//		if (extensions != null)
+//			return extensions;
+//
+//		IExtension[] tmpExtensions = Platform.getExtensionRegistry()
+//				.getExtensionPoint(EvaluationUtil.PLUGIN_ID, EXTENSION_NAME)
+//				.getExtensions();
+//
+//		DebugPrintUtil.devOrDebugPrintln("Checker extensions:" //$NON-NLS-1$
+//				+ tmpExtensions.length);
+//
+//		List<CheckerExtension> l = new ArrayList<CheckerExtension>();
+//		for (int i = 0; i < tmpExtensions.length; i++) {
+//			IConfigurationElement[] configElements = tmpExtensions[i]
+//					.getConfigurationElements();
+//			for (int j = 0; j < configElements.length; j++) {
+//				CheckerExtension ex = parseExtension(configElements[j]);
+//				if (ex != null) {
+//					l.add(ex);
+//				}
+//			}
+//		}
+//		extensions = l.toArray(new CheckerExtension[l.size()]);
+//		return extensions;
+//	}
+	public static CheckerExtension[] getExtensions() {
 		if (extensions != null)
 			return extensions;
 
-		IExtension[] tmpExtensions = Platform.getExtensionRegistry()
-				.getExtensionPoint(EvaluationUtil.PLUGIN_ID, EXTENSION_NAME)
-				.getExtensions();
-
-		DebugPrintUtil.devOrDebugPrintln("Checker extensions:" //$NON-NLS-1$
-				+ tmpExtensions.length);
-
-		List<CheckerExtension> l = new ArrayList<CheckerExtension>();
-		for (int i = 0; i < tmpExtensions.length; i++) {
-			IConfigurationElement[] configElements = tmpExtensions[i]
-					.getConfigurationElements();
-			for (int j = 0; j < configElements.length; j++) {
-				CheckerExtension ex = parseExtension(configElements[j]);
-				if (ex != null) {
-					l.add(ex);
+		IConfigurationElement configuration = new IConfigurationElement() {
+			@Override
+			public Object createExecutableExtension(String propertyName) throws CoreException {
+				if (propertyName.equals(ATTR_INFO_PROVIDER)) {
+					return new HtmlCheckerInfoProvider();
 				}
+				throw new NotImplementedException();
 			}
-		}
-		extensions = l.toArray(new CheckerExtension[l.size()]);
+
+			@Override
+			public String getAttribute(String name) throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getAttribute(String attrName, String locale) throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getAttributeAsIs(String name) throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String[] getAttributeNames() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public IConfigurationElement[] getChildren() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public IConfigurationElement[] getChildren(String name) throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public IExtension getDeclaringExtension() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getName() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public Object getParent() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getValue() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getValue(String locale) throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getValueAsIs() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getNamespace() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public String getNamespaceIdentifier() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public IContributor getContributor() throws InvalidRegistryObjectException {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public boolean isValid() {
+				throw new NotImplementedException();
+			}
+
+			@Override
+			public int getHandleId() {
+				throw new NotImplementedException();
+			}
+		};
+
+		extensions = new CheckerExtension[] { new CheckerExtension(configuration) };
 		return extensions;
 	}
 

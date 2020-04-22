@@ -11,24 +11,24 @@
 
 package org.eclipse.actf.visualization.lowvision.ui.actions;
 
-import org.eclipse.actf.ui.util.Messages;
-import org.eclipse.actf.ui.util.PreferenceUtils;
-import org.eclipse.actf.visualization.lowvision.LowVisionVizPlugin;
-import org.eclipse.actf.visualization.lowvision.ui.preferences.LowVisionPreferencePage;
-import org.eclipse.jface.action.Action;
-
-
-
-public class LowVisionSettingsAction extends Action {
-		
-    public LowVisionSettingsAction() {
-        setToolTipText(Messages.Tooltip_Settings); 
-        setImageDescriptor(LowVisionVizPlugin.imageDescriptorFromPlugin(LowVisionVizPlugin.PLUGIN_ID, "icons/setting.png")); //$NON-NLS-1$
-        setText(Messages.MenuConst_Settings); 
-    }
-
-    public void run() {
-        PreferenceUtils.openPreferenceDialog(LowVisionPreferencePage.ID);
-    }
-
-}
+//import org.eclipse.actf.ui.util.Messages;
+//import org.eclipse.actf.ui.util.PreferenceUtils;
+//import org.eclipse.actf.visualization.lowvision.LowVisionVizPlugin;
+//import org.eclipse.actf.visualization.lowvision.ui.preferences.LowVisionPreferencePage;
+//import org.eclipse.jface.action.Action;
+//
+//
+//
+//public class LowVisionSettingsAction extends Action {
+//
+//    public LowVisionSettingsAction() {
+//        setToolTipText(Messages.Tooltip_Settings);
+//        setImageDescriptor(LowVisionVizPlugin.imageDescriptorFromPlugin(LowVisionVizPlugin.PLUGIN_ID, "icons/setting.png")); //$NON-NLS-1$
+//        setText(Messages.MenuConst_Settings);
+//    }
+//
+//    public void run() {
+//        PreferenceUtils.openPreferenceDialog(LowVisionPreferencePage.ID);
+//    }
+//
+//}

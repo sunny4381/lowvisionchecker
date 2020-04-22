@@ -12,7 +12,8 @@
 package org.eclipse.actf.visualization.eval;
 
 import org.eclipse.actf.visualization.eval.guideline.IGuidelineSlectionChangedListener;
-import org.eclipse.swt.graphics.Image;
+
+import java.awt.*;
 
 /**
  * Interface for evaluation item information
@@ -93,7 +94,7 @@ public interface IEvaluationItem extends IGuidelineSlectionChangedListener{
 	 * @return Techniques information to be shown in the result table
 	 */
 	public String getTableDataTechniques();
-	
+
 	/**
 	 * @return icons for evaluation metrics to be shown in the result table
 	 */

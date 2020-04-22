@@ -14,7 +14,7 @@ import org.eclipse.osgi.util.NLS;
 
 public final class ModelServiceMessages extends NLS {
 
-	private static final String BUNDLE_NAME = "messages";//$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org.eclipse.actf.model.ui.util.messages";//$NON-NLS-1$
 
 	private ModelServiceMessages() {
 		// Do not instantiate

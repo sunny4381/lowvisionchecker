@@ -12,8 +12,9 @@
 package org.eclipse.actf.visualization.eval.problem;
 
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
-import org.eclipse.swt.graphics.Image;
 import org.w3c.dom.Node;
+
+import java.awt.*;
 
 /**
  * Interface for problem information

@@ -14,20 +14,11 @@ package org.eclipse.actf.visualization.eval.guideline;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Comparator;
-import java.util.Enumeration;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
-import java.util.Vector;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import com.google.common.collect.Collections2;
 import org.eclipse.actf.util.FileUtils;
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
@@ -60,8 +51,9 @@ public class GuidelineHolder {
 
 	private static GuidelineHolder INSTANCE = null;
 
-	private IPreferenceStore preferenceStore = EvaluationPlugin.getDefault()
-			.getPreferenceStore();
+//	private IPreferenceStore preferenceStore = EvaluationPlugin.getDefault()
+//			.getPreferenceStore();
+	private IPreferenceStore preferenceStore = null;
 
 	private ICheckerInfoProvider[] checkerInfos = CheckerExtension
 			.getCheckerInfoProviders();
@@ -127,15 +119,14 @@ public class GuidelineHolder {
 	// TODO guideline base -> check item base On/Off
 
 	private GuidelineHolder() {
-		Bundle bundle = EvaluationPlugin.getDefault().getBundle();
-		Enumeration<URL> guidelines = bundle.findEntries(
-				"resources/guidelines", "*.xml", false); //$NON-NLS-1$ //$NON-NLS-2$
-
+		Collection<URL> guidelines = Collections2.transform(
+				Arrays.asList("jis.xml", "section508.xml", "wcag20.xml"),
+				(name) -> GuidelineHolder.this.getClass().getResource(name));
 		InputStream is;
 
-		while (guidelines.hasMoreElements()) {
+		for (URL guideline : guidelines) {
 			try {
-				readGuidelines(guidelines.nextElement().openStream());
+				readGuidelines(guideline.openStream());
 			} catch (IOException e) {
 				e.printStackTrace();
 			}
@@ -182,8 +173,7 @@ public class GuidelineHolder {
 		// check item config
 
 		try {
-			is = FileLocator.openStream(bundle, new Path(
-					"resources/checkitem.xml"), false); //$NON-NLS-1$
+			is = this.getClass().getResourceAsStream("checkitem.xml");
 			CheckItemReader cir = CheckItemReader.parse(is, this);
 			Set<String> metricsNameSet = new HashSet<String>();
 			if (cir.isSucceed()) {
@@ -238,9 +228,7 @@ public class GuidelineHolder {
 			} else {
 				// TODO error report
 			}
-		} catch (IOException e1) {
-			e1.printStackTrace();
-		}
+		} finally {}
 
 		for (IEvaluationItem tmpItem : checkitemMap.values()) {
 			if (tmpItem instanceof EvaluationItemImpl) {

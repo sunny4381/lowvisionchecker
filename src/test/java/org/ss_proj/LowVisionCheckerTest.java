@@ -5,10 +5,14 @@ import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
 import com.github.kklisura.cdt.services.types.ChromeTab;
 import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
+import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.util.List;
+
+import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
 public class LowVisionCheckerTest {
@@ -46,5 +50,8 @@ public class LowVisionCheckerTest {
 
         LowVisionChecker checker = new LowVisionChecker(browser, URL, lowVisionType);
         checker.run();
+
+        List<IProblemItem> problemItem = checker.getProblemList();
+        assertThat(problemItem.size(), greaterThan(1));
     }
 }

@@ -20,12 +20,11 @@ import org.eclipse.actf.visualization.internal.eval.CheckerExtension;
 
 public class GuidelineItemDescription {
 
-	private static final String BUNDLE_NAME = "resources/description"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org/eclipse/actf/visualization/eval/guideline/description"; //$NON-NLS-1$
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
+	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
 
 	private static GuidelineItemDescription instance;
 

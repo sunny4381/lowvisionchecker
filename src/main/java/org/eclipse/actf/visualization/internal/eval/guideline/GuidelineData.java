@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.visualization.internal.eval.guideline;
 
+import java.awt.*;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
@@ -21,7 +22,6 @@ import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.IGuidelineItem;
 import org.eclipse.actf.visualization.eval.ITechniquesItem;
 import org.eclipse.actf.visualization.eval.guideline.IGuidelineData;
-import org.eclipse.swt.graphics.Image;
 
 public class GuidelineData implements IGuidelineData {
 

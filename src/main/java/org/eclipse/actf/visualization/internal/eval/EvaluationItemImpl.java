@@ -11,6 +11,8 @@
 
 package org.eclipse.actf.visualization.internal.eval;
 
+import java.awt.*;
+import java.io.IOException;
 import java.util.Comparator;
 import java.util.Iterator;
 import java.util.TreeSet;
@@ -25,9 +27,10 @@ import org.eclipse.actf.visualization.eval.guideline.GuidelineSelectionChangedEv
 import org.eclipse.actf.visualization.eval.problem.IProblemConst;
 import org.eclipse.actf.visualization.internal.eval.guideline.GuidelineItemDescription;
 import org.eclipse.actf.visualization.internal.eval.guideline.MetricsItem;
-import org.eclipse.swt.graphics.Image;
 
 import com.ibm.icu.text.MessageFormat;
+
+import javax.imageio.ImageIO;
 
 @SuppressWarnings("nls")
 public class EvaluationItemImpl implements IEvaluationItem {
@@ -40,73 +43,49 @@ public class EvaluationItemImpl implements IEvaluationItem {
 	private static final String UNDERSTANDABLE = "understandable";
 	private static final String ROBUST = "robust";
 
-	private static final Image ERROR_C_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrC.png").createImage();
-	private static final Image ERROR_N_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrN.png").createImage();
-	private static final Image ERROR_L_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrL.png").createImage();
-	private static final Image ERROR_O_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrO.png").createImage();
-	private static final Image ERROR_P_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrP.png").createImage();
-	private static final Image ERROR_R_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrR.png").createImage();
-	private static final Image ERROR_U_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ErrU.png").createImage();
-	private static final Image ERROR_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/Err.png").createImage();
+	private static Image loadImage(final String resourceName) {
+		try {
+			return ImageIO.read(EvaluationItemImpl.class.getResourceAsStream(resourceName));
+		} catch (IOException e) {
+			throw new RuntimeException(e);
+		}
+	}
 
-	private static final Image WARN_C_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnC.png").createImage();
-	private static final Image WARN_N_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnN.png").createImage();
-	private static final Image WARN_L_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnL.png").createImage();
-	private static final Image WARN_O_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnO.png").createImage();
-	private static final Image WARN_P_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnP.png").createImage();
-	private static final Image WARN_R_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnR.png").createImage();
-	private static final Image WARN_U_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/WarnU.png").createImage();
-	private static final Image WARN_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/Warn.png").createImage();
+	private static final Image ERROR_C_IMAGE = loadImage("icons/ErrC.png");
+	private static final Image ERROR_N_IMAGE = loadImage("icons/ErrN.png");
+	private static final Image ERROR_L_IMAGE = loadImage("icons/ErrL.png");
+	private static final Image ERROR_O_IMAGE = loadImage("icons/ErrO.png");
+	private static final Image ERROR_P_IMAGE = loadImage("icons/ErrP.png");
+	private static final Image ERROR_R_IMAGE = loadImage("icons/ErrR.png");
+	private static final Image ERROR_U_IMAGE = loadImage("icons/ErrU.png");
+	private static final Image ERROR_IMAGE = loadImage("icons/Err.png");
 
-	private static final Image USER_C_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfC.png").createImage();
-	private static final Image USER_N_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfN.png").createImage();
-	private static final Image USER_L_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfL.png").createImage();
-	private static final Image USER_O_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfO.png").createImage();
-	private static final Image USER_P_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfP.png").createImage();
-	private static final Image USER_R_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfR.png").createImage();
-	private static final Image USER_U_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/ConfU.png").createImage();
-	private static final Image USER_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/Conf.png").createImage();
+	private static final Image WARN_C_IMAGE = loadImage("icons/WarnC.png");
+	private static final Image WARN_N_IMAGE = loadImage("icons/WarnN.png");
+	private static final Image WARN_L_IMAGE = loadImage("icons/WarnL.png");
+	private static final Image WARN_O_IMAGE = loadImage("icons/WarnO.png");
+	private static final Image WARN_P_IMAGE = loadImage("icons/WarnP.png");
+	private static final Image WARN_R_IMAGE = loadImage("icons/WarnR.png");
+	private static final Image WARN_U_IMAGE = loadImage("icons/WarnU.png");
+	private static final Image WARN_IMAGE = loadImage("icons/Warn.png");
 
-	private static final Image INFO_C_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoC.png").createImage();
-	private static final Image INFO_N_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoN.png").createImage();
-	private static final Image INFO_L_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoL.png").createImage();
-	private static final Image INFO_O_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoO.png").createImage();
-	private static final Image INFO_P_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoP.png").createImage();
-	private static final Image INFO_R_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoR.png").createImage();
-	private static final Image INFO_U_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/InfoU.png").createImage();
-	private static final Image INFO_IMAGE = EvaluationPlugin
-			.getImageDescriptor("icons/Info.png").createImage();
+	private static final Image USER_C_IMAGE = loadImage("icons/ConfC.png");
+	private static final Image USER_N_IMAGE = loadImage("icons/ConfN.png");
+	private static final Image USER_L_IMAGE = loadImage("icons/ConfL.png");
+	private static final Image USER_O_IMAGE = loadImage("icons/ConfO.png");
+	private static final Image USER_P_IMAGE = loadImage("icons/ConfP.png");
+	private static final Image USER_R_IMAGE = loadImage("icons/ConfR.png");
+	private static final Image USER_U_IMAGE = loadImage("icons/ConfU.png");
+	private static final Image USER_IMAGE = loadImage("icons/Conf.png");
+
+	private static final Image INFO_C_IMAGE = loadImage("icons/InfoC.png");
+	private static final Image INFO_N_IMAGE = loadImage("icons/InfoN.png");
+	private static final Image INFO_L_IMAGE = loadImage("icons/InfoL.png");
+	private static final Image INFO_O_IMAGE = loadImage("icons/InfoO.png");
+	private static final Image INFO_P_IMAGE = loadImage("icons/InfoP.png");
+	private static final Image INFO_R_IMAGE = loadImage("icons/InfoR.png");
+	private static final Image INFO_U_IMAGE = loadImage("icons/InfoU.png");
+	private static final Image INFO_IMAGE = loadImage("icons/Info.png");
 
 	private String id = "";
 
