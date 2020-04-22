@@ -41,6 +41,16 @@
     return ret;
   };
 
+  const sliceMap = function(obj, allowedKeys) {
+    const ret = {};
+
+    allowedKeys.forEach((key) => {
+      ret[key] = obj[key];
+    });
+
+    return ret;
+  }
+
   // const traverseDescendantNode = function(el, callback) {
   //   if (! el.hasChildNodes()) {
   //     return;
@@ -76,9 +86,16 @@
     return {
       xpath: fullXPath(el),
       tagName: el.nodeName.toLowerCase(),
-      rect: el.getBoundingClientRect(),
-      style: el.style,
-      computedStyle: getComputedStyle(el),
+      rect: sliceMap(el.getBoundingClientRect(), [ "x", "y", "width", "height", "left", "top", "right", "bottom" ]),
+      // style: el.style,
+      computedStyle: sliceMap(
+        getComputedStyle(el),
+        [
+          "background", "backgroundColor", "backgroundImage", "backgroundRepeat", "color", "display", "fontFamily",
+          "fontSize", "fontStyle", "fontVariant", "letterSpacing", "lineHeight", "opacity", "position", "textAlign",
+          "textDecoration", "visibility"
+        ]
+      ),
       href: el.href ? new URL(el.href, baseUrl).href : null,
       texts: texts(el)
     };
@@ -87,5 +104,5 @@
   const ret = Array.from(document.body.querySelectorAll(selector), (el) => makeHash(el));
   ret.unshift(makeHash(document.body));
 
-  return JSON.stringify(ret);
-})("li");
+  return ret;
+})("*");

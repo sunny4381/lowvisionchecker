@@ -3,21 +3,58 @@ package org.ss_proj;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.swt.graphics.Rectangle;
 import org.w3c.dom.Element;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Map;
 
 public class CurrentStylesImpl implements ICurrentStyles {
     private String xpath;
     private String tagName;
     private Rect rect;
-    private Style style;
+//    private Style style;
     private Style computedStyle;
     private String href;
     private String[] texts;
 
     public CurrentStylesImpl() {
+    }
+
+    public static CurrentStylesImpl convertFrom(Map<String, ?> map) {
+        CurrentStylesImpl ret = new CurrentStylesImpl();
+
+        map.forEach((key, value) -> {
+            switch (key) {
+                case "xpath":
+                    ret.setXPath((String) value);
+                    break;
+                case "tagName":
+                    ret.setTagName((String) value);
+                    break;
+                case "rect":
+                    ret.setRect(Rect.convertFrom((Map<String, Object>) value));
+                    break;
+//                case "style":
+//                    ret.setStyle(Style.convertFrom((Map<String, Object>) value));
+//                    break;
+                case "computedStyle":
+                    ret.setComputedStyle(Style.convertFrom((Map<String, Object>) value));
+                    break;
+                case "href":
+                    ret.setHref((String) value);
+                    break;
+                case "texts":
+                    String[] array = null;
+                    if (value != null) {
+                        array = Arrays.stream((Object[])value).toArray(String[]::new);
+                    }
+                    ret.setTexts(array);
+                    break;
+            }
+        });
+
+        return ret;
     }
 
     @Override
@@ -46,13 +83,13 @@ public class CurrentStylesImpl implements ICurrentStyles {
         this.rect = rect;
     }
 
-    public Style getStyle() {
-        return this.style;
-    }
-
-    public void setStyle(Style style) {
-        this.style = style;
-    }
+//    public Style getStyle() {
+//        return this.style;
+//    }
+//
+//    public void setStyle(Style style) {
+//        this.style = style;
+//    }
 
     public Style getComputedStyle() {
         return computedStyle;
@@ -109,32 +146,32 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getBackgroundColor() {
-        return this.style.backgroundColor;
+        return this.computedStyle.backgroundColor;
     }
 
     @Override
     public String getBackgroundRepeat() {
-        return this.style.backgroundRepeat;
+        return this.computedStyle.backgroundRepeat;
     }
 
     @Override
     public String getBackgroundImage() {
-        return this.style.backgroundImage;
+        return this.computedStyle.backgroundImage;
     }
 
     @Override
     public String getColor() {
-        return this.style.color;
+        return this.computedStyle.color;
     }
 
     @Override
     public String getDisplay() {
-        return this.style.display;
+        return this.computedStyle.display;
     }
 
     @Override
     public String getFontFamily() {
-        return this.style.fontFamily;
+        return this.computedStyle.fontFamily;
     }
 
     @Override
@@ -144,42 +181,42 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getFontStyle() {
-        return this.style.fontStyle;
+        return this.computedStyle.fontStyle;
     }
 
     @Override
     public String getFontVariant() {
-        return this.style.fontVariant;
+        return this.computedStyle.fontVariant;
     }
 
     @Override
     public String getLetterSpacing() {
-        return this.style.letterSpacing;
+        return this.computedStyle.letterSpacing;
     }
 
     @Override
     public String getLineHeight() {
-        return this.style.lineHeight;
+        return this.computedStyle.lineHeight;
     }
 
     @Override
     public String getPosition() {
-        return this.style.position;
+        return this.computedStyle.position;
     }
 
     @Override
     public String getTextAlign() {
-        return this.style.textAlign;
+        return this.computedStyle.textAlign;
     }
 
     @Override
     public String getTextDecoration() {
-        return this.style.textDecoration;
+        return this.computedStyle.textDecoration;
     }
 
     @Override
     public String getVisibility() {
-        return this.style.visibility;
+        return this.computedStyle.visibility;
     }
 
     @Override
@@ -199,7 +236,7 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getOpacity() {
-        return this.style.opacity;
+        return this.computedStyle.opacity;
     }
 
     @Override

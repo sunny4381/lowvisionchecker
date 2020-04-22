@@ -1,5 +1,7 @@
 package org.ss_proj;
 
+import java.util.Map;
+
 public class Rect {
     private Double x;
     private Double y;
@@ -11,6 +13,52 @@ public class Rect {
     private Double bottom;
 
     public Rect() {}
+
+    public static Rect convertFrom(Map<String, ?> map) {
+        Rect ret = new Rect();
+
+        map.forEach((key, _value) -> {
+            final Double value;
+            if (_value == null) {
+                value = null;
+            } else if (_value instanceof Double) {
+                value = (Double) _value;
+            } else if (_value instanceof Integer) {
+                value = ((Integer) _value).doubleValue();
+            } else {
+                value = Double.parseDouble(_value.toString());
+            }
+
+            switch (key) {
+            case "x":
+                ret.setX(value);
+                break;
+            case "y":
+                ret.setY(value);
+                break;
+            case "width":
+                ret.setWidth(value);
+                break;
+            case "height":
+                ret.setHeight(value);
+                break;
+            case "left":
+                ret.setLeft(value);
+                break;
+            case "top":
+                ret.setTop(value);
+                break;
+            case "right":
+                ret.setRight(value);
+                break;
+            case "bottom":
+                ret.setBottom(value);
+                break;
+            }
+        });
+
+        return ret;
+    }
 
     public Double getX() {
         return x;

@@ -1,16 +1,12 @@
 package org.ss_proj;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kklisura.cdt.protocol.commands.DOM;
-import com.github.kklisura.cdt.protocol.commands.Emulation;
 import com.github.kklisura.cdt.protocol.commands.Page;
 import com.github.kklisura.cdt.protocol.commands.Runtime;
-import com.github.kklisura.cdt.protocol.events.page.LifecycleEvent;
 import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextCreated;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
-import com.github.kklisura.cdt.protocol.support.types.EventListener;
 import com.github.kklisura.cdt.protocol.types.page.*;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
@@ -78,41 +74,14 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void navigate(String url) {
+        final Navigate navigate;
         try {
-            this.navigateAndWait(url, 10000);
+            navigate = CDTUtil.navigateAndWait(this.service, url, 10000);
         } catch (InterruptedException e) {
             throw new RuntimeException("load timeout");
         }
-    }
-
-    public void navigateAndWait(final String url, final long timeoutMillis) throws InterruptedException {
-        final Object lock = new Object();
-        final EventHandler<LifecycleEvent> eventHandler = new EventHandler<LifecycleEvent>() {
-            @Override
-            public void onEvent(LifecycleEvent event) {
-                if ("load".equals(event.getName())) {
-                    synchronized (lock) {
-                        lock.notify();
-                    }
-                }
-            }
-        };
-        final EventListener eventListener = this.page.onLifecycleEvent(eventHandler);
-
-        final Navigate navigate = this.page.navigate(url);
-        if (navigate == null) {
-            throw new RuntimeException("destination unreachable");
-        }
 
         this.frameId = navigate.getFrameId();
-
-        try {
-            synchronized (lock) {
-                lock.wait(timeoutMillis);
-            }
-        } finally {
-            this.service.removeEventListener(eventListener);
-        }
     }
 
     @Override
@@ -157,7 +126,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public int getReadyState() {
-        final String readyState = String.valueOf(this.evaluate("document.readyState"));
+        final String readyState = String.valueOf(CDTUtil.evaluate(this.service, "document.readyState"));
         if ("complete".equals(readyState)) {
             return READYSTATE_COMPLETE;
         } else if ("loading".equals(readyState)) {
@@ -167,43 +136,6 @@ public class Browser implements IWebBrowserACTF, IModelService {
         }
 
         return READYSTATE_UNINITIALIZED;
-    }
-
-    public Object evaluate(final String expression) {
-        Evaluate evaluate = this.runtime.evaluate(expression);
-        if (evaluate == null) {
-            return null;
-        }
-
-        final Object ret;
-        {
-            RemoteObject remoteObject = evaluate.getResult();
-            if (remoteObject == null) {
-                return null;
-            }
-
-            ret = remoteObject.getValue();
-
-            String objectId = remoteObject.getObjectId();
-            if (objectId != null) {
-                this.runtime.releaseObject(objectId);
-            }
-        }
-
-        String error = null;
-        final ExceptionDetails exceptionDetails = evaluate.getExceptionDetails();
-        if (exceptionDetails != null) {
-            final RemoteObject remoteObject = exceptionDetails.getException();
-            if (remoteObject != null) {
-                error = remoteObject.getDescription();
-            }
-        }
-
-        if (error != null) {
-            throw new RuntimeException(error);
-        }
-
-        return ret;
     }
 
     @Override
@@ -299,18 +231,10 @@ public class Browser implements IWebBrowserACTF, IModelService {
             throw new RuntimeException(e);
         }
 
-        final String jsonArray = (String)this.evaluate(js);
-        final CurrentStylesImpl[] currentStylesArray;
-        try {
-            ObjectMapper mapper = new ObjectMapper()
-                    .configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
-            currentStylesArray = mapper.readValue(jsonArray, CurrentStylesImpl[].class);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        HashMap<String, ICurrentStyles> ret = new HashMap<>(currentStylesArray.length);
-        for (CurrentStylesImpl currentStyles : currentStylesArray) {
+        Object[] array = (Object[])CDTUtil.evaluate(this.service, js);
+        HashMap<String, ICurrentStyles> ret = new HashMap<>(array.length);
+        for (Object _item : array) {
+            CurrentStylesImpl currentStyles = CurrentStylesImpl.convertFrom((Map<String, Object>)_item);
             ret.put(currentStyles.getXPath(), currentStyles);
         }
 
@@ -388,48 +312,10 @@ public class Browser implements IWebBrowserACTF, IModelService {
             return null;
         }
 
-        final Object title = getPropertyByObjectId(objectId, "title");
+        final Object title = CDTUtil.getPropertyByObjectId(this.service, objectId, "title");
         this.runtime.releaseObject(objectId);
 
         return String.valueOf(title);
-    }
-
-    private Object getPropertyByObjectId(final String objectId, final String propertyName) {
-        final CallArgument argument = new CallArgument();
-        argument.setValue(propertyName);
-
-        final CallFunctionOn callFunctionOn = this.runtime.callFunctionOn(
-                "function(property) { return property.split('.').reduce((o, i) => o[i], this); }",
-                objectId,
-                Collections.singletonList(argument),
-                Boolean.FALSE, Boolean.TRUE, Boolean.FALSE, Boolean.FALSE, Boolean.FALSE, null, null);
-
-        if (callFunctionOn == null) {
-            return null;
-        }
-
-        Object ret = null;
-        {
-            final RemoteObject remoteObject = callFunctionOn.getResult();
-            if (remoteObject != null) {
-                ret = remoteObject.getValue();
-            }
-        }
-
-        String error = null;
-        final ExceptionDetails exceptionDetails = callFunctionOn.getExceptionDetails();
-        if (exceptionDetails != null) {
-            final RemoteObject remoteObject = exceptionDetails.getException();
-            if (remoteObject != null) {
-                error = remoteObject.getDescription();
-            }
-        }
-
-        if (error != null) {
-            throw new RuntimeException(error);
-        }
-
-        return ret;
     }
 
     @Override
@@ -473,7 +359,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             return null;
         }
 
-        final Object html = getPropertyByObjectId(remoteObject.getObjectId(), "documentElement.outerHTML");
+        final Object html = CDTUtil.getPropertyByObjectId(this.service, remoteObject.getObjectId(), "documentElement.outerHTML");
         this.runtime.releaseObject(remoteObject.getObjectId());
 
         return String.valueOf(html);
@@ -531,7 +417,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
                 continue;
             }
 
-            Object src = getPropertyByObjectId(objectId, "src");
+            Object src = CDTUtil.getPropertyByObjectId(this.service, objectId, "src");
             Rect rect = getBoundingClientRect(objectId);
 
             this.runtime.releaseObject(objectId);
@@ -601,28 +487,6 @@ public class Browser implements IWebBrowserACTF, IModelService {
     }
 
     public void saveScreenshot(final String outputFilename) throws IOException {
-        final LayoutMetrics layoutMetrics = this.page.getLayoutMetrics();
-
-        final Double width = layoutMetrics.getContentSize().getWidth();
-        final Double height = layoutMetrics.getContentSize().getHeight();
-
-        final Emulation emulation = this.service.getEmulation();
-        emulation.setDeviceMetricsOverride(width.intValue(), height.intValue(), 1.0d, Boolean.FALSE);
-
-        Viewport viewport = new Viewport();
-        viewport.setScale(1d);
-
-        // You can set offset with X, Y
-        viewport.setX(0d);
-        viewport.setY(0d);
-
-        // Set a width, height of a page to take screenshot at
-        viewport.setWidth(width);
-        viewport.setHeight(height);
-
-        final String base64ImageData = page.captureScreenshot(CaptureScreenshotFormat.PNG, 100, viewport, Boolean.TRUE);
-        try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilename)) {
-            fileOutputStream.write(Base64.getDecoder().decode(base64ImageData));
-        }
+        CDTUtil.saveScreenshot(this.service, outputFilename);
     }
 }
