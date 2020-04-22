@@ -24,6 +24,7 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -488,5 +489,9 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     public void saveScreenshot(final String outputFilename) throws IOException {
         CDTUtil.saveScreenshot(this.service, outputFilename);
+    }
+
+    public byte[] takeScreenshot() {
+        return CDTUtil.takeScreenshot(this.service);
     }
 }

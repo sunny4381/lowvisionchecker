@@ -23,14 +23,12 @@ public class LowVisionChecker {
     private IPageImage[] framePageImage;
     private ImagePositionInfo[][] imageInfoInHtmlArray;
     private ArrayList<Map<String, ICurrentStyles>> styleInfoArray;
-    private String dumpImageFile;
     private List<IProblemItem> lowvisionProblemList;
 
     public LowVisionChecker(final Browser browser, final String address, final LowVisionType lowVisionType) {
         this.browser = browser;
         this.address = address;
 
-        this.dumpImageFile = System.getProperty("java.io.tmpdir") + Thread.currentThread().getId() + ".png";
         this.framePageImage = new IPageImage[1];
         this.imageInfoInHtmlArray = new ImagePositionInfo[1][];
         this.styleInfoArray = new ArrayList<>(1);
@@ -44,16 +42,11 @@ public class LowVisionChecker {
     }
 
     public void run() throws IOException {
-        IModelService modelService = browser;
-
-//        ModelServiceImageCreator imgCreator = new ModelServiceImageCreator(modelService);
-//        imgCreator.getScreenImageAsBMP(dumpImageFile, true);
-        browser.saveScreenshot(dumpImageFile);
+        final byte[] screenshot = browser.takeScreenshot();
         final int frameId = 0;
         final int lastFrame = 0;
 
-//        framePageImage[frameId] = PageImageFactory.createPageImage(dumpImageFile);
-        framePageImage[frameId] = PageImageFactory.loadFromPng(dumpImageFile);
+        framePageImage[frameId] = PageImageFactory.loadFromPng(screenshot);
 
         imageInfoInHtmlArray[frameId] = browser.getAllImagePosition();
         styleInfoArray.set(frameId, browser.getStyleInfo().getCurrentStyles());

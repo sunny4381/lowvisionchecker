@@ -6,16 +6,24 @@ import org.eclipse.actf.visualization.internal.engines.lowvision.image.PageImage
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 
 public class PageImageFactory {
-    public static PageImage loadFromPng(final String fileName) throws IOException {
-        return loadFromPng(new File(fileName));
+    public static PageImage loadFromPng(final byte[] data) throws IOException {
+        try (InputStream stream = new ByteArrayInputStream(data)) {
+            return loadFromPng(stream);
+        }
     }
 
-    public static PageImage loadFromPng(final File file) throws IOException {
-        final BufferedImage image = ImageIO.read(file);
+    public static PageImage loadFromPng(final InputStream input) throws IOException {
+        final BufferedImage image = ImageIO.read(input);
+        return loadFrom(image);
+    }
+
+    public static PageImage loadFrom(final BufferedImage image) {
         final IInt2D int2dWhole = loadImageData(image);
         return new PageImage(int2dWhole, false);
     }

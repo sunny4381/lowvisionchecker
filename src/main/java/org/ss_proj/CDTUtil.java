@@ -13,7 +13,11 @@ import com.github.kklisura.cdt.protocol.types.page.Viewport;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.protocol.types.runtime.Properties;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
+import javassist.bytecode.ByteArray;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
@@ -202,7 +206,7 @@ public class CDTUtil {
         return ret;
     }
 
-    public static void saveScreenshot(final ChromeDevToolsService service, final String outputFilename) throws IOException {
+    public static byte[] takeScreenshot(final ChromeDevToolsService service) {
         final Page page = service.getPage();
         page.enable();
 
@@ -226,8 +230,13 @@ public class CDTUtil {
         viewport.setHeight(height);
 
         final String base64ImageData = page.captureScreenshot(CaptureScreenshotFormat.PNG, 100, viewport, Boolean.TRUE);
+        return Base64.getDecoder().decode(base64ImageData);
+    }
+
+    public static void saveScreenshot(final ChromeDevToolsService service, final String outputFilename) throws IOException {
+        final byte[] data = takeScreenshot(service);
         try (FileOutputStream fileOutputStream = new FileOutputStream(outputFilename)) {
-            fileOutputStream.write(Base64.getDecoder().decode(base64ImageData));
+            fileOutputStream.write(data);
         }
     }
 }
