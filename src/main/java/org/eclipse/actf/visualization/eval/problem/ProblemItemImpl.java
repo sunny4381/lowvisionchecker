@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.visualization.eval.problem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
@@ -97,6 +98,7 @@ public class ProblemItemImpl implements IProblemItem {
 		return checkItem;
 	}
 
+	@JsonIgnore
 	public String getId() {
 		return checkItem.getId();
 	}
@@ -117,6 +119,7 @@ public class ProblemItemImpl implements IProblemItem {
 		return checkItem.getMetricsScores();
 	}
 
+	@JsonIgnore
 	public Image[] getMetricsIcons() {
 		return checkItem.getMetricsIcons();
 	}
@@ -137,6 +140,7 @@ public class ProblemItemImpl implements IProblemItem {
 		return serialNumber;
 	}
 
+	@JsonIgnore
 	public Node getTargetNode() {
 		return targetNode;
 	}
@@ -170,6 +174,7 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
+	@JsonIgnore
 	public HighlightTargetId[] getHighlightTargetIds() {
 		return (targetIds);
 	}
@@ -246,6 +251,7 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
+	@JsonIgnore
 	public HighlightTargetSourceInfo[] getHighlightTargetSoruceInfo() {
 		if (targetSources.length == 0 && line > -1) {
 			Html2ViewMapData dummy = new Html2ViewMapData(
@@ -260,6 +266,7 @@ public class ProblemItemImpl implements IProblemItem {
 		visitor.visit(this);
 	}
 
+	@JsonIgnore
 	public HighlightTargetNodeInfo getHighlightTargetNodeInfo() {
 		return highlightTargetNodeInfo;
 	}

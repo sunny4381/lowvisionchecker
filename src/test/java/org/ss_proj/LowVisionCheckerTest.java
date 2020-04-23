@@ -1,5 +1,6 @@
 package org.ss_proj;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
@@ -51,7 +52,12 @@ public class LowVisionCheckerTest {
         LowVisionChecker checker = new LowVisionChecker(browser, URL, lowVisionType);
         checker.run();
 
-        List<IProblemItem> problemItem = checker.getProblemList();
-        assertThat(problemItem.size(), greaterThan(1));
+        List<IProblemItem> problemItems = checker.getProblemList();
+        assertThat(problemItems.size(), greaterThan(1));
+
+        ObjectMapper mapper = new ObjectMapper();
+        for (IProblemItem problemItem : problemItems) {
+            System.out.println(mapper.writeValueAsString(problemItem));
+        }
     }
 }

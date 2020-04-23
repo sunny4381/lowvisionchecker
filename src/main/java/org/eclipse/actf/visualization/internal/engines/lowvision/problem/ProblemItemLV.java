@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.visualization.internal.engines.lowvision.problem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.visualization.eval.EvaluationUtil;
 import org.eclipse.actf.visualization.eval.problem.IProblemItemImage;
 import org.eclipse.actf.visualization.eval.problem.ProblemItemImpl;
@@ -64,6 +65,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 		super(id, xpath, cssPath);
 	}
 
+	@JsonIgnore
 	public int getArea() {
 		return area;
 	}
@@ -75,6 +77,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getBackgroundS
 	 * ()
 	 */
+	@JsonIgnore
 	public String getBackground() {
 		return backgroundS;
 	}
@@ -86,6 +89,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getForegroundS
 	 * ()
 	 */
+	@JsonIgnore
 	public String getForeground() {
 		return foregroundS;
 	}
@@ -97,6 +101,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getFrameId
 	 * ()
 	 */
+	@JsonIgnore
 	public int getFrameId() {
 		return frameId;
 	}
@@ -108,6 +113,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getFrameOffset
 	 * ()
 	 */
+	@JsonIgnore
 	public int getFrameOffset() {
 		return frameOffset;
 	}
@@ -119,10 +125,12 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getFrameUrlS
 	 * ()
 	 */
+	@JsonIgnore
 	public String getFrameUrl() {
 		return frameUrlS;
 	}
 
+	@JsonIgnore
 	public int getHeight() {
 		return height;
 	}
@@ -133,6 +141,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * @see
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getIconId()
 	 */
+	@JsonIgnore
 	public int getIconId() {
 		return iconId;
 	}
@@ -144,6 +153,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getImageIcon
 	 * ()
 	 */
+	@JsonIgnore
 	public Image getIconImage() {
 		// return imageIcon;
 		String evalPluginID = EvaluationUtil.PLUGIN_ID;
@@ -178,6 +188,7 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * @see org.eclipse.actf.visualization.eval.problem.IProblemItemImage#
 	 * getImageIconTooltip()
 	 */
+	@JsonIgnore
 	public String getIconTooltip() {
 		// return imageIcon;
 		if (isCanHighlight()) {
@@ -211,18 +222,22 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getSeverityLV
 	 * ()
 	 */
+	@JsonIgnore
 	public int getSeverityLV() {
 		return severityLV;
 	}
 
+	@JsonIgnore
 	public int getWidth() {
 		return width;
 	}
 
+	@JsonIgnore
 	public int getX() {
 		return x;
 	}
 
+	@JsonIgnore
 	public int getY() {
 		return y;
 	}

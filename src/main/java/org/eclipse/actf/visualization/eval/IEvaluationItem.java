@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.visualization.eval;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.visualization.eval.guideline.IGuidelineSlectionChangedListener;
 
 import java.awt.*;
@@ -98,6 +99,7 @@ public interface IEvaluationItem extends IGuidelineSlectionChangedListener{
 	/**
 	 * @return icons for evaluation metrics to be shown in the result table
 	 */
+	@JsonIgnore
 	public Image[] getMetricsIcons();
 
 	/**

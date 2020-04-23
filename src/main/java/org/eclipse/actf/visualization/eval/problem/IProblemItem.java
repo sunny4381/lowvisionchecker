@@ -11,6 +11,7 @@
 
 package org.eclipse.actf.visualization.eval.problem;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.w3c.dom.Node;
 
@@ -54,21 +55,25 @@ public interface IProblemItem {
 	/**
 	 * @return serial number
 	 */
+	@JsonIgnore
 	public abstract int getSerialNumber();
 
 	/**
 	 * @return target {@link Node} of the problem
 	 */
+	@JsonIgnore
 	public abstract Node getTargetNode();
 
 	/**
 	 * @return target String will be embedded into description
 	 */
+	@JsonIgnore
 	public abstract String getTargetString();
 
 	/**
 	 * @return target String will be used to export this problem item
 	 */
+	@JsonIgnore
 	public abstract String getTargetStringForExport();
 
 	/**
@@ -112,6 +117,7 @@ public interface IProblemItem {
 	/**
 	 * @return corresponding {@link HighlightTargetNodeInfo} of this problem
 	 */
+	@JsonIgnore
 	HighlightTargetNodeInfo getHighlightTargetNodeInfo();
 
 	/**
@@ -133,6 +139,7 @@ public interface IProblemItem {
 	/**
 	 * @return array of {@link HighlightTargetId} corresponds to this problem
 	 */
+	@JsonIgnore
 	HighlightTargetId[] getHighlightTargetIds();
 
 	/**
@@ -162,11 +169,13 @@ public interface IProblemItem {
 	/**
 	 * @return line number of the problem position
 	 */
+	@JsonIgnore
 	public abstract int getLine();
 
 	/**
 	 * @return line number of the problem position as String
 	 */
+	@JsonIgnore
 	public abstract String getLineStr();
 
 	/**
@@ -203,6 +212,7 @@ public interface IProblemItem {
 	/**
 	 * @return corresponding {@link HighlightTargetSourceInfo} of this problem
 	 */
+	@JsonIgnore
 	HighlightTargetSourceInfo[] getHighlightTargetSoruceInfo();
 
 	/**
@@ -217,6 +227,7 @@ public interface IProblemItem {
 	/**
 	 * @return evaluation item ID
 	 */
+	@JsonIgnore
 	public String getId();
 
 	/**
@@ -232,21 +243,25 @@ public interface IProblemItem {
 	/**
 	 * @return get evaluation metrics scores relate to this problem
 	 */
+	@JsonIgnore
 	public int[] getMetricsScores();
 
 	/**
 	 * @return get icons for evaluation metrics
 	 */
+	@JsonIgnore
 	public Image[] getMetricsIcons();
 
 	/**
 	 * @return get related guideline information as String array
 	 */
+	@JsonIgnore
 	public String[] getTableDataGuideline();
 
 	/**
 	 * @return sub type of the problem
 	 */
+	@JsonIgnore
 	public abstract int getSubType();
 
 	/**
