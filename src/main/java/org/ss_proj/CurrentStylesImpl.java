@@ -11,6 +11,7 @@ import java.util.Map;
 
 public class CurrentStylesImpl implements ICurrentStyles {
     private String xpath;
+    private String cssPath;
     private String tagName;
     private Rect rect;
 //    private Style style;
@@ -28,6 +29,9 @@ public class CurrentStylesImpl implements ICurrentStyles {
             switch (key) {
                 case "xpath":
                     ret.setXPath((String) value);
+                    break;
+                case "cssPath":
+                    ret.setCssPath((String) value);
                     break;
                 case "tagName":
                     ret.setTagName((String) value);
@@ -64,6 +68,15 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     public void setXPath(String xpath) {
         this.xpath = xpath;
+    }
+
+    @Override
+    public String getCssPath() {
+        return cssPath;
+    }
+
+    public void setCssPath(String cssPath) {
+        this.cssPath = cssPath;
     }
 
     @Override

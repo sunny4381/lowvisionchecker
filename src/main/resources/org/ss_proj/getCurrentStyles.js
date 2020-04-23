@@ -6,7 +6,7 @@
       let sibIndex = 0;
       for (var i = 0; i < el.parentNode.childNodes.length; i++) {
         const sib = el.parentNode.childNodes[i];
-        if (sib.nodeName == el.nodeName) {
+        if (sib.nodeName === el.nodeName) {
           if (sib === el) {
             sibIndex = sibCount;
           }
@@ -22,6 +22,50 @@
     }
 
     return stack.join("/");
+  };
+
+    // https://code.jquery.com/jquery-3.3.1.js
+  var escapeSelector = function(sel) { // $.escapeSelector()
+    var rcssescape = /([\0-\x1f\x7f]|^-?\d)|^-$|[^\0-\x1f\x7f-\uFFFF\w-]/g;
+    var fcssescape = function(ch, asCodePoint) {
+      if (asCodePoint) {
+        // U+0000 NULL becomes U+FFFD REPLACEMENT CHARACTER
+        if (ch === "\0") {
+          return "\uFFFD";
+        }
+        // Control characters and (dependent upon position) numbers get escaped as code points
+        return ch.slice(0, -1) + "\\" + ch.charCodeAt(ch.length - 1).toString(16) + " ";
+      }
+      // Other potentially-special ASCII characters get backslash-escaped
+      return "\\" + ch;
+    };
+
+    return (sel + '').replace(rcssescape, fcssescape);
+  };
+
+  const cssPath = function(el) {
+    if (!(el instanceof Element)) {
+      return;
+    }
+
+    const paths = [];
+    while (el.nodeType === Node.ELEMENT_NODE) {
+      let nodeName = el.nodeName.toLowerCase();
+      if (el.id && document.querySelectorAll("#" + escapeSelector(el.id)).length === 1) {
+        paths.unshift(`${nodeName}#${escapeSelector(el.id)}`);
+        break;
+      }
+
+      let sib = el, nth = 1;
+      while (sib = sib.previousElementSibling) {
+        if (sib.nodeName.toLowerCase() === nodeName) {
+          nth++;
+        }
+      }
+      paths.unshift(nth !== 1 ? `${nodeName}:nth-of-type(${nth})` : nodeName);
+      el = el.parentNode;
+    }
+    return paths.join(" > ");
   };
 
   const texts = function(el) {
@@ -85,6 +129,7 @@
   const makeHash = function(el) {
     return {
       xpath: fullXPath(el),
+      cssPath: cssPath(el),
       tagName: el.nodeName.toLowerCase(),
       rect: sliceMap(el.getBoundingClientRect(), [ "x", "y", "width", "height", "left", "top", "right", "bottom" ]),
       // style: el.style,

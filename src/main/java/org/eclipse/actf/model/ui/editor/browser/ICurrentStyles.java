@@ -26,6 +26,11 @@ public interface ICurrentStyles {
 	public abstract String getXPath();
 
 	/**
+	 * @return Css Path (child path sequence) of the element
+	 */
+	public abstract String getCssPath();
+
+	/**
 	 * @return tag name of the element
 	 */
 	public abstract String getTagName();
