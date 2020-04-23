@@ -60,8 +60,8 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	/**
 	 * @param id
 	 */
-	public ProblemItemLV(String id) {
-		super(id);
+	public ProblemItemLV(String id, String xpath, String cssPath) {
+		super(id, xpath, cssPath);
 	}
 
 	public int getArea() {

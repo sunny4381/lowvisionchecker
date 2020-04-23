@@ -25,42 +25,49 @@ import org.eclipse.actf.visualization.internal.engines.lowvision.problem.Problem
 
 public class LowVisionProblemConverter {
 
-	public static List<IProblemItem> convert(LowVisionProblemGroup[] target, String urlS, int frameId) {
+	public static List<IProblemItem> convert(LowVisionProblemGroup[] targets, String urlS, int frameId) {
 
 		ArrayList<IProblemItem> result = new ArrayList<IProblemItem>();
 
-		for (int i = 0; i < target.length; i++) {
-			int type = target[i].getLowVisionProblemType();
+		for (int i = 0; i < targets.length; i++) {
+			LowVisionProblemGroup target = targets[i];
+			int type = target.getLowVisionProblemType();
 			ProblemItemLV tmp;
-			ColorProblem cp;
 			switch (type) {
 			case ILowVisionProblem.LOWVISION_COLOR_PROBLEM:
-				cp = (ColorProblem) target[i].getRepresentative();
-				tmp = new ProblemItemLV("L_" + target[i].getLowVisionProblemType() + "." + cp.getLevel()); //$NON-NLS-1$
-				tmp.setTargetNode(cp.getElement());
-				tmp.setTargetString(cp.getAdditionalDescription());
+				{
+					ColorProblem cp = (ColorProblem) target.getRepresentative();
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cp.getLevel(), cp.getPageElement().getXPath(), cp.getPageElement().getCssPath()); //$NON-NLS-1$
+					tmp.setTargetNode(cp.getElement());
+					tmp.setTargetString(cp.getAdditionalDescription());
+				}
 				break;
 			case ILowVisionProblem.LOWVISION_COLOR_WITH_ALPHA_WARNING:
-				ColorWarning cw = (ColorWarning) target[i].getRepresentative();
-				tmp = new ProblemItemLV("L_" + target[i].getLowVisionProblemType() + "." + cw.getWarningType()); //$NON-NLS-1$
+				{
+					ColorWarning cw = (ColorWarning) target.getRepresentative();
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cw.getWarningType(), cw.getPageElement().getXPath(), cw.getPageElement().getCssPath()); //$NON-NLS-1$
+				}
 				break;
 			default:
-				tmp = new ProblemItemLV("L_" + target[i].getLowVisionProblemType()); //$NON-NLS-1$
+				{
+					ILowVisionProblem problem = target.getRepresentative();
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType(), problem.getPageElement().getXPath(), problem.getPageElement().getCssPath()); //$NON-NLS-1$
+				}
 			}
 			tmp.setSubType(type);
 			try {
 				switch (type) {
 				case ILowvisionProblemSubtype.LOWVISION_BACKGROUND_IMAGE_WARNING:
-					cp = (ColorProblem) target[i].getRepresentative();
+					ColorProblem cp = (ColorProblem) target.getRepresentative();
 					tmp.setTargetNode(cp.getElement());
 					tmp.setTargetString(cp.getAdditionalDescription());
 					break;
 				case ILowvisionProblemSubtype.LOWVISION_COLOR_PROBLEM:
 					break;
 				default:
-					tmp.setDescription(target[i].getDescription());
-					if (target[i].getRepresentative() != null)
-						tmp.setTargetNode(target[i].getRepresentative().getElement());
+					tmp.setDescription(target.getDescription());
+					if (target.getRepresentative() != null)
+						tmp.setTargetNode(target.getRepresentative().getElement());
 				}
 			} catch (Exception e) {
 				tmp.setDescription("unknown"); //$NON-NLS-1$
@@ -70,14 +77,14 @@ public class LowVisionProblemConverter {
 			tmp.setFrameId(frameId);
 			tmp.setFrameUrl(urlS);
 
-			tmp.setSeverityLV(target[i].getIntProbability());// TODO
-			tmp.setForeground(getLVProblemColorString(target[i], true));
-			tmp.setBackground(getLVProblemColorString(target[i], false));
-			tmp.setX(target[i].getX());
-			tmp.setY(target[i].getY());
-			tmp.setWidth(target[i].getWidth());
-			tmp.setHeight(target[i].getHeight());
-			tmp.setArea(target[i].getWidth() * target[i].getHeight());
+			tmp.setSeverityLV(target.getIntProbability());// TODO
+			tmp.setForeground(getLVProblemColorString(target, true));
+			tmp.setBackground(getLVProblemColorString(target, false));
+			tmp.setX(target.getX());
+			tmp.setY(target.getY());
+			tmp.setWidth(target.getWidth());
+			tmp.setHeight(target.getHeight());
+			tmp.setArea(target.getWidth() * target.getHeight());
 
 			// TODO recommendation
 			result.add(tmp);

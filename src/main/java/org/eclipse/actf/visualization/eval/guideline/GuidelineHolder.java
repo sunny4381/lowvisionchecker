@@ -823,18 +823,16 @@ public class GuidelineHolder {
 	@Override
 	public String toString() {
 		Set<IEvaluationItem> eSet = getMatchedCheckitemSet();
-		ArrayList<IProblemItem> ar = new ArrayList<IProblemItem>();
-		for (IEvaluationItem i : eSet) {
-			ar.add(new ProblemItemImpl(i.getId()));
-		}
 		Map<String, ItemType> itemMap = new HashMap<String, ItemType>();
 		ReportUtil ru = new ReportUtil();
 		ru.setMode(ReportUtil.TAB);
 		StringBuffer tmpSB = new StringBuffer();
 		tmpSB.append("ACTF id\t" + ru.getFirstLine() + FileUtils.LINE_SEP);
-		for (IProblemItem i : ar) {
+		for (IEvaluationItem i : eSet) {
+			i = ProblemItemImpl.translateEvaluationItem((i.getId()));
+
 			tmpSB.append(i.getId() + "\t" + ru.toString(i) + FileUtils.LINE_SEP);
-			String[] techS = i.getEvaluationItem().getTableDataTechniques()
+			String[] techS = i.getTableDataTechniques()
 					.split(",");
 			for (String s : techS) {
 				String tech = s.trim();
@@ -889,9 +887,9 @@ public class GuidelineHolder {
 		techniquesItemSet = new TreeSet<ITechniquesItem>();
 
 		for (IEvaluationItem i : matchedCheckitemSet) {
-			ProblemItemImpl pitem = new ProblemItemImpl(i.getId());
-			ITechniquesItem[][] techs = pitem.getEvaluationItem()
-					.getTechniques();
+			i = ProblemItemImpl.translateEvaluationItem(i.getId());
+
+			ITechniquesItem[][] techs = i.getTechniques();
 			for (int j = 0; j < techs.length; j++) {
 				for (int j2 = 0; j2 < techs[j].length; j2++) {
 					techniquesItemSet.add(techs[j][j2]);
@@ -900,30 +898,30 @@ public class GuidelineHolder {
 		}
 	}
 
-	public Map<String, Set<IProblemItem>> getTechProbMap() {
-		if (techniquesProblemMap == null)
-			createTechProbMap();
-		return techniquesProblemMap;
-	}
+//	public Map<String, Set<IProblemItem>> getTechProbMap() {
+//		if (techniquesProblemMap == null)
+//			createTechProbMap();
+//		return techniquesProblemMap;
+//	}
 
-	private void createTechProbMap() {
-		techniquesProblemMap = new HashMap<String, Set<IProblemItem>>();
-
-		for (IEvaluationItem i : matchedCheckitemSet) {
-			ProblemItemImpl pitem = new ProblemItemImpl(i.getId());
-			ITechniquesItem[][] techs = pitem.getEvaluationItem()
-					.getTechniques();
-			for (int j = 0; j < techs.length; j++) {
-				for (int j2 = 0; j2 < techs[j].length; j2++) {
-					ITechniquesItem tech = techs[j][j2];
-					techniquesItemSet.add(tech);
-					if (!techniquesProblemMap.containsKey(tech.getId())) {
-						techniquesProblemMap.put(tech.getId(),
-								new HashSet<IProblemItem>());
-					}
-					techniquesProblemMap.get(tech.getId()).add(pitem);
-				}
-			}
-		}
-	}
+//	private void createTechProbMap() {
+//		techniquesProblemMap = new HashMap<String, Set<IProblemItem>>();
+//
+//		for (IEvaluationItem i : matchedCheckitemSet) {
+//			ProblemItemImpl pitem = new ProblemItemImpl(i.getId());
+//			ITechniquesItem[][] techs = pitem.getEvaluationItem()
+//					.getTechniques();
+//			for (int j = 0; j < techs.length; j++) {
+//				for (int j2 = 0; j2 < techs[j].length; j2++) {
+//					ITechniquesItem tech = techs[j][j2];
+//					techniquesItemSet.add(tech);
+//					if (!techniquesProblemMap.containsKey(tech.getId())) {
+//						techniquesProblemMap.put(tech.getId(),
+//								new HashSet<IProblemItem>());
+//					}
+//					techniquesProblemMap.get(tech.getId()).add(pitem);
+//				}
+//			}
+//		}
+//	}
 }

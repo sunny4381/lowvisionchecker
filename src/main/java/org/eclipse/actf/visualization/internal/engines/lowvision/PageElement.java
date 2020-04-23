@@ -999,4 +999,11 @@ public class PageElement {
 		return (true);
 	}
 
+	public String getXPath() {
+		return style.getXPath();
+	}
+
+	public String getCssPath() {
+		return style.getCssPath();
+	}
 }

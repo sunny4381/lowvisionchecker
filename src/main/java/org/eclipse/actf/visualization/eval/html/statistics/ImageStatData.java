@@ -130,31 +130,31 @@ public class ImageStatData implements IPageStatisticsTag {
 		}
 	}
 
-	/**
-	 * Extract problem item information relates to the image from XML fragment
-	 * and add the information into this instance.
-	 * 
-	 * @param atts
-	 *            target {@link Attributes}
-	 * @throws StatisticsDataFormatException
-	 */
-	public void addProblemItem(Attributes atts)
-			throws StatisticsDataFormatException {
-		String idS = atts.getValue(ID);
-		String targetS = atts.getValue(TARGET_STRING);
-
-		if (idS != null) {
-			IProblemItem tmpItem = new ProblemItemImpl(idS);
-			if (!tmpItem.getId().equals("unknown")) { //$NON-NLS-1$
-				if (targetS != null) {
-					tmpItem.setTargetStringForExport(targetS);
-				}
-				addProblemItem(tmpItem);
-				return;
-			}
-		}
-		throw new StatisticsDataFormatException();
-	}
+//	/**
+//	 * Extract problem item information relates to the image from XML fragment
+//	 * and add the information into this instance.
+//	 *
+//	 * @param atts
+//	 *            target {@link Attributes}
+//	 * @throws StatisticsDataFormatException
+//	 */
+//	public void addProblemItem(Attributes atts)
+//			throws StatisticsDataFormatException {
+//		String idS = atts.getValue(ID);
+//		String targetS = atts.getValue(TARGET_STRING);
+//
+//		if (idS != null) {
+//			IProblemItem tmpItem = new ProblemItemImpl(idS);
+//			if (!tmpItem.getId().equals("unknown")) { //$NON-NLS-1$
+//				if (targetS != null) {
+//					tmpItem.setTargetStringForExport(targetS);
+//				}
+//				addProblemItem(tmpItem);
+//				return;
+//			}
+//		}
+//		throw new StatisticsDataFormatException();
+//	}
 
 	/**
 	 * Add problem item relates to image

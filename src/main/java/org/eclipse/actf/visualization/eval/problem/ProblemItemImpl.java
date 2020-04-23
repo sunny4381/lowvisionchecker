@@ -32,9 +32,13 @@ public class ProblemItemImpl implements IProblemItem {
 
 	private boolean canHighlight = false;
 
-	private IEvaluationItem checkItem;
+	private final IEvaluationItem checkItem;
 
-	private String description = NULL_STRING;
+	private final String xpath;
+
+	private final String cssPath;
+
+	private String description;
 
 	private int serialNumber = -1;
 
@@ -58,39 +62,35 @@ public class ProblemItemImpl implements IProblemItem {
 
 	/**
 	 * Create new ProblemItemImpl for the evaluation item
-	 * 
+	 *
 	 * @param id
 	 *            evaluation item ID
 	 * @see GuidelineHolder#getEvaluationItem(String)
 	 */
 	@SuppressWarnings("nls")
-	public ProblemItemImpl(String id) {
-		checkItem = GUIDELINE_HOLDER.getEvaluationItem(id);
+	public ProblemItemImpl(String id, String xpath, String cssPath) {
+		this.checkItem = translateEvaluationItem(id);
+		this.xpath = xpath;
+		this.cssPath = cssPath;
 
-		if (checkItem == null) {
-			checkItem = new EvaluationItemImpl("unknown",
-					EvaluationItemImpl.SEV_INFO_STR);
-			DebugPrintUtil.devOrDebugPrintln("Problem Item: unknown id \"" + id
-					+ "\"");
-
-		} else {
-			description = checkItem.createDescription();
+		if (checkItem.getId().equals("unknown")) {
+			DebugPrintUtil.devOrDebugPrintln("Problem Item: unknown id \"" + id + "\"");
 		}
 
+		this.description = checkItem.createDescription();
 	}
 
-	/**
-	 * Create new ProblemItemImpl for the evaluation item and set target Node
-	 * 
-	 * @param id
-	 *            evaluation item ID
-	 * @param targetNode
-	 *            target Node
-	 * @see GuidelineHolder#getEvaluationItem(String)
-	 */
-	public ProblemItemImpl(String id, Node targetNode) {
-		this(id);
-		setTargetNode(targetNode);
+	public static IEvaluationItem translateEvaluationItem(String id) {
+		IEvaluationItem item = GUIDELINE_HOLDER.getEvaluationItem(id);
+		if (item != null) {
+			return item;
+		}
+
+		return createUnknownEvaluationItem();
+	}
+
+	public static IEvaluationItem createUnknownEvaluationItem() {
+		return new EvaluationItemImpl("unknown", EvaluationItemImpl.SEV_INFO_STR);
 	}
 
 	public IEvaluationItem getEvaluationItem() {
@@ -99,6 +99,14 @@ public class ProblemItemImpl implements IProblemItem {
 
 	public String getId() {
 		return checkItem.getId();
+	}
+
+	public String getXPath() {
+		return this.xpath;
+	}
+
+	public String getCssPath() {
+		return this.cssPath;
 	}
 
 	public String[] getTableDataGuideline() {
@@ -143,10 +151,6 @@ public class ProblemItemImpl implements IProblemItem {
 
 	public void setCanHighlight(boolean canHighlight) {
 		this.canHighlight = canHighlight;
-	}
-
-	public void setEvaluationItem(IEvaluationItem checkItem) {
-		this.checkItem = checkItem;
 	}
 
 	public void setDescription(String description) {
@@ -286,5 +290,4 @@ public class ProblemItemImpl implements IProblemItem {
 	public void setSubType(int subType) {
 		this.subType = subType;
 	}
-
 }

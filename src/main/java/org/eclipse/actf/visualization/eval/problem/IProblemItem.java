@@ -87,13 +87,6 @@ public interface IProblemItem {
 	public abstract void setCanHighlight(boolean canHighlight);
 
 	/**
-	 * Set {@link IEvaluationItem} relates to this problem
-	 * 
-	 * @param evalItem
-	 */
-	public abstract void setEvaluationItem(IEvaluationItem evalItem);
-
-	/**
 	 * Set description about this problem
 	 * 
 	 * @param description
@@ -264,4 +257,7 @@ public interface IProblemItem {
 	 */
 	public void setSubType(int subType);
 
+	public String getXPath();
+
+	public String getCssPath();
 }

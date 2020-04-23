@@ -130,16 +130,15 @@ public class ReportUtil implements IProblemItemVisitor {
 		}
 	}
 
-	public String toString(IProblemItem item) {
-		if (item == null) {
+	private String toString(IEvaluationItem evalItem, String severityStr, String lineStrMulti, String description) {
+		if (evalItem == null) {
 			return "";
 		}
 
-		IEvaluationItem evalItem = item.getEvaluationItem();
 		String csvStr = cacheMap.get(evalItem);
 		if (csvStr == null) {
 			StringBuffer tmpSB = new StringBuffer();
-			tmpSB.append(prep(item.getSeverityStr()) + separator);
+			tmpSB.append(prep(severityStr) + separator);
 			int[] metricsValues = evalItem.getMetricsScores();
 			for (int i = 0; i < metricsValues.length; i++) {
 				if (enabledMetrics[i]) {
@@ -189,7 +188,7 @@ public class ReportUtil implements IProblemItemVisitor {
 			}
 			tmpSB.append(prep(tmpS) + separator);
 
-			tmpSB.append(prep(item.getEvaluationItem().getTableDataTechniques())
+			tmpSB.append(prep(evalItem.getTableDataTechniques())
 					+ separator);
 
 			tmpS = techUrlSB.toString();
@@ -201,8 +200,24 @@ public class ReportUtil implements IProblemItemVisitor {
 			csvStr = tmpSB.toString();
 			cacheMap.put(evalItem, csvStr);
 		}
-		return (csvStr + prep(item.getLineStrMulti()) + separator + prep(item
-				.getDescription()));
+		return (csvStr + prep(lineStrMulti) + separator + prep(description));
+	}
+
+	public String toString(final IEvaluationItem evalItem) {
+		if (evalItem == null) {
+			return "";
+		}
+
+		final IEvaluationItem translated = ProblemItemImpl.translateEvaluationItem(evalItem.getId());
+		return toString(translated, translated.getSeverityStr(), null, translated.createDescription());
+	}
+
+	public String toString(IProblemItem item) {
+		if (item == null) {
+			return "";
+		}
+
+		return toString(item.getEvaluationItem(), item.getSeverityStr(), item.getLineStrMulti(), item.getDescription());
 	}
 
 	public void visit(IProblemItem item) {
