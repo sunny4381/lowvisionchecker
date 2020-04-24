@@ -9,8 +9,8 @@ import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
-import org.ss_proj.cdt.Browser;
 
 import java.util.List;
 
@@ -41,6 +41,7 @@ public class CheckerTest {
         launcher.close();
     }
 
+    @Ignore
     @Test
     public void run() throws Exception {
         LowVisionType lowVisionType = new LowVisionType();

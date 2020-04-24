@@ -1,4 +1,4 @@
-package org.ss_proj.cdt;
+package org.ss_proj.lowvision;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,7 +17,8 @@ import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
-import org.ss_proj.lowvision.CurrentStylesImpl;
+import org.ss_proj.cdt.Rect;
+import org.ss_proj.cdt.Util;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;

@@ -1,4 +1,4 @@
-package org.ss_proj.cdt;
+package org.ss_proj.lowvision;
 
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
@@ -9,6 +9,7 @@ import org.apache.commons.lang.StringEscapeUtils;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.io.File;
@@ -33,6 +34,7 @@ public class BrowserTest {
         launcher.close();
     }
 
+    @Ignore
     @Test
     public void testFacebookStyles() throws Exception {
         final ChromeTab tab = chromeService.createTab();
@@ -75,6 +77,7 @@ public class BrowserTest {
         }
     }
 
+    @Ignore
     @Test
     public void convert() throws Exception {
         File file = new File("/Users/nakano_hideo/Projects/lowvisionchecker/src/main/resources/messages_ja.properties");

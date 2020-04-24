@@ -7,7 +7,6 @@ import org.eclipse.actf.visualization.engines.lowvision.PageEvaluation;
 import org.eclipse.actf.visualization.engines.lowvision.image.IPageImage;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.actf.visualization.lowvision.util.LowVisionUtil;
-import org.ss_proj.cdt.Browser;
 
 import java.io.IOException;
 import java.util.ArrayList;
