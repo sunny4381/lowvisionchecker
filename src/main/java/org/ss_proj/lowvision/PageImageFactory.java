@@ -32,11 +32,12 @@ public class PageImageFactory {
         final int imageWidth = image.getWidth();
         final int imageHeight = image.getHeight();
         Int2D destImage = new Int2D(imageWidth, imageHeight);
+        int[][] destData = destImage.getData();
         for (int y = 0; y < imageHeight; y++) {
             for (int x = 0; x < imageWidth; x++) {
                 int argb = image.getRGB(x, y);
                 int rgb = argb & 0x00ffffff;
-                destImage.getData()[imageHeight - y - 1][x] = rgb;
+                destData[y][x] = rgb;
             }
         }
         return destImage;
