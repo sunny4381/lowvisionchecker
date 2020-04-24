@@ -6,11 +6,15 @@ import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
 import com.github.kklisura.cdt.services.types.ChromeTab;
+import com.google.common.io.Files;
 import org.eclipse.actf.visualization.engines.lowvision.LowVisionException;
 import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
+import org.eclipse.actf.visualization.engines.lowvision.image.ImageException;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import picocli.CommandLine;
 
+import javax.imageio.ImageIO;
+import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
 import java.util.concurrent.Callable;
@@ -27,8 +31,14 @@ public class App implements Callable<Integer> {
 //    @CommandLine.Option(names = {"-b", "--browser"}, description = "specifies browser. chrome, firefox or edge. default is chrome")
 //    private String browser = "chrome";
 
-    @CommandLine.Option(names = {"-o", "--output"}, description = "specifies output file. default is a.json")
-    private String output = "a.json";
+    @CommandLine.Option(names = {"-o", "--output-report"}, description = "specifies output report file. default is a.json")
+    private String outputReportFilepath = "a.json";
+
+    @CommandLine.Option(names = "--output-image", description = "specifies output image file. default doesn't output image file.")
+    private String outputImageFilepath = null;
+
+    @CommandLine.Option(names = "--source-image", description = "specifies output source image file. default doesn't output source image file.")
+    private String sourceImageFilepath = null;
 
     @CommandLine.Option(names = "--no-lowvision-eyesight", negatable = true)
     private boolean lowvisionEyesight = true;
@@ -55,9 +65,7 @@ public class App implements Callable<Integer> {
 
     @Override
     public Integer call() throws Exception {
-        List<IProblemItem> problemItems = this.doCheck();
-
-        outputResults(problemItems);
+        this.doCheck();
 
         return 0;
     }
@@ -81,7 +89,7 @@ public class App implements Callable<Integer> {
         return lowVisionType;
     }
 
-    private List<IProblemItem> doCheck() throws LowVisionException, IOException {
+    private void doCheck() throws LowVisionException, IOException, ImageException {
         try (ChromeLauncher launcher = new ChromeLauncher()) {
             final ChromeService chromeService = launcher.launch(this.headless);
             final ChromeTab tab = chromeService.createTab();
@@ -90,19 +98,36 @@ public class App implements Callable<Integer> {
             Browser browser = new Browser(devToolsService, tab.getId());
             browser.navigate(this.url);
 
-
             Checker checker = new Checker(browser, this.url, createLowVisionType());
             checker.run();
 
-            return checker.getProblemList();
+            outputResults(checker.getProblemList());
+
+            if (this.outputImageFilepath != null && !this.outputImageFilepath.isEmpty()) {
+                outputImage(checker.getLowvisionImage());
+            }
+
+            if (this.sourceImageFilepath != null && !this.sourceImageFilepath.isEmpty()) {
+                outputSourceImage(checker.getSourceImage());
+            }
         }
     }
 
     private void outputResults(List<IProblemItem> problemItems) throws FileNotFoundException, UnsupportedEncodingException, JsonProcessingException {
-        try (PrintWriter writer = new PrintWriter(new File(this.output), "UTF-8")) {
+        try (PrintWriter writer = new PrintWriter(new File(this.outputReportFilepath), "UTF-8")) {
             for (IProblemItem problemItem : problemItems) {
                 writer.println(Mapper.writeValueAsString(problemItem));
             }
         }
+    }
+
+    private void outputImage(BufferedImage image) throws IOException {
+        String format = Files.getFileExtension(this.outputImageFilepath);
+        ImageIO.write(image, format, new File(this.outputImageFilepath));
+    }
+
+    private void outputSourceImage(BufferedImage image) throws IOException {
+        String format = Files.getFileExtension(this.sourceImageFilepath);
+        ImageIO.write(image, format, new File(this.sourceImageFilepath));
     }
 }
