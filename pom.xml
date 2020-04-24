@@ -22,6 +22,12 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>info.picocli</groupId>
+            <artifactId>picocli</artifactId>
+            <version>4.2.0</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.eclipse.platform</groupId>
             <artifactId>org.eclipse.core.runtime</artifactId>
             <version>3.17.100</version>
