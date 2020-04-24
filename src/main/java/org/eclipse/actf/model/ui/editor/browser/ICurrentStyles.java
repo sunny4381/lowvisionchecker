@@ -50,25 +50,25 @@ public interface ICurrentStyles {
 	 */
 	public abstract URL getLinkURL();
 
-	/**
-	 * @return background color
-	 */
-	public abstract String getBackgroundColor();
+//	/**
+//	 * @return background color
+//	 */
+//	public abstract String getBackgroundColor();
 
-	/**
-	 * @return background repeat
-	 */
-	public abstract String getBackgroundRepeat();
+//	/**
+//	 * @return background repeat
+//	 */
+//	public abstract String getComputedBackgroundRepeat();
 
-	/**
-	 * @return background image
-	 */
-	public String getBackgroundImage();
+//	/**
+//	 * @return background image
+//	 */
+//	public String getBackgroundImage();
 
-	/**
-	 * @return foreground color
-	 */
-	public abstract String getColor();
+//	/**
+//	 * @return foreground color
+//	 */
+//	public abstract String getColor();
 
 	// /**
 	// * @return
@@ -80,60 +80,65 @@ public interface ICurrentStyles {
 	// */
 	// public abstract String getFontWeight(); //style
 
-	/**
-	 * @return display
-	 */
-	public abstract String getDisplay();
-
-	/**
-	 * @return font family
-	 */
-	public abstract String getFontFamily();
+//	/**
+//	 * @return display
+//	 */
+//	public abstract String getComputedDisplay();
+//
+//	/**
+//	 * @return font family
+//	 */
+//	public abstract String getComputedFontFamily();
 
 	/**
 	 * @return font size
 	 */
 	public abstract String getFontSize();
 
-	/**
-	 * @return font style
-	 */
-	public abstract String getFontStyle();
+//	/**
+//	 * @return font size
+//	 */
+//	public abstract String getComputedFontSize();
 
-	/**
-	 * @return font variant
-	 */
-	public abstract String getFontVariant();
-
-	/**
-	 * @return letter spacing
-	 */
-	public abstract String getLetterSpacing();
-
-	/**
-	 * @return line height
-	 */
-	public abstract String getLineHeight();
-
-	/**
-	 * @return position
-	 */
-	public abstract String getPosition();
-
-	/**
-	 * @return text align
-	 */
-	public abstract String getTextAlign();
-
-	/**
-	 * @return text decoration
-	 */
-	public abstract String getTextDecoration();
-
-	/**
-	 * @return visibility
-	 */
-	public abstract String getVisibility();
+//	/**
+//	 * @return font style
+//	 */
+//	public abstract String getComputedFontStyle();
+//
+//	/**
+//	 * @return font variant
+//	 */
+//	public abstract String getComputedFontVariant();
+//
+//	/**
+//	 * @return letter spacing
+//	 */
+//	public abstract String getComputedLetterSpacing();
+//
+//	/**
+//	 * @return line height
+//	 */
+//	public abstract String getComputedLineHeight();
+//
+//	/**
+//	 * @return position
+//	 */
+//	public abstract String getComputedPosition();
+//
+//	/**
+//	 * @return text align
+//	 */
+//	public abstract String getComputedTextAlign();
+//
+//	/**
+//	 * @return text decoration
+//	 */
+//	public abstract String getComputedTextDecoration();
+//
+//	/**
+//	 * @return visibility
+//	 */
+//	public abstract String getComputedVisibility();
 
 	/**
 	 * @return target Element
@@ -158,7 +163,7 @@ public interface ICurrentStyles {
 	/**
 	 * @return opacity
 	 */
-	public String getOpacity();
+	public String getComputedOpacity();
 	
 	
 	/**

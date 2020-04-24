@@ -8,16 +8,21 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class CurrentStylesImpl implements ICurrentStyles {
     private String xpath;
     private String cssPath;
     private String tagName;
     private Rect rect;
-//    private Style style;
+    private Style style;
     private Style computedStyle;
     private String href;
     private String[] texts;
+    private String[] descendantTextsWithBGImage;
+
+    private static String[] EMPTY_STRING_ARRAY = new String[0];
 
     public CurrentStylesImpl() {
     }
@@ -39,26 +44,43 @@ public class CurrentStylesImpl implements ICurrentStyles {
                 case "rect":
                     ret.setRect(Rect.convertFrom((Map<String, Object>) value));
                     break;
-//                case "style":
-//                    ret.setStyle(Style.convertFrom((Map<String, Object>) value));
-//                    break;
+                case "style":
+                    ret.setStyle(Style.convertFrom((Map<String, Object>) value));
+                    break;
                 case "computedStyle":
                     ret.setComputedStyle(Style.convertFrom((Map<String, Object>) value));
                     break;
                 case "href":
                     ret.setHref((String) value);
                     break;
-                case "texts":
-                    String[] array = null;
-                    if (value != null) {
-                        array = Arrays.stream((Object[])value).toArray(String[]::new);
+                case "texts": {
+                        String[] array = null;
+                        if (value != null) {
+                            array = Arrays.stream((Object[]) value).toArray(String[]::new);
+                        }
+                        ret.setTexts(array);
                     }
-                    ret.setTexts(array);
+                    break;
+                case "descendantTextsWithBGImage": {
+                        String[] array = null;
+                        if (value != null) {
+                            array = Arrays.stream((Object[]) value).toArray(String[]::new);
+                        }
+                        ret.setDescendantTextsWithBGImage(array);
+                    }
                     break;
             }
         });
 
         return ret;
+    }
+
+    private static String orDefault(String actualValue, String defaultValue) {
+        if (actualValue == null || actualValue.isEmpty()) {
+            return defaultValue;
+        }
+
+        return actualValue;
     }
 
     @Override
@@ -96,13 +118,13 @@ public class CurrentStylesImpl implements ICurrentStyles {
         this.rect = rect;
     }
 
-//    public Style getStyle() {
-//        return this.style;
-//    }
-//
-//    public void setStyle(Style style) {
-//        this.style = style;
-//    }
+    public Style getStyle() {
+        return this.style;
+    }
+
+    public void setStyle(Style style) {
+        this.style = style;
+    }
 
     public Style getComputedStyle() {
         return computedStyle;
@@ -157,99 +179,99 @@ public class CurrentStylesImpl implements ICurrentStyles {
         }
     }
 
-    @Override
-    public String getBackgroundColor() {
-        return this.computedStyle.backgroundColor;
-    }
+//    @Override
+//    public String getBackgroundColor() {
+//        return orDefault(this.style.backgroundColor, "transparent");
+//    }
 
-    @Override
-    public String getBackgroundRepeat() {
-        return this.computedStyle.backgroundRepeat;
-    }
+//    @Override
+//    public String getBackgroundRepeat() {
+//        return this.style.backgroundRepeat;
+//    }
 
-    @Override
-    public String getBackgroundImage() {
-        return this.computedStyle.backgroundImage;
-    }
+//    @Override
+//    public String getBackgroundImage() {
+//        return orDefault(this.style.backgroundImage, "none");
+//    }
 
-    @Override
-    public String getColor() {
-        return this.computedStyle.color;
-    }
+//    @Override
+//    public String getColor() {
+//        return orDefault(this.style.color, "transparent");
+//    }
 
-    @Override
-    public String getDisplay() {
-        return this.computedStyle.display;
-    }
+//    @Override
+//    public String getDisplay() {
+//        return this.style.display;
+//    }
 
-    @Override
-    public String getFontFamily() {
-        return this.computedStyle.fontFamily;
-    }
+//    @Override
+//    public String getFontFamily() {
+//        return this.style.fontFamily;
+//    }
 
     @Override
     public String getFontSize() {
-        return this.computedStyle.fontSize;
+        return orDefault(this.style.fontSize, "medium");
     }
 
-    @Override
-    public String getFontStyle() {
-        return this.computedStyle.fontStyle;
-    }
+//    @Override
+//    public String getFontStyle() {
+//        return orDefault(this.style.fontStyle, "normal");
+//    }
 
-    @Override
-    public String getFontVariant() {
-        return this.computedStyle.fontVariant;
-    }
+//    @Override
+//    public String getFontVariant() {
+//        return orDefault(this.style.fontVariant, "normal");
+//    }
 
-    @Override
-    public String getLetterSpacing() {
-        return this.computedStyle.letterSpacing;
-    }
+//    @Override
+//    public String getLetterSpacing() {
+//        return orDefault(this.style.letterSpacing, "normal");
+//    }
 
-    @Override
-    public String getLineHeight() {
-        return this.computedStyle.lineHeight;
-    }
+//    @Override
+//    public String getLineHeight() {
+//        return orDefault(this.style.lineHeight, "normal");
+//    }
 
-    @Override
-    public String getPosition() {
-        return this.computedStyle.position;
-    }
+//    @Override
+//    public String getPosition() {
+//        return orDefault(this.style.position, "static");
+//    }
 
-    @Override
-    public String getTextAlign() {
-        return this.computedStyle.textAlign;
-    }
+//    @Override
+//    public String getTextAlign() {
+//        return orDefault(this.style.textAlign, "start");
+//    }
 
-    @Override
-    public String getTextDecoration() {
-        return this.computedStyle.textDecoration;
-    }
+//    @Override
+//    public String getTextDecoration() {
+//        return orDefault(this.style.textDecorationLine, "none");
+//    }
 
-    @Override
-    public String getVisibility() {
-        return this.computedStyle.visibility;
-    }
+//    @Override
+//    public String getVisibility() {
+//        return orDefault(this.style.visibility, "visible");
+//    }
 
     @Override
     public String getComputedColor() {
-        return this.computedStyle.color;
+        return orDefault(this.computedStyle.color, "transparent");
     }
 
     @Override
     public String getComputedBackgroundColor() {
-        return this.computedStyle.backgroundColor;
+        return orDefault(this.computedStyle.backgroundColor, "transparent");
     }
 
     @Override
     public String getComputedBackgroundImage() {
-        return this.computedStyle.backgroundImage;
+        return orDefault(this.computedStyle.backgroundImage, "none");
     }
 
     @Override
-    public String getOpacity() {
-        return this.computedStyle.opacity;
+    public String getComputedOpacity() {
+        return orDefault(this.computedStyle.opacity, "1");
     }
 
     @Override
@@ -259,17 +281,29 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String[] getChildTexts() {
+        if (this.texts == null) {
+            return EMPTY_STRING_ARRAY;
+        }
+
         return this.texts;
     }
 
     @Override
     public boolean hasDescendantTextWithBGImage() {
-        return false;
+        return this.descendantTextsWithBGImage != null && this.descendantTextsWithBGImage.length > 0;
     }
 
     @Override
     public String[] getDescendantTextsWithBGImage() {
-        return null;
+        if (this.descendantTextsWithBGImage == null) {
+            return EMPTY_STRING_ARRAY;
+        }
+
+        return this.descendantTextsWithBGImage;
+    }
+
+    public void setDescendantTextsWithBGImage(String[] value) {
+        this.descendantTextsWithBGImage = value;
     }
 
     @Override

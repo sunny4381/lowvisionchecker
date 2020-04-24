@@ -21,7 +21,7 @@
       el = el.parentNode;
     }
 
-    return stack.join("/");
+    return "/" + stack.join("/");
   };
 
     // https://code.jquery.com/jquery-3.3.1.js
@@ -95,27 +95,47 @@
     return ret;
   }
 
-  // const traverseDescendantNode = function(el, callback) {
-  //   if (! el.hasChildNodes()) {
-  //     return;
-  //   }
-  //
-  //   el.childNodes.forEach(childEl => {
-  //     callback(callback);
-  //     traverseDescendantNode(childEl, callback);
-  //   });
-  // };
-  //
-  // const descendantTextsWithBGImage = function(el) {
-  //   const backgroudImage = el.style.backgroundImage;
-  //   if (backgroudImage == null || "none" === backgroudImage.toLowerCase()) {
-  //     return null;
-  //   }
-  //
-  //   traverseDescendantNode(el, (node) => {
-  //
-  //   });
-  // };
+  const descendantTextsWithBGImage = function(el) {
+    const isBackgroundImageNone = function(el) {
+      const backgroudImage = el.style.backgroundImage;
+      return (backgroudImage == null || "" === backgroudImage || "none" === backgroudImage.toLowerCase());
+    }
+
+    const isBackgroundColorTransparent = function(el) {
+      const backgroundColor = el.style.backgroundColor;
+      return (backgroundColor == null || "" === backgroundColor || "transparent" === backgroundColor.toLowerCase());
+    }
+
+    if (isBackgroundImageNone(el)) {
+      return null;
+    }
+
+    const treeWalker = document.createTreeWalker(
+      el, NodeFilter.SHOW_ALL,
+      {
+        acceptNode: (n) => {
+          if (n instanceof Text) {
+            return NodeFilter.FILTER_ACCEPT;
+          } else {
+            return NodeFilter.FILTER_SKIP;
+          }
+
+          if (!isBackgroundImageNone(n) || !isBackgroundColorTransparent(n)) {
+            return NodeFilter.FILTER_REJECT;
+          }
+          return NodeFilter.FILTER_SKIP;
+        }
+      }, false);
+
+    const ret = [];
+    let node = treeWalker.nextNode();
+    while (node) {
+      ret.push(node.nodeValue);
+      node = treeWalker.nextNode();
+    }
+
+    return ret;
+  };
 
   let baseUrl = null;
   const baseNode = document.head.querySelector("base");
@@ -132,22 +152,20 @@
       cssPath: cssPath(el),
       tagName: el.nodeName.toLowerCase(),
       rect: sliceMap(el.getBoundingClientRect(), [ "x", "y", "width", "height", "left", "top", "right", "bottom" ]),
-      // style: el.style,
+      style: sliceMap(el.style, [ "background", "backgroundColor", "backgroundImage", "color", "fontSize", "opacity" ]),
       computedStyle: sliceMap(
         getComputedStyle(el),
-        [
-          "background", "backgroundColor", "backgroundImage", "backgroundRepeat", "color", "display", "fontFamily",
-          "fontSize", "fontStyle", "fontVariant", "letterSpacing", "lineHeight", "opacity", "position", "textAlign",
-          "textDecoration", "visibility"
-        ]
+        [ "background", "backgroundColor", "backgroundImage", "color", "fontSize", "opacity" ]
       ),
       href: el.href ? new URL(el.href, baseUrl).href : null,
-      texts: texts(el)
+      texts: texts(el),
+      descendantTextsWithBGImage: descendantTextsWithBGImage(el)
     };
   };
 
   const ret = Array.from(document.body.querySelectorAll(selector), (el) => makeHash(el));
   ret.unshift(makeHash(document.body));
+  ret.unshift(makeHash(document.documentElement));
 
   return ret;
 })("*");

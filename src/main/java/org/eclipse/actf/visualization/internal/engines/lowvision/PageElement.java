@@ -128,7 +128,7 @@ public class PageElement {
 
 		String fgStr = style.getComputedColor();
 		String bgStr = style.getComputedBackgroundColor();
-		String opacityStr = style.getOpacity();
+		String opacityStr = style.getComputedOpacity();
 
 		try {
 			if (opacityStr != null) {

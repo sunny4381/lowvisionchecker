@@ -29,7 +29,7 @@ public class Style {
 //    public String backgroundPosition;
 //    public String backgroundPositionX;
 //    public String backgroundPositionY;
-    public String backgroundRepeat;
+//    public String backgroundRepeat;
 //    public String backgroundRepeatX;
 //    public String backgroundRepeatY;
 //    public String backgroundSize;
@@ -122,7 +122,7 @@ public class Style {
 //    public String cy;
 //    public String d;
 //    public String direction;
-    public String display;
+//    public String display;
 //    public String dominantBaseline;
 //    public String emptyCells;
 //    public String fill;
@@ -141,14 +141,14 @@ public class Style {
 //    public String floodOpacity;
 //    public String font;
 //    public String fontDisplay;
-    public String fontFamily;
+//    public String fontFamily;
 //    public String fontFeatureSettings;
 //    public String fontKerning;
 //    public String fontOpticalSizing;
     public String fontSize;
 //    public String fontStretch;
-    public String fontStyle;
-    public String fontVariant;
+//    public String fontStyle;
+//    public String fontVariant;
 //    public String fontVariantCaps;
 //    public String fontVariantEastAsian;
 //    public String fontVariantLigatures;
@@ -184,10 +184,10 @@ public class Style {
 //    public String justifyItems;
 //    public String justifySelf;
 //    public String left;
-    public String letterSpacing;
+//    public String letterSpacing;
 //    public String lightingColor;
 //    public String lineBreak;
-    public String lineHeight;
+//    public String lineHeight;
 //    public String listStyle;
 //    public String listStyleImage;
 //    public String listStylePosition;
@@ -262,7 +262,7 @@ public class Style {
 //    public String placeItems;
 //    public String placeSelf;
 //    public String pointerEvents;
-    public String position;
+//    public String position;
 //    public String quotes;
 //    public String r;
 //    public String resize;
@@ -315,11 +315,11 @@ public class Style {
 //    public String strokeWidth;
 //    public String tabSize;
 //    public String tableLayout;
-    public String textAlign;
+//    public String textAlign;
 //    public String textAlignLast;
 //    public String textAnchor;
 //    public String textCombineUpright;
-    public String textDecoration;
+//    public String textDecoration;
 //    public String textDecorationColor;
 //    public String textDecorationLine;
 //    public String textDecorationSkipInk;
@@ -349,7 +349,7 @@ public class Style {
 //    public String userZoom;
 //    public String vectorEffect;
 //    public String verticalAlign;
-    public String visibility;
+//    public String visibility;
 //    public String webkitAlignContent;
 //    public String webkitAlignItems;
 //    public String webkitAlignSelf;
@@ -535,47 +535,14 @@ public class Style {
                 case "backgroundImage":
                     ret.backgroundImage = (String) value;
                     break;
-                case "backgroundRepeat":
-                    ret.backgroundRepeat = (String) value;
-                    break;
                 case "color":
                     ret.color = (String) value;
-                    break;
-                case "display":
-                    ret.display = (String) value;
-                    break;
-                case "fontFamily":
-                    ret.fontFamily = (String) value;
                     break;
                 case "fontSize":
                     ret.fontSize = (String) value;
                     break;
-                case "fontStyle":
-                    ret.fontStyle = (String) value;
-                    break;
-                case "fontVariant":
-                    ret.fontVariant = (String) value;
-                    break;
-                case "letterSpacing":
-                    ret.letterSpacing = (String) value;
-                    break;
-                case "lineHeight":
-                    ret.lineHeight = (String) value;
-                    break;
                 case "opacity":
                     ret.opacity = (String) value;
-                    break;
-                case "position":
-                    ret.position = (String) value;
-                    break;
-                case "textAlign":
-                    ret.textAlign = (String) value;
-                    break;
-                case "textDecoration":
-                    ret.textDecoration = (String) value;
-                    break;
-                case "visibility":
-                    ret.visibility = (String) value;
                     break;
             }
         });

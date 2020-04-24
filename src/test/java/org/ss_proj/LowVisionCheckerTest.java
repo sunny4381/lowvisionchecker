@@ -21,7 +21,8 @@ public class LowVisionCheckerTest {
     private Browser browser;
 
 //    private static String URL = "https://www.yahoo.co.jp/";
-    private static String URL = "https://github.com/";
+//    private static String URL = "https://github.com/";
+    private static String URL = "https://www.facebook.com/";
 
     @Before
     public void setUp() throws Exception {
