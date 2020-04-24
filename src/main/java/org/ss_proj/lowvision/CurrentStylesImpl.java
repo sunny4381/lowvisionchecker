@@ -1,7 +1,9 @@
-package org.ss_proj;
+package org.ss_proj.lowvision;
 
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.swt.graphics.Rectangle;
+import org.ss_proj.cdt.Rect;
+import org.ss_proj.cdt.Style;
 import org.w3c.dom.Element;
 
 import java.net.MalformedURLException;

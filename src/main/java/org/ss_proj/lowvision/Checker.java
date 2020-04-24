@@ -1,6 +1,5 @@
-package org.ss_proj;
+package org.ss_proj.lowvision;
 
-import org.eclipse.actf.model.ui.IModelService;
 import org.eclipse.actf.model.ui.ImagePositionInfo;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.actf.visualization.engines.lowvision.LowVisionType;
@@ -8,6 +7,7 @@ import org.eclipse.actf.visualization.engines.lowvision.PageEvaluation;
 import org.eclipse.actf.visualization.engines.lowvision.image.IPageImage;
 import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.eclipse.actf.visualization.lowvision.util.LowVisionUtil;
+import org.ss_proj.cdt.Browser;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,7 +15,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class LowVisionChecker {
+public class Checker {
     private final Browser browser;
     private final String address;
     private final LowVisionType lowVisionType;
@@ -25,7 +25,7 @@ public class LowVisionChecker {
     private ArrayList<Map<String, ICurrentStyles>> styleInfoArray;
     private List<IProblemItem> lowvisionProblemList;
 
-    public LowVisionChecker(final Browser browser, final String address, final LowVisionType lowVisionType) {
+    public Checker(final Browser browser, final String address, final LowVisionType lowVisionType) {
         this.browser = browser;
         this.address = address;
 

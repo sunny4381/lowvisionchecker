@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.lowvision;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kklisura.cdt.launch.ChromeLauncher;
@@ -10,13 +10,14 @@ import org.eclipse.actf.visualization.eval.problem.IProblemItem;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
+import org.ss_proj.cdt.Browser;
 
 import java.util.List;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
 
-public class LowVisionCheckerTest {
+public class CheckerTest {
     private ChromeLauncher launcher;
     private Browser browser;
 
@@ -50,7 +51,7 @@ public class LowVisionCheckerTest {
         lowVisionType.setColorFilter(true);
         lowVisionType.setColorFilterDegree(0.8f);
 
-        LowVisionChecker checker = new LowVisionChecker(browser, URL, lowVisionType);
+        Checker checker = new Checker(browser, URL, lowVisionType);
         checker.run();
 
         List<IProblemItem> problemItems = checker.getProblemList();

@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.cdt;
 
 import java.util.Map;
 

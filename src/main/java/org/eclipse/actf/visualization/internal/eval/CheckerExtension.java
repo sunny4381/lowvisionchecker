@@ -11,17 +11,12 @@
 
 package org.eclipse.actf.visualization.internal.eval;
 
-import java.io.InputStream;
 import java.util.ArrayList;
-import java.util.List;
-import java.util.ResourceBundle;
 
-import org.eclipse.actf.util.logging.DebugPrintUtil;
-import org.eclipse.actf.visualization.eval.EvaluationUtil;
 import org.eclipse.actf.visualization.eval.IChecker;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
 import org.eclipse.core.runtime.*;
-import org.ss_proj.HtmlCheckerInfoProvider;
+import org.ss_proj.lowvision.HtmlCheckerInfoProvider;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class CheckerExtension {

@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.lowvision;
 
 import org.eclipse.actf.visualization.internal.engines.lowvision.image.IInt2D;
 import org.eclipse.actf.visualization.internal.engines.lowvision.image.Int2D;

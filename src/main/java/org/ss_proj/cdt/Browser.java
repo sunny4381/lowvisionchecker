@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.cdt;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -17,6 +17,7 @@ import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+import org.ss_proj.lowvision.CurrentStylesImpl;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
@@ -24,7 +25,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
-import java.awt.image.BufferedImage;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -77,7 +77,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
     public void navigate(String url) {
         final Navigate navigate;
         try {
-            navigate = CDTUtil.navigateAndWait(this.service, url, 10000);
+            navigate = Util.navigateAndWait(this.service, url, 10000);
         } catch (InterruptedException e) {
             throw new RuntimeException("load timeout");
         }
@@ -127,7 +127,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public int getReadyState() {
-        final String readyState = String.valueOf(CDTUtil.evaluate(this.service, "document.readyState"));
+        final String readyState = String.valueOf(Util.evaluate(this.service, "document.readyState"));
         if ("complete".equals(readyState)) {
             return READYSTATE_COMPLETE;
         } else if ("loading".equals(readyState)) {
@@ -232,7 +232,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             throw new RuntimeException(e);
         }
 
-        Object[] array = (Object[])CDTUtil.evaluate(this.service, js);
+        Object[] array = (Object[]) Util.evaluate(this.service, js);
         HashMap<String, ICurrentStyles> ret = new HashMap<>(array.length);
         for (Object _item : array) {
             CurrentStylesImpl currentStyles = CurrentStylesImpl.convertFrom((Map<String, Object>)_item);
@@ -313,7 +313,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             return null;
         }
 
-        final Object title = CDTUtil.getPropertyByObjectId(this.service, objectId, "title");
+        final Object title = Util.getPropertyByObjectId(this.service, objectId, "title");
         this.runtime.releaseObject(objectId);
 
         return String.valueOf(title);
@@ -360,7 +360,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
             return null;
         }
 
-        final Object html = CDTUtil.getPropertyByObjectId(this.service, remoteObject.getObjectId(), "documentElement.outerHTML");
+        final Object html = Util.getPropertyByObjectId(this.service, remoteObject.getObjectId(), "documentElement.outerHTML");
         this.runtime.releaseObject(remoteObject.getObjectId());
 
         return String.valueOf(html);
@@ -418,7 +418,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
                 continue;
             }
 
-            Object src = CDTUtil.getPropertyByObjectId(this.service, objectId, "src");
+            Object src = Util.getPropertyByObjectId(this.service, objectId, "src");
             Rect rect = getBoundingClientRect(objectId);
 
             this.runtime.releaseObject(objectId);
@@ -488,10 +488,10 @@ public class Browser implements IWebBrowserACTF, IModelService {
     }
 
     public void saveScreenshot(final String outputFilename) throws IOException {
-        CDTUtil.saveScreenshot(this.service, outputFilename);
+        Util.saveScreenshot(this.service, outputFilename);
     }
 
     public byte[] takeScreenshot() {
-        return CDTUtil.takeScreenshot(this.service);
+        return Util.takeScreenshot(this.service);
     }
 }

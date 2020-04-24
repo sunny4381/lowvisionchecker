@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.cdt;
 
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;

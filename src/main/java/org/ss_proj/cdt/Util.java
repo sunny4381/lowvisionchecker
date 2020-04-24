@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.cdt;
 
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.github.kklisura.cdt.protocol.commands.DOM;
@@ -13,16 +13,12 @@ import com.github.kklisura.cdt.protocol.types.page.Viewport;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.protocol.types.runtime.Properties;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
-import javassist.bytecode.ByteArray;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
-import java.io.ByteArrayInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.*;
 
-public class CDTUtil {
+public class Util {
     public static Navigate navigateAndWait(final ChromeDevToolsService service, final String url, final long timeoutMillis) throws InterruptedException {
         final Page page = service.getPage();
         page.enable();

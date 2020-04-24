@@ -1,4 +1,4 @@
-package org.ss_proj;
+package org.ss_proj.lowvision;
 
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
 
