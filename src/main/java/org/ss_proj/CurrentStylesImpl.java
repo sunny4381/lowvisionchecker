@@ -8,8 +8,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Map;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 public class CurrentStylesImpl implements ICurrentStyles {
     private String xpath;
@@ -81,6 +79,15 @@ public class CurrentStylesImpl implements ICurrentStyles {
         }
 
         return actualValue;
+    }
+
+    private static boolean isFullyTransparent(String color) {
+        if (color == null || color.isEmpty()) {
+            return false;
+        }
+
+        color = color.replaceAll("\\s", "");
+        return color.startsWith("rgba(") && color.endsWith(",0)");
     }
 
     @Override
@@ -181,6 +188,9 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
 //    @Override
 //    public String getBackgroundColor() {
+//        if (isFullyTransparent(this.style.backgroundColor)) {
+//            return "transparent";
+//        }
 //        return orDefault(this.style.backgroundColor, "transparent");
 //    }
 
@@ -196,6 +206,9 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
 //    @Override
 //    public String getColor() {
+//        if (isFullyTransparent(this.style.color)) {
+//            return "transparent";
+//        }
 //        return orDefault(this.style.color, "transparent");
 //    }
 
@@ -256,11 +269,17 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getComputedColor() {
+        if (isFullyTransparent(this.computedStyle.color)) {
+            return "transparent";
+        }
         return orDefault(this.computedStyle.color, "transparent");
     }
 
     @Override
     public String getComputedBackgroundColor() {
+        if (isFullyTransparent(this.computedStyle.backgroundColor)) {
+            return "transparent";
+        }
         return orDefault(this.computedStyle.backgroundColor, "transparent");
     }
 
