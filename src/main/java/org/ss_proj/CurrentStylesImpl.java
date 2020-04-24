@@ -224,7 +224,12 @@ public class CurrentStylesImpl implements ICurrentStyles {
 
     @Override
     public String getFontSize() {
-        return orDefault(this.style.fontSize, "medium");
+        return this.style.fontSize;
+    }
+
+    @Override
+    public String getComputedFontSize() {
+        return this.computedStyle.fontSize;
     }
 
 //    @Override

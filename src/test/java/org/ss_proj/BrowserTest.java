@@ -47,16 +47,18 @@ public class BrowserTest {
         {
             ICurrentStyles htmlStyle = styles.stream().filter((item) -> item.getXPath().equals("/html")).findFirst().get();
             assertThat(htmlStyle.getTagName(), is("html"));
-//            assertThat(htmlStyle.getComputedFontSize(), is("16px"));
+            assertThat(htmlStyle.getFontSize(), isEmptyString());
+            assertThat(htmlStyle.getComputedFontSize(), is("16px"));
         }
 
         {
             ICurrentStyles bodyStyle = styles.stream().filter((item) -> item.getXPath().equals("/html/body")).findFirst().get();
             assertThat(bodyStyle.getTagName(), is("body"));
-            assertThat(bodyStyle.getComputedColor(), is("#1c1e21"));
-            assertThat(bodyStyle.getComputedBackgroundColor(), is("#ffffff"));
+            assertThat(bodyStyle.getComputedColor(), is("rgb(28, 30, 33)"));
+            assertThat(bodyStyle.getComputedBackgroundColor(), is("rgb(255, 255, 255)"));
             assertThat(bodyStyle.getComputedBackgroundImage(), is("none"));
-//            assertThat(bodyStyle.getComputedFontSize(), is("12px"));
+            assertThat(bodyStyle.getFontSize(), isEmptyString());
+            assertThat(bodyStyle.getComputedFontSize(), is("12px"));
             assertThat(bodyStyle.getComputedOpacity(), is("1"));
             assertThat(bodyStyle.getChildTexts(), emptyArray());
             assertThat(bodyStyle.getDescendantTextsWithBGImage(), emptyArray());

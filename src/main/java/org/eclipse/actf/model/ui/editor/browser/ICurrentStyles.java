@@ -95,10 +95,10 @@ public interface ICurrentStyles {
 	 */
 	public abstract String getFontSize();
 
-//	/**
-//	 * @return font size
-//	 */
-//	public abstract String getComputedFontSize();
+	/**
+	 * @return font size
+	 */
+	public abstract String getComputedFontSize();
 
 //	/**
 //	 * @return font style

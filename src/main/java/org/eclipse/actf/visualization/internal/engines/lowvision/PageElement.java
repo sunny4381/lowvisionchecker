@@ -732,7 +732,7 @@ public class PageElement {
 			return (null);
 		}
 
-		String fontStr = style.getFontSize().toLowerCase();
+		String fontStr = style.getComputedFontSize().toLowerCase();
 
 		// reset at TD/TH
 		StringTokenizer fontSt = new StringTokenizer(fontStr, DELIM);
