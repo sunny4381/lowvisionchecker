@@ -215,6 +215,7 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
+	@JsonIgnore
 	public String getLineStrMulti() {
 		StringBuffer tmpSB = new StringBuffer();
 		// TODO check multiple same line number
