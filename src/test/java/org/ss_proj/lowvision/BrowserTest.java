@@ -37,7 +37,8 @@ public class BrowserTest {
     @Ignore
     @Test
     public void testFacebookStyles() throws Exception {
-        final ChromeTab tab = chromeService.createTab();
+        final ChromeTab tab = chromeService.getTabs().get(0);
+        chromeService.activateTab(tab);
 
         final ChromeDevToolsService devToolsService = chromeService.createDevToolsService(tab);
         Browser browser = new Browser(devToolsService, tab.getId());

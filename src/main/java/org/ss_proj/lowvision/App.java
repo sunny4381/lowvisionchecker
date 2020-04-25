@@ -92,7 +92,8 @@ public class App implements Callable<Integer> {
     private void doCheck() throws LowVisionException, IOException, ImageException {
         try (ChromeLauncher launcher = new ChromeLauncher()) {
             final ChromeService chromeService = launcher.launch(this.headless);
-            final ChromeTab tab = chromeService.createTab();
+            final ChromeTab tab = chromeService.getTabs().get(0);
+            chromeService.activateTab(tab);
             final ChromeDevToolsService devToolsService = chromeService.createDevToolsService(tab);
 
             Browser browser = new Browser(devToolsService, tab.getId());
