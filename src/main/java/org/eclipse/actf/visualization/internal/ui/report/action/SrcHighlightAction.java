@@ -10,62 +10,62 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.internal.ui.report.action;
 
-//import java.util.ArrayList;
-//import java.util.Arrays;
-//import java.util.List;
-//
-//import org.eclipse.actf.visualization.eval.problem.HighlightTargetSourceInfo;
-//import org.eclipse.actf.visualization.eval.problem.IProblemItem;
-//import org.eclipse.actf.visualization.internal.ui.report.Messages;
-//import org.eclipse.actf.visualization.internal.ui.report.srcviewer.SrcViewerForPT;
-//import org.eclipse.actf.visualization.internal.ui.report.table.ResultTableViewer;
-//import org.eclipse.jface.action.Action;
-//import org.eclipse.jface.viewers.IStructuredSelection;
-//import org.eclipse.jface.viewers.TableViewer;
-//
-//public class SrcHighlightAction extends Action {
-//
-//	private ResultTableViewer _resultTableViewer;
-//
-//	private TableViewer _tableView;
-//
-//	private SrcViewerForPT _srcViewer;
-//
-//	public SrcHighlightAction(ResultTableViewer resultTableViewer) {
-//		super(Messages.ProblemTable_5);
-//		this._resultTableViewer = resultTableViewer;
-//		this._tableView = resultTableViewer.getTableViewer();
-//		this._srcViewer = SrcViewerForPT.getInstance();
-//	}
-//
-//	/*
-//	 * (non-Javadoc)
-//	 *
-//	 * @see org.eclipse.jface.action.Action#run()
-//	 */
-//	public void run() {
-//
-//		if (_srcViewer != null) {
-//
-//			_srcViewer.openSrcViewer();
-//
-//			@SuppressWarnings("unchecked")
-//			List<IProblemItem> targetList = ((IStructuredSelection) _tableView
-//					.getSelection()).toList();
-//			ArrayList<HighlightTargetSourceInfo> srcLineArray = new ArrayList<HighlightTargetSourceInfo>();
-//
-//			for (IProblemItem tmpItem : targetList) {
-//				srcLineArray.addAll(Arrays.asList(tmpItem
-//						.getHighlightTargetSoruceInfo()));
-//			}
-//
-//			HighlightTargetSourceInfo[] target = new HighlightTargetSourceInfo[srcLineArray
-//					.size()];
-//			srcLineArray.toArray(target);
-//			_srcViewer.highlightSrcViewer(target,
-//					_resultTableViewer.getCurrentSoruceFile());
-//
-//		}
-//	}
-//
-//}
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
+import org.eclipse.actf.visualization.eval.problem.HighlightTargetSourceInfo;
+import org.eclipse.actf.visualization.eval.problem.IProblemItem;
+import org.eclipse.actf.visualization.internal.ui.report.Messages;
+import org.eclipse.actf.visualization.internal.ui.report.srcviewer.SrcViewerForPT;
+import org.eclipse.actf.visualization.internal.ui.report.table.ResultTableViewer;
+import org.eclipse.jface.action.Action;
+import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.TableViewer;
+
+public class SrcHighlightAction extends Action {
+
+	private ResultTableViewer _resultTableViewer;
+
+	private TableViewer _tableView;
+
+	private SrcViewerForPT _srcViewer;
+
+	public SrcHighlightAction(ResultTableViewer resultTableViewer) {
+		super(Messages.ProblemTable_5);
+		this._resultTableViewer = resultTableViewer;
+		this._tableView = resultTableViewer.getTableViewer();
+		this._srcViewer = SrcViewerForPT.getInstance();
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.eclipse.jface.action.Action#run()
+	 */
+	public void run() {
+
+		if (_srcViewer != null) {
+
+			_srcViewer.openSrcViewer();
+
+			@SuppressWarnings("unchecked")
+			List<IProblemItem> targetList = ((IStructuredSelection) _tableView
+					.getSelection()).toList();
+			ArrayList<HighlightTargetSourceInfo> srcLineArray = new ArrayList<HighlightTargetSourceInfo>();
+
+			for (IProblemItem tmpItem : targetList) {
+				srcLineArray.addAll(Arrays.asList(tmpItem
+						.getHighlightTargetSoruceInfo()));
+			}
+
+			HighlightTargetSourceInfo[] target = new HighlightTargetSourceInfo[srcLineArray
+					.size()];
+			srcLineArray.toArray(target);
+			_srcViewer.highlightSrcViewer(target,
+					_resultTableViewer.getCurrentSoruceFile());
+
+		}
+	}
+
+}
