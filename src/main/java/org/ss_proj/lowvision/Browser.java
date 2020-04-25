@@ -351,19 +351,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
     }
 
     public String getContent() {
-        final DOM dom = this.service.getDOM();
-        dom.enable();
-
-        final Integer nodeId = dom.getDocument().getNodeId();
-        final RemoteObject remoteObject = dom.resolveNode(nodeId, null, null, this.getExecutionContextId());
-        if (remoteObject == null) {
-            return null;
-        }
-
-        final Object html = Util.getPropertyByObjectId(this.service, remoteObject.getObjectId(), "documentElement.outerHTML");
-        this.runtime.releaseObject(remoteObject.getObjectId());
-
-        return String.valueOf(html);
+        return (String) Util.evaluate(this.service, "document.documentElement.outerHTML");
     }
 
     @Override
