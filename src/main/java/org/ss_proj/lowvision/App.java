@@ -96,6 +96,20 @@ public class App implements Callable<Integer> {
     private void doCheck() throws LowVisionException, IOException, ImageException {
         try (ChromeLauncher launcher = new ChromeLauncher()) {
             final ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(this.headless);
+            argumentsBuilder.additionalArguments("disable-backgrounding-occluded-windows", true);
+            argumentsBuilder.additionalArguments("disable-breakpad", true);
+            argumentsBuilder.additionalArguments("disable-dev-shm-usage", true);
+            argumentsBuilder.additionalArguments("disable-features", "site-per-process,TranslateUI");
+            argumentsBuilder.additionalArguments("disable-ipc-flooding-protection", true);
+            argumentsBuilder.additionalArguments("disable-renderer-backgrounding", true);
+            argumentsBuilder.additionalArguments("disable-session-crashed-bubble", true);
+            argumentsBuilder.additionalArguments("disable-web-security", true);
+            argumentsBuilder.additionalArguments("enable-automation", true);
+            argumentsBuilder.additionalArguments("enable-features", "NetworkService,NetworkServiceInProcess");
+            argumentsBuilder.additionalArguments("force-color-profile", "srgb");
+            argumentsBuilder.additionalArguments("keep-alive-for-test", true);
+            argumentsBuilder.additionalArguments("password-store", "basic");
+            argumentsBuilder.additionalArguments("use-mock-keychain", true);
             if (this.windowSize != null && !this.windowSize.isEmpty()) {
                 argumentsBuilder.additionalArguments("window-size", this.windowSize);
             }

@@ -29,6 +29,20 @@ public class BrowserTest {
         launcher = new ChromeLauncher();
         ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(false);
         argumentsBuilder.additionalArguments("window-size", "1024,768");
+        argumentsBuilder.additionalArguments("disable-backgrounding-occluded-windows", true);
+        argumentsBuilder.additionalArguments("disable-breakpad", true);
+        argumentsBuilder.additionalArguments("disable-dev-shm-usage", true);
+        argumentsBuilder.additionalArguments("disable-ipc-flooding-protection", true);
+        argumentsBuilder.additionalArguments("disable-renderer-backgrounding", true);
+        argumentsBuilder.additionalArguments("disable-session-crashed-bubble", true);
+        argumentsBuilder.additionalArguments("disable-web-security", true);
+        argumentsBuilder.additionalArguments("enable-automation", true);
+        argumentsBuilder.additionalArguments("force-color-profile", "srgb");
+        argumentsBuilder.additionalArguments("keep-alive-for-test", true);
+        argumentsBuilder.additionalArguments("password-store", "basic");
+        argumentsBuilder.additionalArguments("use-mock-keychain", true);
+        argumentsBuilder.additionalArguments("disable-features", "site-per-process,TranslateUI");
+        argumentsBuilder.additionalArguments("enable-features", "NetworkService,NetworkServiceInProcess");
         chromeService = launcher.launch(argumentsBuilder.build());
     }
 
@@ -77,7 +91,7 @@ public class BrowserTest {
 
         {
             ICurrentStyles style = styles.stream().filter((item) -> item.getXPath().equals("/html/body/div[1]/div[1]/div/div/div[2]/div/div[1]/a/span[2]/i")).findFirst().get();
-            assertThat(style.getComputedBackgroundImage(), is("url(\"https://static.xx.fbcdn.net/rsrc.php/v3/yz/r/F5fJ75JdD_h.png\")"));
+            assertThat(style.getComputedBackgroundImage(), containsString("/rsrc.php/v3/yz/r/F5fJ75JdD_h.png"));
         }
     }
 
