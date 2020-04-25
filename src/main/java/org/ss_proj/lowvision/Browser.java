@@ -21,7 +21,6 @@ import org.ss_proj.cdt.Rect;
 import org.ss_proj.cdt.Util;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -58,12 +57,12 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void setFocusAddressText(boolean selectAll) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void showAddressText(boolean flag) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     public Integer getExecutionContextId() {
@@ -147,57 +146,57 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public String getLocationName() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public boolean isUrlExists() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public int getNavigateErrorCode() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void setWebBrowserSilent(boolean bSilent) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void setDisableScriptDebugger(boolean bDisable) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public boolean isDisableScriptDebugger() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void highlightElementById(String id) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void hightlightElementByAttribute(String name, String value) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void clearHighlight() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public void setFontSize(int fontSize) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public int getFontSize() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -210,17 +209,17 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
             @Override
             public ModelServiceSizeInfo getSizeInfo(boolean isWhole) {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException("not implemented");
             }
 
             @Override
             public RGB getUnvisitedLinkColor() {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException("not implemented");
             }
 
             @Override
             public RGB getVisitedLinkColor() {
-                throw new NotImplementedException();
+                throw new UnsupportedOperationException("not implemented");
             }
         };
     }
@@ -245,42 +244,42 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public int getBrowserAddress() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public int setTimeout(String script, int interval) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public boolean clearTimeout(int id) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public int setInterval(String script, int interval) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public boolean clearInterval(int id) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public String[] getSupportMIMETypes() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public String[] getSupportExtensions() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public String getCurrentMIMEType() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -290,7 +289,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void open(File target) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -348,7 +347,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Composite getTargetComposite() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     public String getContent() {
@@ -389,12 +388,12 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void jumpToNode(org.w3c.dom.Node target) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public IModelServiceScrollManager getScrollManager() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
@@ -480,12 +479,12 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public IModelServiceHolder getModelServiceHolder() {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     @Override
     public Object getAttribute(String key) {
-        throw new NotImplementedException();
+        throw new UnsupportedOperationException("not implemented");
     }
 
     public void saveScreenshot(final String outputFilename) throws IOException {

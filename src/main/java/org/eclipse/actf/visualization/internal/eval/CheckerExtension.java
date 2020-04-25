@@ -17,7 +17,6 @@ import org.eclipse.actf.visualization.eval.IChecker;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
 import org.eclipse.core.runtime.*;
 import org.ss_proj.lowvision.HtmlCheckerInfoProvider;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 public class CheckerExtension {
 	private static final String EXTENSION_NAME = "checkers"; //$NON-NLS-1$
@@ -110,92 +109,92 @@ public class CheckerExtension {
 				if (propertyName.equals(ATTR_INFO_PROVIDER)) {
 					return new HtmlCheckerInfoProvider();
 				}
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getAttribute(String name) throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getAttribute(String attrName, String locale) throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getAttributeAsIs(String name) throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String[] getAttributeNames() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public IConfigurationElement[] getChildren() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public IConfigurationElement[] getChildren(String name) throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public IExtension getDeclaringExtension() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getName() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public Object getParent() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getValue() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getValue(String locale) throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getValueAsIs() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getNamespace() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public String getNamespaceIdentifier() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public IContributor getContributor() throws InvalidRegistryObjectException {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public boolean isValid() {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 
 			@Override
 			public int getHandleId() {
-				throw new NotImplementedException();
+				throw new UnsupportedOperationException("not implemented");
 			}
 		};
 
