@@ -16,6 +16,7 @@ import org.junit.Test;
 import java.io.File;
 import java.nio.charset.StandardCharsets;
 import java.util.Collection;
+import java.util.Locale;
 
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.*;
@@ -27,7 +28,7 @@ public class BrowserTest {
     @Before
     public void setUp() throws Exception {
         launcher = new ChromeLauncher();
-        ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(false);
+        ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(true);
         argumentsBuilder.additionalArguments("window-size", "1024,768");
         argumentsBuilder.additionalArguments("disable-backgrounding-occluded-windows", true);
         argumentsBuilder.additionalArguments("disable-breakpad", true);
@@ -43,6 +44,7 @@ public class BrowserTest {
         argumentsBuilder.additionalArguments("use-mock-keychain", true);
         argumentsBuilder.additionalArguments("disable-features", "site-per-process,TranslateUI");
         argumentsBuilder.additionalArguments("enable-features", "NetworkService,NetworkServiceInProcess");
+        argumentsBuilder.additionalArguments("lang", Locale.getDefault().toLanguageTag());
         chromeService = launcher.launch(argumentsBuilder.build());
     }
 

@@ -18,6 +18,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.*;
 import java.util.List;
+import java.util.Locale;
 import java.util.concurrent.Callable;
 
 public class App implements Callable<Integer> {
@@ -25,6 +26,9 @@ public class App implements Callable<Integer> {
 
     @CommandLine.Parameters(index = "0", description = "The url to check")
     private String url = null;
+
+    @CommandLine.Option(names = "--lang", description = "specifies lang. default is unspecified(use system default)")
+    private Locale lang = Locale.getDefault();
 
     @CommandLine.Option(names = "--no-browser-headless", negatable = true, description = "specifies to execute with headless or not. default is headless")
     private boolean headless = true;
@@ -63,7 +67,9 @@ public class App implements Callable<Integer> {
     private float lowvisionColorFilterDegree = 0.8f;
 
     public static void main(String[] args) {
-        int exitCode = new CommandLine(new App()).execute(args);
+        int exitCode = new CommandLine(new App())
+                .registerConverter(Locale.class, s -> new Locale.Builder().setLanguageTag(s).build())
+                .execute(args);
         System.exit(exitCode);
     }
 
@@ -114,8 +120,13 @@ public class App implements Callable<Integer> {
                 argumentsBuilder.additionalArguments("window-size", this.windowSize);
             }
             final ChromeService chromeService = launcher.launch(argumentsBuilder.build());
-            final ChromeTab tab = chromeService.getTabs().get(0);
-            chromeService.activateTab(tab);
+            final ChromeTab tab;
+            if (chromeService.getTabs().size() > 0) {
+                tab = chromeService.getTabs().get(0);
+                chromeService.activateTab(tab);
+            } else {
+                tab = chromeService.createTab();
+            }
             final ChromeDevToolsService devToolsService = chromeService.createDevToolsService(tab);
 
             Browser browser = new Browser(devToolsService, tab.getId());
