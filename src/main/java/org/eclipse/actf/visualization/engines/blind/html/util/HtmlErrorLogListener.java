@@ -106,7 +106,7 @@ public class HtmlErrorLogListener implements IErrorLogListener {
 	}
 
 	private void addHtmlProblem(String id, String target) {
-		IProblemItem tmpCP = new ProblemItemImpl(id);
+		IProblemItem tmpCP = new ProblemItemImpl(id, "", "");
 		int line = -1;
 		String tmpS[] = target.split(":"); //$NON-NLS-1$
 		if (tmpS.length > 0) {
@@ -164,13 +164,13 @@ public class HtmlErrorLogListener implements IErrorLogListener {
 			// (IE based LIVE DOM)->DOCTYPE was removed by IE
 			if (EvaluationUtil.isOriginalDOM() && isNoDoctypeDeclaration()) {
 				if (isInvalidDoctype() || isNonPublicDoctype()) {
-					IProblemItem item = new ProblemItemImpl("C_1000.6");
+					IProblemItem item = new ProblemItemImpl("C_1000.6", "", "");
 					if (doctype_line > -1) {
 						item.setLine(doctype_line);
 					}
 					problemV.add(item);
 				} else {
-					problemV.add(new ProblemItemImpl("C_1000.7"));
+					problemV.add(new ProblemItemImpl("C_1000.7", "", ""));
 				}
 			}
 			flag = false;
