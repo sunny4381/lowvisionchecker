@@ -35,7 +35,8 @@ $ java -jar target/lowvisionchecker-$version.jar "https://www.yahoo.co.jp/"
 
 ### オプション
 
-- --no-headless: ヘッドレスモードを無効にして実行します。既定ではヘッドレスモードで実行します。
+- --no-browser-headless: ヘッドレスモードを無効にして実行します。既定ではヘッドレスモードで実行します。
+- --browser-window-size: ブラウザのサイズを設定します（例: --browser-window-size=1024,768）。既定では自動です。
 - --output-report=検証結果ファイル名: 検証結果ファイル名を指定します。既定では a.json になっています。
 - --output-image=検証結果画像ファイル名: 検証結果画像ファイル名を指定します。既定では検証結果画像は出力しません。
 - --source-image=キャプチャ画像ファイル名: 内部ではブラウザに表示された画面を画像化します。その画像化したものをファイルへ出力します。既定では出力しません。

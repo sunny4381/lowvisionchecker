@@ -2,6 +2,7 @@ package org.ss_proj.lowvision;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.kklisura.cdt.launch.ChromeArguments;
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
@@ -25,8 +26,11 @@ public class App implements Callable<Integer> {
     @CommandLine.Parameters(index = "0", description = "The url to check")
     private String url = null;
 
-    @CommandLine.Option(names = "--no-headless", negatable = true, description = "specifies to execute with headless or not. default is headless")
+    @CommandLine.Option(names = "--no-browser-headless", negatable = true, description = "specifies to execute with headless or not. default is headless")
     private boolean headless = true;
+
+    @CommandLine.Option(names = "--browser-window-size", description = "specifies the browser window size. default is unspecified (auto)")
+    private String windowSize = null;
 
 //    @CommandLine.Option(names = {"-b", "--browser"}, description = "specifies browser. chrome, firefox or edge. default is chrome")
 //    private String browser = "chrome";
@@ -91,7 +95,11 @@ public class App implements Callable<Integer> {
 
     private void doCheck() throws LowVisionException, IOException, ImageException {
         try (ChromeLauncher launcher = new ChromeLauncher()) {
-            final ChromeService chromeService = launcher.launch(this.headless);
+            final ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(this.headless);
+            if (this.windowSize != null && !this.windowSize.isEmpty()) {
+                argumentsBuilder.additionalArguments("window-size", this.windowSize);
+            }
+            final ChromeService chromeService = launcher.launch(argumentsBuilder.build());
             final ChromeTab tab = chromeService.getTabs().get(0);
             chromeService.activateTab(tab);
             final ChromeDevToolsService devToolsService = chromeService.createDevToolsService(tab);

@@ -1,5 +1,6 @@
 package org.ss_proj.lowvision;
 
+import com.github.kklisura.cdt.launch.ChromeArguments;
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.github.kklisura.cdt.services.ChromeService;
@@ -26,7 +27,9 @@ public class BrowserTest {
     @Before
     public void setUp() throws Exception {
         launcher = new ChromeLauncher();
-        chromeService = launcher.launch(false);
+        ChromeArguments.Builder argumentsBuilder = ChromeArguments.defaults(false);
+        argumentsBuilder.additionalArguments("window-size", "1024,768");
+        chromeService = launcher.launch(argumentsBuilder.build());
     }
 
     @After
