@@ -17,6 +17,7 @@ import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserStyleInfo;
 import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
+import org.ss_proj.cdt.DocumentImpl;
 import org.ss_proj.cdt.Rect;
 import org.ss_proj.cdt.Util;
 import org.w3c.dom.Document;
@@ -326,18 +327,18 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Document getDocument() {
-        try {
-            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-            DocumentBuilder builder = factory.newDocumentBuilder();
-            return builder.parse(new ByteArrayInputStream(this.getContent().getBytes()));
-        } catch (ParserConfigurationException e) {
-            throw new RuntimeException(e);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        } catch (SAXException e) {
-            throw new RuntimeException(e);
-        }
-
+//        try {
+//            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
+//            DocumentBuilder builder = factory.newDocumentBuilder();
+//            return builder.parse(new ByteArrayInputStream(this.getContent().getBytes()));
+//        } catch (ParserConfigurationException e) {
+//            throw new RuntimeException(e);
+//        } catch (IOException e) {
+//            throw new RuntimeException(e);
+//        } catch (SAXException e) {
+//            throw new RuntimeException(e);
+//        }
+        return new DocumentImpl(this.service, this.service.getDOM().getDocument());
     }
 
     @Override
