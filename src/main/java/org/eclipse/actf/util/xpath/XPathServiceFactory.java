@@ -11,6 +11,8 @@
 
 package org.eclipse.actf.util.xpath;
 
+import org.eclipse.actf.util.xpath.jaxp.XPathServiceFactoryImpl;
+
 import java.lang.reflect.Method;
 
 /**
@@ -32,8 +34,7 @@ public abstract class XPathServiceFactory {
 	}
 
 	static {
-		setFactory(enable("org.eclipse.actf.util.xpath.jaxp.XPathServiceFactoryImpl")); //$NON-NLS-1$
-		setFactory(enable("org.eclipse.actf.util.jxpath.XPathServiceFactoryImpl")); //$NON-NLS-1$
+		setFactory(XPathServiceFactoryImpl.newInstance());
 	}
 	private static XPathServiceFactory factory;
 
