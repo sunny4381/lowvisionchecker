@@ -12,12 +12,7 @@
 package org.eclipse.actf.visualization.engines.blind;
 
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Properties;
-import java.util.Set;
-import java.util.TreeSet;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -42,7 +37,9 @@ public class TextChecker {
 
 	private static final String KANJI = "(\\p{InCJKUnifiedIdeographs})"; //$NON-NLS-1$
 
-	private static final String ALT_TEXT_PROPERTIES_FILE = "altText.properties"; //$NON-NLS-1$
+	private static final String BUNDLE_NAME = "org/eclipse/actf/visualization/engines/blind/altText";
+
+	private static final int NG_WORD_LIMIT = 10000;
 
 	private static final String INAPP_ALT = "blindViz.inappropriateAlt_"; //$NON-NLS-1$
 
@@ -56,56 +53,30 @@ public class TextChecker {
 
 	private Set<String> ngPatterns = new HashSet<String>();
 
-	private IPreferenceStore pref = BlindVizEnginePlugin.getDefault().getPreferenceStore();
-
 	// TODO spell out check
 
 	// separated from VisualizeEngine
 	private TextChecker() {
 
-		if (!pref.getBoolean(IBlindPreferenceConstants.NOT_FIRST_TIME)) {
-
-			Properties prop = new Properties();
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+		for (int i = 0; i < NG_WORD_LIMIT; i++) {
 			try {
-				InputStream prefIS = FileLocator.openStream(Platform.getBundle(BlindVizEnginePlugin.PLUGIN_ID),
-						new Path("config/" + ALT_TEXT_PROPERTIES_FILE), false); //$NON-NLS-1$
-				if (prefIS != null) {
-					prop.load(prefIS);
-				}
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-
-			for (Object key : prop.keySet()) {
-				String keyS = (String) key;
-				String value;
-				if (keyS.startsWith(INAPP_ALT)) {
-					value = prop.getProperty(keyS);
-					if (value.length() > 0) {
-						ngwordset.add(value);
-					}
-				} else if (keyS.startsWith(POSSIBLE_INAPP_ALT)) {
-					value = prop.getProperty(keyS);
-					if (value.length() > 0) {
-						ngwordset2.add(value);
-					}
-				}
-			}
-
-			resetPreferences();
-
-		} else {
-			for (int i = 0; pref.contains(INAPP_ALT + i); i++) {
-				String value = pref.getString(INAPP_ALT + i);
-				if (value.length() > 0) {
+				String value = bundle.getString(INAPP_ALT + i);
+				if (value != null && value.length() > 0) {
 					ngwordset.add(value);
 				}
+			} catch (MissingResourceException e) {
+				break;
 			}
-			for (int i = 0; pref.contains(POSSIBLE_INAPP_ALT + i); i++) {
-				String value = pref.getString(POSSIBLE_INAPP_ALT + i);
-				if (value.length() > 0) {
+		}
+		for (int i = 0; i < NG_WORD_LIMIT; i++) {
+			try {
+				String value = bundle.getString(POSSIBLE_INAPP_ALT + i);
+				if (value != null && value.length() > 0) {
 					ngwordset2.add(value);
 				}
+			} catch (MissingResourceException e) {
+				break;
 			}
 		}
 
@@ -276,39 +247,39 @@ public class TextChecker {
 		return tmpSet;
 	}
 
-	private void resetPreferences() {
-		int i = 0;
-		for (String value : ngwordset) {
-			pref.setValue(INAPP_ALT + i, value);
-			i++;
-		}
-		for (int j = i; pref.contains(INAPP_ALT + j); j++) {
-			pref.setValue(INAPP_ALT + j, NULL_STRING);
-		}
+//	private void resetPreferences() {
+//		int i = 0;
+//		for (String value : ngwordset) {
+//			pref.setValue(INAPP_ALT + i, value);
+//			i++;
+//		}
+//		for (int j = i; pref.contains(INAPP_ALT + j); j++) {
+//			pref.setValue(INAPP_ALT + j, NULL_STRING);
+//		}
+//
+//		i = 0;
+//		for (String value : ngwordset2) {
+//			pref.setValue(POSSIBLE_INAPP_ALT + i, value);
+//			i++;
+//		}
+//		for (int j = i; pref.contains(POSSIBLE_INAPP_ALT + j); j++) {
+//			pref.setValue(POSSIBLE_INAPP_ALT + j, NULL_STRING);
+//		}
+//	}
 
-		i = 0;
-		for (String value : ngwordset2) {
-			pref.setValue(POSSIBLE_INAPP_ALT + i, value);
-			i++;
-		}
-		for (int j = i; pref.contains(POSSIBLE_INAPP_ALT + j); j++) {
-			pref.setValue(POSSIBLE_INAPP_ALT + j, NULL_STRING);
-		}
-	}
-
-	/**
-	 * Set inappropriate alternative text {@link Set}. The new {@link Set} will
-	 * be stored into {@link PreferenceStore}.
-	 * 
-	 * @param inappAltSet
-	 *            {@link Set} of inappropriate alternative text
-	 */
-	public void setInappropriateAltSet(Set<String> inappAltSet) {
-		if (inappAltSet != null) {
-			ngwordset = inappAltSet;
-		}
-		resetPreferences();
-	}
+//	/**
+//	 * Set inappropriate alternative text {@link Set}. The new {@link Set} will
+//	 * be stored into {@link PreferenceStore}.
+//	 *
+//	 * @param inappAltSet
+//	 *            {@link Set} of inappropriate alternative text
+//	 */
+//	public void setInappropriateAltSet(Set<String> inappAltSet) {
+//		if (inappAltSet != null) {
+//			ngwordset = inappAltSet;
+//		}
+//		resetPreferences();
+//	}
 
 	//
 	// TODO Constants and methods called from CheckEngine class. For new JIS.

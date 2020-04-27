@@ -11,29 +11,29 @@
 
 package org.eclipse.actf.visualization.engines.blind.ui.actions;
 
-import org.eclipse.actf.ui.util.Messages;
-import org.eclipse.actf.ui.util.PreferenceUtils;
-import org.eclipse.actf.visualization.engines.blind.ui.preferences.BlindPreferencePage;
-import org.eclipse.actf.visualization.internal.engines.blind.BlindVizEnginePlugin;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.preference.PreferencePage;
-
-/**
- * Action to invoke Blind visualization {@link PreferencePage}
- */
-public class BlindSettingAction extends Action {
-
-	/**
-	 * Constructor of the class
-	 */
-	public BlindSettingAction() {
-		setToolTipText(Messages.Tooltip_Settings); 
-		setImageDescriptor(BlindVizEnginePlugin.imageDescriptorFromPlugin(
-				BlindVizEnginePlugin.PLUGIN_ID, "icons/setting.png")); //$NON-NLS-1$
-		setText(Messages.MenuConst_Settings); 
-	}
-
-	public void run() {
-		PreferenceUtils.openPreferenceDialog(BlindPreferencePage.ID);
-	}
-}
+//import org.eclipse.actf.ui.util.Messages;
+//import org.eclipse.actf.ui.util.PreferenceUtils;
+//import org.eclipse.actf.visualization.engines.blind.ui.preferences.BlindPreferencePage;
+//import org.eclipse.actf.visualization.internal.engines.blind.BlindVizEnginePlugin;
+//import org.eclipse.jface.action.Action;
+//import org.eclipse.jface.preference.PreferencePage;
+//
+///**
+// * Action to invoke Blind visualization {@link PreferencePage}
+// */
+//public class BlindSettingAction extends Action {
+//
+//	/**
+//	 * Constructor of the class
+//	 */
+//	public BlindSettingAction() {
+//		setToolTipText(Messages.Tooltip_Settings);
+//		setImageDescriptor(BlindVizEnginePlugin.imageDescriptorFromPlugin(
+//				BlindVizEnginePlugin.PLUGIN_ID, "icons/setting.png")); //$NON-NLS-1$
+//		setText(Messages.MenuConst_Settings);
+//	}
+//
+//	public void run() {
+//		PreferenceUtils.openPreferenceDialog(BlindPreferencePage.ID);
+//	}
+//}

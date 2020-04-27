@@ -30,9 +30,11 @@ public class EvaluationUtil {
 	 * @return true, if user selected original DOM in preference page
 	 */
 	public static boolean isOriginalDOM() {
-		return IPreferenceConstants.CHECKER_ORG_DOM.equals(EvaluationPlugin
-				.getDefault().getPreferenceStore()
-				.getString(IPreferenceConstants.CHECKER_TARGET));
+		String targetDOM = System.getProperty(IPreferenceConstants.CHECKER_TARGET);
+		if (targetDOM == null || targetDOM.isEmpty()) {
+			targetDOM = IPreferenceConstants.CHECKER_ORG_DOM;
+		}
+		return IPreferenceConstants.CHECKER_ORG_DOM.equals(targetDOM);
 	}
 
 	/**
