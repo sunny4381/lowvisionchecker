@@ -11,10 +11,12 @@
 package org.eclipse.actf.visualization.engines.blind;
 
 import org.eclipse.actf.visualization.engines.blind.ui.preferences.IBlindPreferenceConstants;
-import org.eclipse.actf.visualization.internal.engines.blind.BlindVizEnginePlugin;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
+import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.RGB;
+
+import java.util.ResourceBundle;
 
 /**
  * This class stores configuration parameters of blind usability visualization
@@ -28,6 +30,8 @@ public class ParamBlind {
 	public static String BLIND_LAYOUT_MODE = IBlindPreferenceConstants.BLIND_LAYOUT_MODE;
 
 	public static String BLIND_BROWSER_MODE = IBlindPreferenceConstants.BLIND_BROWSER_MODE;
+
+	private static final String BUNDLE_NAME = "org/eclipse/actf/visualization/engines/blind/default";
 
 	private static ParamBlind INSTANCE;
 
@@ -82,25 +86,37 @@ public class ParamBlind {
 	}
 
 	private static void setValues(ParamBlind pb) {
-		IPreferenceStore store = BlindVizEnginePlugin.getDefault().getPreferenceStore();
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
 
-		if (store.getDefaultString(IBlindPreferenceConstants.BLIND_LANG).equals(IBlindPreferenceConstants.LANG_JA)) {
+		String lang = bundle.getString(IBlindPreferenceConstants.BLIND_LANG);
+		if (lang == null || lang.equals(IBlindPreferenceConstants.LANG_JA)) {
 			pb.iLanguage = JP;
 		} else {
 			pb.iLanguage = EN;
 		}
 
-		pb.visualizeMode = store.getString(IBlindPreferenceConstants.BLIND_MODE);
+		pb.visualizeMode = bundle.getString(IBlindPreferenceConstants.BLIND_MODE);
 
-		pb.iMaxTime = store.getInt(IBlindPreferenceConstants.BLIND_MAX_TIME_SECOND);
-		pb.maxTimeColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_MAX_TIME_COLOR);
-		pb.tableHeaderColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_TABLE_HEADER_COLOR);
-		pb.headingTagsColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_HEADING_TAGS_COLOR);
-		pb.inputTagsColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_INPUT_TAGS_COLOR);
-		pb.labelTagsColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_LABEL_TAGS_COLOR);
-		pb.tableBorderColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_TABLE_BORDER_COLOR);
-		pb.captionColor = PreferenceConverter.getColor(store, IBlindPreferenceConstants.BLIND_CAPTION_COLOR);
+		pb.iMaxTime = Integer.parseInt(bundle.getString(IBlindPreferenceConstants.BLIND_MAX_TIME_SECOND));
+		pb.maxTimeColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_MAX_TIME_COLOR));
+		pb.tableHeaderColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_TABLE_HEADER_COLOR));
+		pb.headingTagsColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_HEADING_TAGS_COLOR));
+		pb.inputTagsColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_INPUT_TAGS_COLOR));
+		pb.labelTagsColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_LABEL_TAGS_COLOR));
+		pb.tableBorderColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_TABLE_BORDER_COLOR));
+		pb.captionColor = getColor(bundle.getString(IBlindPreferenceConstants.BLIND_CAPTION_COLOR));
+	}
 
+	private static RGB getColor(String value) {
+		if (value == null || IPreferenceStore.STRING_DEFAULT_DEFAULT.equals(value)) {
+			return PreferenceConverter.COLOR_DEFAULT_DEFAULT;
+		}
+
+		RGB color = StringConverter.asRGB(value, null);
+		if (color == null) {
+			return PreferenceConverter.COLOR_DEFAULT_DEFAULT;
+		}
+		return color;
 	}
 
 	private ParamBlind() {
