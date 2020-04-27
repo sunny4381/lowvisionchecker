@@ -31,24 +31,32 @@ public class ElementInfoProviderExtension {
 
 	private static IElementViewerInfoProvider[] providers = null;
 
+//	public static IElementViewerInfoProvider[] getProviders() {
+//		if (providers != null) {
+//			return providers;
+//		}
+//
+//		ElementInfoProviderExtension[] tmpExtensions = getExtensions();
+//		ArrayList<IElementViewerInfoProvider> tmpList = new ArrayList<IElementViewerInfoProvider>();
+//		if (tmpExtensions != null) {
+//			for (int i = 0; i < tmpExtensions.length; i++) {
+//				IElementViewerInfoProvider tmpProvider = tmpExtensions[i]
+//						.getElementViewerInfoProvider();
+//				if (tmpProvider != null) {
+//					tmpList.add(tmpProvider);
+//				}
+//			}
+//		}
+//		providers = new IElementViewerInfoProvider[tmpList.size()];
+//		tmpList.toArray(providers);
+//		return providers;
+//	}
 	public static IElementViewerInfoProvider[] getProviders() {
 		if (providers != null) {
 			return providers;
 		}
 
-		ElementInfoProviderExtension[] tmpExtensions = getExtensions();
-		ArrayList<IElementViewerInfoProvider> tmpList = new ArrayList<IElementViewerInfoProvider>();
-		if (tmpExtensions != null) {
-			for (int i = 0; i < tmpExtensions.length; i++) {
-				IElementViewerInfoProvider tmpProvider = tmpExtensions[i]
-						.getElementViewerInfoProvider();
-				if (tmpProvider != null) {
-					tmpList.add(tmpProvider);
-				}
-			}
-		}
-		providers = new IElementViewerInfoProvider[tmpList.size()];
-		tmpList.toArray(providers);
+		providers = new IElementViewerInfoProvider[0];
 		return providers;
 	}
 
