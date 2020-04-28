@@ -14,6 +14,7 @@ package org.eclipse.actf.visualization.internal.engines.blind;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.nio.file.Files;
 
 import org.eclipse.actf.util.FileUtils;
 import org.eclipse.actf.visualization.engines.blind.BlindVizResourceUtil;
@@ -105,8 +106,12 @@ public class BlindVizEnginePlugin extends AbstractUIPlugin {
 
 	private static void createTempDirectory() {
 		if (tmpDir == null) {
-			String tmpS = plugin.getStateLocation().toOSString()
-					+ File.separator + "tmp"; //$NON-NLS-1$
+			final String tmpS;
+			try {
+				tmpS = Files.createTempDirectory("blind").toString();
+			} catch (IOException e) {
+				throw new UnsupportedOperationException(e);
+			}
 			if (FileUtils.isAvailableDirectory(tmpS)) {
 				tmpDir = new File(tmpS);
 			} else {
