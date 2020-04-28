@@ -1,7 +1,10 @@
 package org.ss_proj.cdt;
 
+import com.github.kklisura.cdt.protocol.commands.DOM;
 import com.github.kklisura.cdt.protocol.types.dom.Node;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
+
+import java.util.List;
 
 public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document {
     public DocumentImpl(ChromeDevToolsService service, Node backend) {
@@ -64,8 +67,11 @@ public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document {
     }
 
     @Override
-    public org.w3c.dom.NodeList getElementsByTagName(String tagname) {
-        throw new UnsupportedOperationException("not implemented");
+    public org.w3c.dom.NodeList getElementsByTagName(String tagName) {
+        final DOM dom = getService().getDOM();
+        final Node document = dom.getDocument();
+        final List<Integer> nodeIdList = dom.querySelectorAll(document.getNodeId(), tagName);
+        return new NodeListImpl(getService(), nodeIdList);
     }
 
     @Override
