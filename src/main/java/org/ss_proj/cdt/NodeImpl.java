@@ -3,7 +3,12 @@ package org.ss_proj.cdt;
 import com.github.kklisura.cdt.protocol.types.dom.Node;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 
+import java.util.List;
+
 public class NodeImpl implements org.w3c.dom.Node {
+    public final static int ELEMENT_NODE = 1;
+    public final static int DOCUMENT_NODE = 9;
+
     private final ChromeDevToolsService service;
     private final Node backend;
 
@@ -47,7 +52,12 @@ public class NodeImpl implements org.w3c.dom.Node {
 
     @Override
     public org.w3c.dom.NodeList getChildNodes() {
-        throw new UnsupportedOperationException("not implemented");
+        final List<Node> children = getBackend().getChildren();
+        if (children == null || children.isEmpty()) {
+            return NodeListImpl.emptyList();
+        }
+
+        return new NodeListImpl(getService(), children);
     }
 
     @Override

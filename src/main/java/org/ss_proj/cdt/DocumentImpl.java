@@ -71,7 +71,7 @@ public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document {
         final DOM dom = getService().getDOM();
         final Node document = dom.getDocument();
         final List<Integer> nodeIdList = dom.querySelectorAll(document.getNodeId(), tagName);
-        return new NodeListImpl(getService(), nodeIdList);
+        return new NodeIdList(getService(), nodeIdList);
     }
 
     @Override

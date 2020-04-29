@@ -5,11 +5,14 @@ import com.github.kklisura.cdt.services.ChromeDevToolsService;
 
 import java.util.List;
 
+import static org.ss_proj.cdt.NodeImpl.DOCUMENT_NODE;
+import static org.ss_proj.cdt.NodeImpl.ELEMENT_NODE;
+
 public class NodeListImpl implements org.w3c.dom.NodeList {
     private final ChromeDevToolsService service;
-    private final List<Integer> nodeList;
+    private final List<Node> nodeList;
 
-    public NodeListImpl(ChromeDevToolsService service, List<Integer> nodeList) {
+    public NodeListImpl(ChromeDevToolsService service, List<Node> nodeList) {
         this.service = service;
         this.nodeList = nodeList;
     }
@@ -30,20 +33,29 @@ public class NodeListImpl implements org.w3c.dom.NodeList {
         return EMPTY_LIST;
     }
 
+    public static org.w3c.dom.Node wrap(ChromeDevToolsService service, Node node) {
+        switch (node.getNodeType()) {
+        case ELEMENT_NODE:
+            return new ElementImpl(service, node);
+        case DOCUMENT_NODE:
+            return new DocumentImpl(service, node);
+        default:
+            return new NodeImpl(service, node);
+        }
+    }
+
     @Override
     public org.w3c.dom.Node item(int index) {
         if (index < 0 || index >= this.nodeList.size()) {
             return null;
         }
 
-        final Integer nodeId = this.nodeList.get(index);
-        if (nodeId == null) {
+        final Node node = this.nodeList.get(index);
+        if (node == null) {
             return null;
         }
 
-        final Node node = this.service.getDOM().describeNode(nodeId, null, null, null, Boolean.FALSE);
-
-        return new NodeImpl(this.service, node);
+        return wrap(this.service, node);
     }
 
     @Override
