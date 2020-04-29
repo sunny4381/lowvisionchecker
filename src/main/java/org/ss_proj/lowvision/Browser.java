@@ -37,6 +37,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
     private final Page page;
     private String frameId = null;
     private Integer executionContextId = null;
+    private boolean isUrlExists = false;
 
     public Browser(final ChromeDevToolsService service, final String serviceId) {
         this.service = service;
@@ -84,6 +85,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
         }
 
         this.frameId = navigate.getFrameId();
+        this.isUrlExists = true;
     }
 
     @Override
@@ -152,11 +154,12 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public boolean isUrlExists() {
-        throw new UnsupportedOperationException("not implemented");
+        return this.isUrlExists;
     }
 
     @Override
     public int getNavigateErrorCode() {
+        this.isUrlExists = false;
         throw new UnsupportedOperationException("not implemented");
     }
 
