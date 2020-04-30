@@ -552,14 +552,14 @@ public class GuidelineHolder {
 	}
 
 	private void initDisabledMetrics() {
-		for (int j = 0; j < metricsNames.length; j++) {
-			String tmpS = ICheckerPreferenceConstants.METRICS_PREFIX
-					+ metricsNames[j];
-			if (preferenceStore.contains(tmpS)
-					&& preferenceStore.getBoolean(tmpS)) {
-				enabledMetrics[j] = false;
-			}
-		}
+//		for (int j = 0; j < metricsNames.length; j++) {
+//			String tmpS = ICheckerPreferenceConstants.METRICS_PREFIX
+//					+ metricsNames[j];
+//			if (preferenceStore.contains(tmpS)
+//					&& preferenceStore.getBoolean(tmpS)) {
+//				enabledMetrics[j] = false;
+//			}
+//		}
 	}
 
 	private void initCorrespondingMetrics() {
