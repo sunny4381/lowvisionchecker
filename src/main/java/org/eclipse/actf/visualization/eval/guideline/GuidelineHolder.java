@@ -499,77 +499,66 @@ public class GuidelineHolder {
 
 	private void initDisabledGuideline() {
 
-		try {
-
-			for (int i = 0; i < guidelineArray.length; i++) {
-				GuidelineData data = guidelineArray[i];
-				String[] subLevels = data.getLevels();
-				if (subLevels.length == 0) {
-					String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
-							+ data.getGuidelineName() + UNDERSCORE;
-					if (preferenceStore.contains(tmpS)
-							&& preferenceStore.getBoolean(tmpS)) {
-						data.setEnabled(false);
-					} else {
-						data.setEnabled(true);
-					}
+		for (int i = 0; i < guidelineArray.length; i++) {
+			GuidelineData data = guidelineArray[i];
+			String[] subLevels = data.getLevels();
+			if (subLevels.length == 0) {
+				String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
+						+ data.getGuidelineName() + UNDERSCORE;
+				if (preferenceStore.contains(tmpS)
+						&& preferenceStore.getBoolean(tmpS)) {
+					data.setEnabled(false);
 				} else {
-					for (int j = 0; j < subLevels.length; j++) {
-						GuidelineData subData = data
-								.getSubLevelData(subLevels[j]);
-						String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
-								+ subData.getGuidelineName() + UNDERSCORE + j;
-						if (preferenceStore.contains(tmpS)
-								|| preferenceStore.getBoolean(tmpS)) {
-							subData.setEnabled(false);
-						} else {
-							subData.setEnabled(true);
-						}
+					data.setEnabled(true);
+				}
+			} else {
+				for (int j = 0; j < subLevels.length; j++) {
+					GuidelineData subData = data
+							.getSubLevelData(subLevels[j]);
+					String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
+							+ subData.getGuidelineName() + UNDERSCORE + j;
+					if (preferenceStore.contains(tmpS)
+							|| preferenceStore.getBoolean(tmpS)) {
+						subData.setEnabled(false);
+					} else {
+						subData.setEnabled(true);
 					}
 				}
-
 			}
-		} catch (Exception e) {
+
 		}
 	}
 
 	private void storeDisabledGuideline() {
-		try {
-			for (int i = 0; i < guidelineArray.length; i++) {
-				IGuidelineData data = guidelineArray[i];
-				String[] subLevels = data.getLevels();
-				if (subLevels.length == 0) {
+		for (int i = 0; i < guidelineArray.length; i++) {
+			IGuidelineData data = guidelineArray[i];
+			String[] subLevels = data.getLevels();
+			if (subLevels.length == 0) {
+				preferenceStore.setValue(
+						ICheckerPreferenceConstants.GUIDELINE_PREFIX
+								+ data.getGuidelineName() + UNDERSCORE,
+						!data.isEnabled());
+			} else {
+				for (int j = 0; j < subLevels.length; j++) {
+					IGuidelineData subData = data
+							.getSubLevelData(subLevels[j]);
 					preferenceStore.setValue(
 							ICheckerPreferenceConstants.GUIDELINE_PREFIX
-									+ data.getGuidelineName() + UNDERSCORE,
-							!data.isEnabled());
-				} else {
-					for (int j = 0; j < subLevels.length; j++) {
-						IGuidelineData subData = data
-								.getSubLevelData(subLevels[j]);
-						preferenceStore.setValue(
-								ICheckerPreferenceConstants.GUIDELINE_PREFIX
-										+ subData.getGuidelineName()
-										+ UNDERSCORE + j, !subData.isEnabled());
-					}
+									+ subData.getGuidelineName()
+									+ UNDERSCORE + j, !subData.isEnabled());
 				}
 			}
-		} catch (Exception e) {
-			e.printStackTrace();
 		}
 	}
 
 	private void initDisabledMetrics() {
-		try {
-			for (int j = 0; j < metricsNames.length; j++) {
-				String tmpS = ICheckerPreferenceConstants.METRICS_PREFIX
-						+ metricsNames[j];
-				if (preferenceStore.contains(tmpS)
-						&& preferenceStore.getBoolean(tmpS)) {
-					enabledMetrics[j] = false;
-				}
+		for (int j = 0; j < metricsNames.length; j++) {
+			String tmpS = ICheckerPreferenceConstants.METRICS_PREFIX
+					+ metricsNames[j];
+			if (preferenceStore.contains(tmpS)
+					&& preferenceStore.getBoolean(tmpS)) {
+				enabledMetrics[j] = false;
 			}
-		} catch (Exception e) {
 		}
 	}
 
@@ -583,19 +572,16 @@ public class GuidelineHolder {
 	}
 
 	private void storeDisabledMetrics() {
-		try {
-			for (int i = 0; i < enabledMetrics.length; i++) {
-				if (!enabledMetrics[i]) {
-					preferenceStore.setValue(
-							ICheckerPreferenceConstants.METRICS_PREFIX
-									+ metricsNames[i], true);
-				} else {
-					preferenceStore.setValue(
-							ICheckerPreferenceConstants.METRICS_PREFIX
-									+ metricsNames[i], false);
-				}
+		for (int i = 0; i < enabledMetrics.length; i++) {
+			if (!enabledMetrics[i]) {
+				preferenceStore.setValue(
+						ICheckerPreferenceConstants.METRICS_PREFIX
+								+ metricsNames[i], true);
+			} else {
+				preferenceStore.setValue(
+						ICheckerPreferenceConstants.METRICS_PREFIX
+								+ metricsNames[i], false);
 			}
-		} catch (Exception e) {
 		}
 	}
 
