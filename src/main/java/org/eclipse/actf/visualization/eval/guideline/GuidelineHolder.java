@@ -503,26 +503,26 @@ public class GuidelineHolder {
 			GuidelineData data = guidelineArray[i];
 			String[] subLevels = data.getLevels();
 			if (subLevels.length == 0) {
-				String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
-						+ data.getGuidelineName() + UNDERSCORE;
-				if (preferenceStore.contains(tmpS)
-						&& preferenceStore.getBoolean(tmpS)) {
-					data.setEnabled(false);
-				} else {
+//				String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
+//						+ data.getGuidelineName() + UNDERSCORE;
+//				if (preferenceStore.contains(tmpS)
+//						&& preferenceStore.getBoolean(tmpS)) {
+//					data.setEnabled(false);
+//				} else {
 					data.setEnabled(true);
-				}
+//				}
 			} else {
 				for (int j = 0; j < subLevels.length; j++) {
 					GuidelineData subData = data
 							.getSubLevelData(subLevels[j]);
-					String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
-							+ subData.getGuidelineName() + UNDERSCORE + j;
-					if (preferenceStore.contains(tmpS)
-							|| preferenceStore.getBoolean(tmpS)) {
-						subData.setEnabled(false);
-					} else {
+//					String tmpS = ICheckerPreferenceConstants.GUIDELINE_PREFIX
+//							+ subData.getGuidelineName() + UNDERSCORE + j;
+//					if (preferenceStore.contains(tmpS)
+//							|| preferenceStore.getBoolean(tmpS)) {
+//						subData.setEnabled(false);
+//					} else {
 						subData.setEnabled(true);
-					}
+//					}
 				}
 			}
 
