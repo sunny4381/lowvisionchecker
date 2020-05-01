@@ -44,7 +44,7 @@ public class Checker {
 
     private final IWebBrowserACTF webBrowser;
     private final String targetUrl;
-    private String tmpDirS;
+    private final String tmpDirS;
 
     private IChecker[] checkers = EvaluationUtil.getCheckers();
     private EvaluationResultBlind checkResult;
@@ -56,7 +56,7 @@ public class Checker {
     public Checker(final IWebBrowserACTF browser, final String url, final String workDirectory) {
         this.webBrowser = browser;
         this.targetUrl = url;
-        this.tmpDirS = workDirectory;
+        this.tmpDirS = workDirectory.endsWith("/") ? workDirectory : workDirectory + "/";
     }
 
     public List<IProblemItem> getProblemList() {

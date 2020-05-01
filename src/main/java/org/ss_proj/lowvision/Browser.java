@@ -11,6 +11,9 @@ import com.github.kklisura.cdt.protocol.types.page.*;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
 import com.google.common.io.Resources;
+import org.eclipse.actf.model.dom.html.HTMLParserFactory;
+import org.eclipse.actf.model.dom.html.IHTMLParser;
+import org.eclipse.actf.model.dom.html.ParseException;
 import org.eclipse.actf.model.ui.*;
 import org.eclipse.actf.model.ui.editor.browser.ICurrentStyles;
 import org.eclipse.actf.model.ui.editor.browser.IWebBrowserACTF;
@@ -330,23 +333,23 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Document getDocument() {
-//        try {
-//            DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
-//            DocumentBuilder builder = factory.newDocumentBuilder();
-//            return builder.parse(new ByteArrayInputStream(this.getContent().getBytes()));
-//        } catch (ParserConfigurationException e) {
-//            throw new RuntimeException(e);
-//        } catch (IOException e) {
-//            throw new RuntimeException(e);
-//        } catch (SAXException e) {
-//            throw new RuntimeException(e);
-//        }
-        return new DocumentImpl(this.service, this.service.getDOM().getDocument());
+        final IHTMLParser parser = HTMLParserFactory.createHTMLParser();
+        try {
+            parser.parse(new ByteArrayInputStream(getPageSource().getBytes(StandardCharsets.UTF_8)));
+        } catch (ParseException e) {
+            throw new RuntimeException(e);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (SAXException e) {
+            throw new RuntimeException(e);
+        }
+
+        return parser.getDocument();
     }
 
     @Override
     public Document getLiveDocument() {
-        return getDocument();
+        return new DocumentImpl(this.service, this.service.getDOM().getDocument());
     }
 
     @Override
@@ -354,18 +357,26 @@ public class Browser implements IWebBrowserACTF, IModelService {
         throw new UnsupportedOperationException("not implemented");
     }
 
+    public String getPageSource() {
+        final Frame frame = this.page.getFrameTree().getFrame();
+        final ResourceContent frameContent = this.page.getResourceContent(frame.getId(), frame.getUrl());
+        return frameContent.getContent();
+    }
+
     public String getContent() {
         return (String) Util.evaluate(this.service, "document.documentElement.outerHTML");
     }
 
+    // ブラウザの「ページのソースを表示」で表示される HTML をファイルへ保存する。
+    // つまり javascript 実行前のソースを保存
     @Override
     public File saveOriginalDocument(String file) {
         if (file == null) {
             return null;
         }
 
-        try (FileWriter fileWrite = new FileWriter(file)) {
-            fileWrite.write(this.getContent());
+        try (final FileWriter fileWrite = new FileWriter(file)) {
+            fileWrite.write(getPageSource());
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -373,9 +384,20 @@ public class Browser implements IWebBrowserACTF, IModelService {
         return new File(file);
     }
 
+    // javavascript 実行後の、現在 ブラウザが表示している DOM を出力する。
     @Override
     public File saveDocumentAsHTMLFile(String file) {
-        return saveOriginalDocument(file);
+        if (file == null) {
+            return null;
+        }
+
+        try (final FileWriter fileWrite = new FileWriter(file)) {
+            fileWrite.write(this.getContent());
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        return new File(file);
     }
 
     @Override
