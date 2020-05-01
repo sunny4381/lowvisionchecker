@@ -1,5 +1,6 @@
 package org.ss_proj.htmlchecker;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.kklisura.cdt.launch.ChromeArguments;
 import com.github.kklisura.cdt.launch.ChromeLauncher;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
@@ -25,7 +26,8 @@ import static org.junit.Assert.*;
 public class CheckerTest {
 //    private static String URL = "https://www.yahoo.co.jp/";
 //    private static String URL = "https://github.com/";
-    private static String URL = "https://www.facebook.com/";
+//    private static String URL = "https://www.facebook.com/";
+    private static String URL = "https://www.town.minami.lg.jp/";
 
     private ChromeLauncher launcher;
     private Browser browser;
@@ -68,5 +70,10 @@ public class CheckerTest {
 
         List<IProblemItem> problemItems = checker.getProblemList();
         assertThat(problemItems.size(), greaterThan(1));
+
+        ObjectMapper mapper = new ObjectMapper();
+        for (IProblemItem problemItem : problemItems) {
+            System.out.println(mapper.writeValueAsString(problemItem));
+        }
     }
 }
