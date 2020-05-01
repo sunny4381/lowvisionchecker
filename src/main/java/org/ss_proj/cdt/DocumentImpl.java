@@ -3,10 +3,13 @@ package org.ss_proj.cdt;
 import com.github.kklisura.cdt.protocol.commands.DOM;
 import com.github.kklisura.cdt.protocol.types.dom.Node;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
+import org.eclipse.actf.model.dom.dombycom.IDocumentEx;
+import org.eclipse.actf.model.dom.dombycom.IStyleSheets;
+import org.w3c.dom.Element;
 
 import java.util.List;
 
-public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document {
+public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document, IDocumentEx {
     public DocumentImpl(ChromeDevToolsService service, Node backend) {
         super(service, backend);
     }
@@ -166,6 +169,26 @@ public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document {
 
     @Override
     public org.w3c.dom.Node renameNode(org.w3c.dom.Node n, String namespaceURI, String qualifiedName) throws org.w3c.dom.DOMException {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public List<org.w3c.dom.Node> getElementsByIdInAllFrames(String id) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public String getCompatMode() {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public Element getTargetElement(String target) {
+        throw new UnsupportedOperationException("not implemented");
+    }
+
+    @Override
+    public IStyleSheets getStyleSheets() {
         throw new UnsupportedOperationException("not implemented");
     }
 }
