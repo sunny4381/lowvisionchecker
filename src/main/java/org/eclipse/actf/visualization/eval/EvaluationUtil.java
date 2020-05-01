@@ -10,6 +10,7 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.eval;
 
+import org.eclipse.actf.examples.adesigner.eval.html.Checker;
 import org.eclipse.actf.visualization.eval.preferences.IPreferenceConstants;
 import org.eclipse.actf.visualization.internal.eval.CheckerExtension;
 import org.eclipse.actf.visualization.internal.eval.EvaluationPlugin;
@@ -43,7 +44,8 @@ public class EvaluationUtil {
 	 * @return array of {@link IChecker}
 	 */
 	public static IChecker[] getCheckers() {
-		return CheckerExtension.getCheckers();
+//		return CheckerExtension.getCheckers();
+		return new IChecker[] { new Checker() };
 	}
 
 	/**

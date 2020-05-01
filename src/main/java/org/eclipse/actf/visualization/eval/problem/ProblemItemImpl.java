@@ -70,7 +70,16 @@ public class ProblemItemImpl implements IProblemItem {
 	 */
 	@SuppressWarnings("nls")
 	public ProblemItemImpl(String id, String xpath, String cssPath) {
+		this(id, null, xpath, cssPath);
+	}
+
+	public ProblemItemImpl(String id, Node targetNode) {
+		this(id, null, "", "");
+	}
+
+	public ProblemItemImpl(String id, Node targetNode, String xpath, String cssPath) {
 		this.checkItem = translateEvaluationItem(id);
+		this.targetNode = targetNode;
 		this.xpath = xpath;
 		this.cssPath = cssPath;
 
