@@ -7,6 +7,7 @@ import com.github.kklisura.cdt.protocol.commands.Page;
 import com.github.kklisura.cdt.protocol.commands.Runtime;
 import com.github.kklisura.cdt.protocol.events.runtime.ExecutionContextCreated;
 import com.github.kklisura.cdt.protocol.support.types.EventHandler;
+import com.github.kklisura.cdt.protocol.types.css.CSSStyleSheetHeader;
 import com.github.kklisura.cdt.protocol.types.page.*;
 import com.github.kklisura.cdt.protocol.types.runtime.*;
 import com.github.kklisura.cdt.services.ChromeDevToolsService;
@@ -22,13 +23,11 @@ import org.eclipse.swt.graphics.RGB;
 import org.eclipse.swt.widgets.Composite;
 import org.ss_proj.cdt.DocumentImpl;
 import org.ss_proj.cdt.Rect;
+import org.ss_proj.cdt.StyleSheetImpl;
 import org.ss_proj.cdt.Util;
 import org.w3c.dom.Document;
 import org.xml.sax.SAXException;
 
-import javax.xml.parsers.DocumentBuilder;
-import javax.xml.parsers.DocumentBuilderFactory;
-import javax.xml.parsers.ParserConfigurationException;
 import java.io.*;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
@@ -41,6 +40,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
     private String frameId = null;
     private Integer executionContextId = null;
     private boolean isUrlExists = false;
+    private List<StyleSheetImpl> styleSheetList;
 
     public Browser(final ChromeDevToolsService service, final String serviceId) {
         this.service = service;
@@ -58,6 +58,37 @@ public class Browser implements IWebBrowserACTF, IModelService {
         this.page = service.getPage();
         this.page.enable();
         this.page.setLifecycleEventsEnabled(true);
+
+        this.service.getDOM().enable();
+        this.service.getCSS().enable();
+
+        this.styleSheetList = new ArrayList();
+        this.service.getCSS().onStyleSheetAdded((event) -> {
+            CSSStyleSheetHeader header = event.getHeader();
+            StyleSheetImpl styleSheet = new StyleSheetImpl(this.service, header.getStyleSheetId());
+            styleSheet.setFrameId(header.getFrameId());
+            styleSheet.setSourceURL(header.getHasSourceURL(), header.getSourceURL());
+            styleSheet.setSourceMapURL(header.getSourceMapURL());
+            styleSheet.setOrigin(header.getOrigin());
+            styleSheet.setTitle(header.getTitle());
+            styleSheet.setOwnerNodeId(header.getOwnerNode());
+            styleSheet.setIsInline(header.getIsInline());
+            styleSheet.setStartLine(header.getStartLine());
+            styleSheet.setStartColumn(header.getStartColumn());
+            styleSheet.setLength(header.getLength());
+
+            String text = this.service.getCSS().getStyleSheetText(header.getStyleSheetId());
+            styleSheet.setStyleSheetText(text);
+
+            this.styleSheetList.add(styleSheet);
+        });
+        this.service.getCSS().onStyleSheetRemoved((event) -> {
+            String styleSheetId = event.getStyleSheetId();
+            Optional<StyleSheetImpl> item = this.styleSheetList.stream().filter((styleSheet) -> styleSheetId.equals(styleSheet.getId())).findFirst();
+            if (item.isPresent()) {
+                this.styleSheetList.remove(item.get());
+            }
+        });
     }
 
     @Override
@@ -80,6 +111,8 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public void navigate(String url) {
+        this.styleSheetList.clear();
+
         final Navigate navigate;
         try {
             navigate = Util.navigateAndWait(this.service, url, 10000);
@@ -349,7 +382,7 @@ public class Browser implements IWebBrowserACTF, IModelService {
 
     @Override
     public Document getLiveDocument() {
-        return new DocumentImpl(this.service, this.service.getDOM().getDocument());
+        return new DocumentImpl(this.service, this.styleSheetList);
     }
 
     @Override

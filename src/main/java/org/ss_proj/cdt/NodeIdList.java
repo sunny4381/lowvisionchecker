@@ -5,8 +5,6 @@ import com.github.kklisura.cdt.services.ChromeDevToolsService;
 
 import java.util.List;
 
-import static org.ss_proj.cdt.NodeImpl.DOCUMENT_NODE;
-import static org.ss_proj.cdt.NodeImpl.ELEMENT_NODE;
 import static org.ss_proj.cdt.NodeListImpl.wrap;
 
 public class NodeIdList implements org.w3c.dom.NodeList {

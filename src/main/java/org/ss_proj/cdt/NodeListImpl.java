@@ -38,7 +38,7 @@ public class NodeListImpl implements org.w3c.dom.NodeList {
         case ELEMENT_NODE:
             return new ElementImpl(service, node);
         case DOCUMENT_NODE:
-            return new DocumentImpl(service, node);
+            throw new UnsupportedOperationException("not implemented");
         default:
             return new NodeImpl(service, node);
         }

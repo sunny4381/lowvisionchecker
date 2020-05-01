@@ -7,11 +7,15 @@ import org.eclipse.actf.model.dom.dombycom.IDocumentEx;
 import org.eclipse.actf.model.dom.dombycom.IStyleSheets;
 import org.w3c.dom.Element;
 
+import java.util.Collections;
 import java.util.List;
 
 public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document, IDocumentEx {
-    public DocumentImpl(ChromeDevToolsService service, Node backend) {
-        super(service, backend);
+    private final List<StyleSheetImpl> styleSheetList;
+
+    public DocumentImpl(ChromeDevToolsService service, List<StyleSheetImpl> styleSheetList) {
+        super(service, service.getDOM().getDocument());
+        this.styleSheetList = Collections.unmodifiableList(styleSheetList);
     }
 
     @Override
@@ -189,6 +193,6 @@ public class DocumentImpl extends NodeImpl implements org.w3c.dom.Document, IDoc
 
     @Override
     public IStyleSheets getStyleSheets() {
-        throw new UnsupportedOperationException("not implemented");
+        return new StyleSheetsImpl(this.styleSheetList);
     }
 }
