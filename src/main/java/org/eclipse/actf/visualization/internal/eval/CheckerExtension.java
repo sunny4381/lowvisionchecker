@@ -13,10 +13,10 @@ package org.eclipse.actf.visualization.internal.eval;
 
 import java.util.ArrayList;
 
+import org.eclipse.actf.examples.adesigner.eval.html.HtmlCheckerInfoProvider;
 import org.eclipse.actf.visualization.eval.IChecker;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
 import org.eclipse.core.runtime.*;
-import org.ss_proj.lowvision.HtmlCheckerInfoProvider;
 
 public class CheckerExtension {
 	private static final String EXTENSION_NAME = "checkers"; //$NON-NLS-1$
