@@ -11,28 +11,28 @@
 
 package org.eclipse.actf.visualization.engines.blind.html.ui.actions;
 
-import org.eclipse.actf.visualization.engines.blind.BlindVizResourceUtil;
-import org.eclipse.actf.visualization.engines.blind.html.ui.elementViewer.ElementViewerManagerFactory;
-import org.eclipse.actf.visualization.internal.engines.blind.html.Messages;
-import org.eclipse.jface.action.Action;
-
-/**
- * Action to invoke ID/CSS viewer
- */
-public class BlindOpenIdCssAction extends Action {
-
-	/**
-	 * Constructor of the class
-	 */
-	public BlindOpenIdCssAction() {
-		setToolTipText(Messages.BlindView_Open_ID);
-		setImageDescriptor(BlindVizResourceUtil
-				.getImageDescriptor("icons/ButtonIdCss.png")); //$NON-NLS-1$
-		setText("ID/CSS"); //$NON-NLS-1$
-	}
-
-	public void run() {
-		ElementViewerManagerFactory.getInstance().openElementViewer();
-	}
-
-}
+//import org.eclipse.actf.visualization.engines.blind.BlindVizResourceUtil;
+//import org.eclipse.actf.visualization.engines.blind.html.ui.elementViewer.ElementViewerManagerFactory;
+//import org.eclipse.actf.visualization.internal.engines.blind.html.Messages;
+//import org.eclipse.jface.action.Action;
+//
+///**
+// * Action to invoke ID/CSS viewer
+// */
+//public class BlindOpenIdCssAction extends Action {
+//
+//	/**
+//	 * Constructor of the class
+//	 */
+//	public BlindOpenIdCssAction() {
+//		setToolTipText(Messages.BlindView_Open_ID);
+//		setImageDescriptor(BlindVizResourceUtil
+//				.getImageDescriptor("icons/ButtonIdCss.png")); //$NON-NLS-1$
+//		setText("ID/CSS"); //$NON-NLS-1$
+//	}
+//
+//	public void run() {
+//		ElementViewerManagerFactory.getInstance().openElementViewer();
+//	}
+//
+//}
