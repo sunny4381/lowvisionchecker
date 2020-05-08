@@ -11,24 +11,24 @@
 
 package org.eclipse.actf.visualization.blind.ui.actions;
 
-import org.eclipse.actf.visualization.blind.ui.internal.Messages;
-import org.eclipse.actf.visualization.blind.ui.internal.PartControlBlind;
-import org.eclipse.actf.visualization.engines.blind.BlindVizResourceUtil;
-import org.eclipse.jface.action.Action;
-
-public class BlindVisualizationAction extends Action {
-	PartControlBlind prb;
-
-	public BlindVisualizationAction(PartControlBlind prb) {
-		setToolTipText(Messages.BlindView_Visualize_4); 
-		setImageDescriptor(BlindVizResourceUtil
-				.getImageDescriptor("icons/etool16/visualize.png")); //$NON-NLS-1$
-		setText(Messages.BlindVisualizationAction_0); 
-		this.prb = prb;
-	}
-
-	public void run() {
-		prb.doVisualize();
-	}
-
-}
+//import org.eclipse.actf.visualization.blind.ui.internal.Messages;
+//import org.eclipse.actf.visualization.blind.ui.internal.PartControlBlind;
+//import org.eclipse.actf.visualization.engines.blind.BlindVizResourceUtil;
+//import org.eclipse.jface.action.Action;
+//
+//public class BlindVisualizationAction extends Action {
+//	PartControlBlind prb;
+//
+//	public BlindVisualizationAction(PartControlBlind prb) {
+//		setToolTipText(Messages.BlindView_Visualize_4);
+//		setImageDescriptor(BlindVizResourceUtil
+//				.getImageDescriptor("icons/etool16/visualize.png")); //$NON-NLS-1$
+//		setText(Messages.BlindVisualizationAction_0);
+//		this.prb = prb;
+//	}
+//
+//	public void run() {
+//		prb.doVisualize();
+//	}
+//
+//}

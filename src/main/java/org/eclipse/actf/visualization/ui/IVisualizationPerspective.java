@@ -10,12 +10,12 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.ui;
 
-@SuppressWarnings("nls")
-public interface IVisualizationPerspective {
-
-	public static final String ID_FLASH_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.FlashPerspective";
-	public static final String ID_GUI_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.GUIPerspective";
-	public static final String ID_HTML_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.HTMLPerspective";
-	public static final String ID_ODF_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.ODFPerspective";
-
-}
+//@SuppressWarnings("nls")
+//public interface IVisualizationPerspective {
+//
+//	public static final String ID_FLASH_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.FlashPerspective";
+//	public static final String ID_GUI_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.GUIPerspective";
+//	public static final String ID_HTML_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.HTMLPerspective";
+//	public static final String ID_ODF_PERSPECTIVE = "org.eclipse.actf.visualization.ui.perspectives.ODFPerspective";
+//
+//}

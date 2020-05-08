@@ -10,44 +10,44 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.ui.report.table;
 
-import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
-import org.eclipse.actf.visualization.eval.problem.IProblemItem;
-import org.eclipse.jface.viewers.ITableLabelProvider;
-import org.eclipse.jface.viewers.LabelProvider;
-import org.eclipse.swt.graphics.Image;
-
-/**
- *
- */
-public class MetricsLabelProvider extends LabelProvider implements
-		ITableLabelProvider {
-
-	private GuidelineHolder guidelineHolder = GuidelineHolder.getInstance();
-
-	private int numMetrics;
-
-	/**
-     * 
-     */
-	public MetricsLabelProvider() {
-		super();
-		numMetrics = guidelineHolder.getMetricsNames().length;
-	}
-
-	public Image getColumnImage(Object arg0, int arg1) {
+//import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
+//import org.eclipse.actf.visualization.eval.problem.IProblemItem;
+//import org.eclipse.jface.viewers.ITableLabelProvider;
+//import org.eclipse.jface.viewers.LabelProvider;
+//import org.eclipse.swt.graphics.Image;
+//
+///**
+// *
+// */
+//public class MetricsLabelProvider extends LabelProvider implements
+//		ITableLabelProvider {
+//
+//	private GuidelineHolder guidelineHolder = GuidelineHolder.getInstance();
+//
+//	private int numMetrics;
+//
+//	/**
+//     *
+//     */
+//	public MetricsLabelProvider() {
+//		super();
+//		numMetrics = guidelineHolder.getMetricsNames().length;
+//	}
+//
+//	public Image getColumnImage(Object arg0, int arg1) {
+////		IProblemItem tmpItem = (IProblemItem) arg0;
+////		if (arg1 >= 0 && arg1 < numMetrics) {
+////			return (tmpItem.getEvaluationItem().getMetricsIcons()[arg1]);
+////		}
+////		return null;
+//		throw new UnsupportedOperationException("not implemented");
+//	}
+//
+//	public String getColumnText(Object arg0, int arg1) {
 //		IProblemItem tmpItem = (IProblemItem) arg0;
 //		if (arg1 >= 0 && arg1 < numMetrics) {
-//			return (tmpItem.getEvaluationItem().getMetricsIcons()[arg1]);
+//			return (tmpItem.getEvaluationItem().getTableDataMetrics()[arg1]);
 //		}
-//		return null;
-		throw new UnsupportedOperationException("not implemented");
-	}
-
-	public String getColumnText(Object arg0, int arg1) {
-		IProblemItem tmpItem = (IProblemItem) arg0;
-		if (arg1 >= 0 && arg1 < numMetrics) {
-			return (tmpItem.getEvaluationItem().getTableDataMetrics()[arg1]);
-		}
-		return ""; //$NON-NLS-1$
-	}
-}
+//		return ""; //$NON-NLS-1$
+//	}
+//}

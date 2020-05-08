@@ -10,38 +10,38 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.internal.ui.report.action;
 
-import org.eclipse.actf.visualization.internal.ui.report.Messages;
-import org.eclipse.jface.action.Action;
-import org.eclipse.jface.viewers.TableViewer;
-
-
-
-public class ClearSelectionAction extends Action {
-
-
-    private TableViewer _tableViewer;
-    
-    
-    /**
-     * @param tableViewer
-     */
-
-    public ClearSelectionAction(TableViewer tableViewer) {
-        super(Messages.ProblemTable_Clear_Selection_15);
-        this._tableViewer = tableViewer;
-    }
-
-    /* (non-Javadoc)
-     * @see org.eclipse.jface.action.Action#run()
-     */
-    public void run() {
-        //resultViewer.clearSelection();
-        _tableViewer.setSelection(null);
-        
-        //TODO
-        //guidelineSubMenu.setGuidelineItem(new ArrayList());
-            
-        //TODO recover highlight (use mediator/IVisualization,IDataSoruce)
-    }
-    
-}
+//import org.eclipse.actf.visualization.internal.ui.report.Messages;
+//import org.eclipse.jface.action.Action;
+//import org.eclipse.jface.viewers.TableViewer;
+//
+//
+//
+//public class ClearSelectionAction extends Action {
+//
+//
+//    private TableViewer _tableViewer;
+//
+//
+//    /**
+//     * @param tableViewer
+//     */
+//
+//    public ClearSelectionAction(TableViewer tableViewer) {
+//        super(Messages.ProblemTable_Clear_Selection_15);
+//        this._tableViewer = tableViewer;
+//    }
+//
+//    /* (non-Javadoc)
+//     * @see org.eclipse.jface.action.Action#run()
+//     */
+//    public void run() {
+//        //resultViewer.clearSelection();
+//        _tableViewer.setSelection(null);
+//
+//        //TODO
+//        //guidelineSubMenu.setGuidelineItem(new ArrayList());
+//
+//        //TODO recover highlight (use mediator/IVisualization,IDataSoruce)
+//    }
+//
+//}

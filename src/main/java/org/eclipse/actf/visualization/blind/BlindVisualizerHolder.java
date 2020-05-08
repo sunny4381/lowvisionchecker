@@ -10,22 +10,22 @@
  *******************************************************************************/
 package org.eclipse.actf.visualization.blind;
 
-import org.eclipse.actf.visualization.blind.internal.BlindVisualizerExtension;
-
-/**
- * Provide access to the blind visualizers that registered via an extension point
- * "org.eclipse.actf.visualization.blind.blindVisualizer".
- */
-public class BlindVisualizerHolder {
-	
-	/**
-	 * Get registered blind visualizers.
-	 * 
-	 * @return registered blind visualizers
-	 * @see IBlindVisualizer
-	 */
-	public static IBlindVisualizer[] getVisualizers(){
-		return BlindVisualizerExtension.getVisualizers();
-	}
-
-}
+//import org.eclipse.actf.visualization.blind.internal.BlindVisualizerExtension;
+//
+///**
+// * Provide access to the blind visualizers that registered via an extension point
+// * "org.eclipse.actf.visualization.blind.blindVisualizer".
+// */
+//public class BlindVisualizerHolder {
+//
+//	/**
+//	 * Get registered blind visualizers.
+//	 *
+//	 * @return registered blind visualizers
+//	 * @see IBlindVisualizer
+//	 */
+//	public static IBlindVisualizer[] getVisualizers(){
+//		return BlindVisualizerExtension.getVisualizers();
+//	}
+//
+//}
