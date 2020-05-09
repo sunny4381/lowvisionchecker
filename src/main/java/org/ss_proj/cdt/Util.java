@@ -25,11 +25,9 @@ public class Util {
         page.setLifecycleEventsEnabled(true);
 
         final Object lock = new Object();
-        final EventListener eventListener = page.onLifecycleEvent(event -> {
-            if ("load".equals(event.getName())) {
-                synchronized (lock) {
-                    lock.notify();
-                }
+        final EventListener eventListener = page.onLoadEventFired(event -> {
+            synchronized (lock) {
+                lock.notify();
             }
         });
 
