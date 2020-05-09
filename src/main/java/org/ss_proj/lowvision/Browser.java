@@ -59,6 +59,9 @@ public class Browser implements IWebBrowserACTF, IModelService {
         this.page.enable();
         this.page.setLifecycleEventsEnabled(true);
 
+        this.service.getNetwork().enable();
+        this.service.getNetwork().setCacheDisabled(Boolean.TRUE);
+
         this.service.getDOM().enable();
         this.service.getCSS().enable();
 
