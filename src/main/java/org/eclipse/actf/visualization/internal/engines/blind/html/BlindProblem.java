@@ -62,7 +62,7 @@ public class BlindProblem extends ProblemItemImpl implements IBlindProblem {
 	 *            target String to be embedded to error description
 	 */
 	public BlindProblem(int _subtype, String targetString) {
-		super("B_" + Integer.toString(_subtype), "", ""); //$NON-NLS-1$
+		super("B_" + Integer.toString(_subtype)); //$NON-NLS-1$
 
 		subType = _subtype;
 

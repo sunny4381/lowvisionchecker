@@ -434,13 +434,13 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private IProblemItem addCheckerProblem(String strId) {
-		IProblemItem tmpCP = new ProblemItemImpl(strId, "", "");
+		IProblemItem tmpCP = new ProblemItemImpl(strId);
 		result.add(tmpCP);
 		return (tmpCP);
 	}
 
 	private IProblemItem addCheckerProblem(String strId, String targetStr) {
-		IProblemItem tmpCP = new ProblemItemImpl(strId, "", "");
+		IProblemItem tmpCP = new ProblemItemImpl(strId);
 		tmpCP.setTargetString(targetStr);
 		result.add(tmpCP);
 		return (tmpCP);
@@ -467,7 +467,7 @@ public class CheckEngine extends HtmlTagUtil {
 	}
 
 	private IProblemItem addCheckerProblem(String strId, String targetStr, Vector<Node> targetV) {
-		IProblemItem tmpCP = new ProblemItemImpl(strId, "", "");
+		IProblemItem tmpCP = new ProblemItemImpl(strId);
 		tmpCP.setTargetString(targetStr);
 		tmpCP.setHighlightTargetNodeInfo(new HighlightTargetNodeInfo(targetV));
 		result.add(tmpCP);
@@ -1376,10 +1376,10 @@ public class CheckEngine extends HtmlTagUtil {
 
 	private void item_32() {
 		if (object_elements.length > 0) { // object alert
-			result.add(new ProblemItemImpl("C_32.0", "", "")); //$NON-NLS-1$
+			result.add(new ProblemItemImpl("C_32.0")); //$NON-NLS-1$
 		} else {
 			if (edu.getAppletElements().size() > 0) { // object alert
-				result.add(new ProblemItemImpl("C_32.0", "", "")); //$NON-NLS-1$
+				result.add(new ProblemItemImpl("C_32.0")); //$NON-NLS-1$
 			}
 		}
 	}
@@ -1668,7 +1668,7 @@ public class CheckEngine extends HtmlTagUtil {
 				curChild = curChild.getNextSibling();
 			}
 			if (bHasProblem) {
-				result.add(new ProblemItemImpl("C_43.0", "", "")); //$NON-NLS-1$
+				result.add(new ProblemItemImpl("C_43.0")); //$NON-NLS-1$
 				break;
 			}
 		}
@@ -2393,7 +2393,7 @@ public class CheckEngine extends HtmlTagUtil {
 			}
 		}
 		if (!bHasTitle) { // document title check
-			result.add(new ProblemItemImpl("C_60.0", "", "")); //$NON-NLS-1$
+			result.add(new ProblemItemImpl("C_60.0")); //$NON-NLS-1$
 		} else {
 			List<String> ngPatterns = new ArrayList<String>();
 			ngPatterns.add("\u7121\u984c.*");
@@ -3028,9 +3028,9 @@ public class CheckEngine extends HtmlTagUtil {
 		if (charset.length() == 0) {
 			if (isHTML5) {
 				// check existence of BOM in BlindVisualizerHTMl.visualize().
-				result.add(new ProblemItemImpl("C_88.1", "", "")); //$NON-NLS-1$
+				result.add(new ProblemItemImpl("C_88.1")); //$NON-NLS-1$
 			} else {
-				result.add(new ProblemItemImpl("C_88.0", "", "")); //$NON-NLS-1$
+				result.add(new ProblemItemImpl("C_88.0")); //$NON-NLS-1$
 			}
 		} else {
 			// check coding (EUC-JP, Shift_JIS, UTF-8...)

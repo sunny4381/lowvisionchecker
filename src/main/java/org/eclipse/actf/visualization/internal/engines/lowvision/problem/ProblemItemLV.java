@@ -32,6 +32,10 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 
 	private static final String ERR_HIGHLIGHT = "(can highlight)";
 
+	private final String xpath;
+
+	private final String cssPath;
+
 	int area = 0;
 
 	String backgroundS = ""; //$NON-NLS-1$
@@ -62,7 +66,17 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * @param id
 	 */
 	public ProblemItemLV(String id, String xpath, String cssPath) {
-		super(id, xpath, cssPath);
+		super(id);
+		this.xpath = xpath;
+		this.cssPath = cssPath;
+	}
+
+	public String getXPath() {
+		return this.xpath;
+	}
+
+	public String getCssPath() {
+		return this.cssPath;
 	}
 
 	@JsonIgnore

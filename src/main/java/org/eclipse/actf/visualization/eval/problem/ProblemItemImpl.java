@@ -11,7 +11,6 @@
 
 package org.eclipse.actf.visualization.eval.problem;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
@@ -33,13 +32,9 @@ public class ProblemItemImpl implements IProblemItem {
 
 	private boolean canHighlight = false;
 
-	private final IEvaluationItem checkItem;
+	private IEvaluationItem checkItem;
 
-	private final String xpath;
-
-	private final String cssPath;
-
-	private String description;
+	private String description = NULL_STRING;
 
 	private int serialNumber = -1;
 
@@ -59,37 +54,6 @@ public class ProblemItemImpl implements IProblemItem {
 
 	protected int subType;
 
-	// TODO add Icon(for Result doc) info
-
-	/**
-	 * Create new ProblemItemImpl for the evaluation item
-	 *
-	 * @param id
-	 *            evaluation item ID
-	 * @see GuidelineHolder#getEvaluationItem(String)
-	 */
-	@SuppressWarnings("nls")
-	public ProblemItemImpl(String id, String xpath, String cssPath) {
-		this(id, null, xpath, cssPath);
-	}
-
-	public ProblemItemImpl(String id, Node targetNode) {
-		this(id, null, "", "");
-	}
-
-	public ProblemItemImpl(String id, Node targetNode, String xpath, String cssPath) {
-		this.checkItem = translateEvaluationItem(id);
-		this.targetNode = targetNode;
-		this.xpath = xpath;
-		this.cssPath = cssPath;
-
-		if (checkItem.getId().equals("unknown")) {
-			DebugPrintUtil.devOrDebugPrintln("Problem Item: unknown id \"" + id + "\"");
-		}
-
-		this.description = checkItem.createDescription();
-	}
-
 	public static IEvaluationItem translateEvaluationItem(String id) {
 		IEvaluationItem item = GUIDELINE_HOLDER.getEvaluationItem(id);
 		if (item != null) {
@@ -103,21 +67,47 @@ public class ProblemItemImpl implements IProblemItem {
 		return new EvaluationItemImpl("unknown", EvaluationItemImpl.SEV_INFO_STR);
 	}
 
+	// TODO add Icon(for Result doc) info
+
+	/**
+	 * Create new ProblemItemImpl for the evaluation item
+	 * 
+	 * @param id
+	 *            evaluation item ID
+	 * @see GuidelineHolder#getEvaluationItem(String)
+	 */
+	@SuppressWarnings("nls")
+	public ProblemItemImpl(String id) {
+		checkItem = translateEvaluationItem(id);
+
+		if (checkItem.getId().equals("unknown")) {
+			DebugPrintUtil.devOrDebugPrintln("Problem Item: unknown id \"" + id
+					+ "\"");
+		}
+
+		description = checkItem.createDescription();
+	}
+
+	/**
+	 * Create new ProblemItemImpl for the evaluation item and set target Node
+	 * 
+	 * @param id
+	 *            evaluation item ID
+	 * @param targetNode
+	 *            target Node
+	 * @see GuidelineHolder#getEvaluationItem(String)
+	 */
+	public ProblemItemImpl(String id, Node targetNode) {
+		this(id);
+		setTargetNode(targetNode);
+	}
+
 	public IEvaluationItem getEvaluationItem() {
 		return checkItem;
 	}
 
-	@JsonIgnore
 	public String getId() {
 		return checkItem.getId();
-	}
-
-	public String getXPath() {
-		return this.xpath;
-	}
-
-	public String getCssPath() {
-		return this.cssPath;
 	}
 
 	public String[] getTableDataGuideline() {
@@ -128,7 +118,6 @@ public class ProblemItemImpl implements IProblemItem {
 		return checkItem.getMetricsScores();
 	}
 
-	@JsonIgnore
 	public Image[] getMetricsIcons() {
 		return checkItem.getMetricsIcons();
 	}
@@ -149,7 +138,6 @@ public class ProblemItemImpl implements IProblemItem {
 		return serialNumber;
 	}
 
-	@JsonIgnore
 	public Node getTargetNode() {
 		return targetNode;
 	}
@@ -164,6 +152,10 @@ public class ProblemItemImpl implements IProblemItem {
 
 	public void setCanHighlight(boolean canHighlight) {
 		this.canHighlight = canHighlight;
+	}
+
+	public void setEvaluationItem(IEvaluationItem checkItem) {
+		this.checkItem = checkItem;
 	}
 
 	public void setDescription(String description) {
@@ -183,7 +175,6 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
-	@JsonIgnore
 	public HighlightTargetId[] getHighlightTargetIds() {
 		return (targetIds);
 	}
@@ -224,7 +215,6 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
-	@JsonIgnore
 	public String getLineStrMulti() {
 		StringBuffer tmpSB = new StringBuffer();
 		// TODO check multiple same line number
@@ -244,8 +234,7 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
-	public void setHighlightTargetSourceInfo(
-			HighlightTargetSourceInfo[] targetSourceInfo) {
+	public void setHighlightTargetSourceInfo(HighlightTargetSourceInfo[] targetSourceInfo) {
 		if (targetSourceInfo != null) {
 			targetSources = targetSourceInfo;
 			int tmpLine = Integer.MAX_VALUE;
@@ -261,7 +250,6 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
-	@JsonIgnore
 	public HighlightTargetSourceInfo[] getHighlightTargetSoruceInfo() {
 		if (targetSources.length == 0 && line > -1) {
 			Html2ViewMapData dummy = new Html2ViewMapData(
@@ -276,13 +264,11 @@ public class ProblemItemImpl implements IProblemItem {
 		visitor.visit(this);
 	}
 
-	@JsonIgnore
 	public HighlightTargetNodeInfo getHighlightTargetNodeInfo() {
 		return highlightTargetNodeInfo;
 	}
 
-	public void setHighlightTargetNodeInfo(
-			HighlightTargetNodeInfo targetNodeInfo) {
+	public void setHighlightTargetNodeInfo(HighlightTargetNodeInfo targetNodeInfo) {
 		this.highlightTargetNodeInfo = targetNodeInfo;
 	}
 
@@ -292,11 +278,9 @@ public class ProblemItemImpl implements IProblemItem {
 		}
 	}
 
-	public void setHighlightTargetSourceInfo(
-			HighlightTargetSourceInfo targetSourceInfo) {
+	public void setHighlightTargetSourceInfo(HighlightTargetSourceInfo targetSourceInfo) {
 		if (targetSourceInfo != null) {
-			this
-					.setHighlightTargetSourceInfo(new HighlightTargetSourceInfo[] { targetSourceInfo });
+			this.setHighlightTargetSourceInfo(new HighlightTargetSourceInfo[] { targetSourceInfo });
 		}
 	}
 
@@ -307,4 +291,5 @@ public class ProblemItemImpl implements IProblemItem {
 	public void setSubType(int subType) {
 		this.subType = subType;
 	}
+
 }

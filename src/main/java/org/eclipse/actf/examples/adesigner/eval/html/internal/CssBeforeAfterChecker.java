@@ -98,7 +98,7 @@ public class CssBeforeAfterChecker {
 		}
 
 		if (textContents.length() > 2) {
-			prob = new ProblemItemImpl("C_90" + errorId, "", "");
+			prob = new ProblemItemImpl("C_90" + errorId);
 			prob.setTargetString(
 					targetString + " (content: " + textContents.subSequence(2, textContents.length()) + ")");
 			prob.setTargetNode(e);
@@ -106,7 +106,7 @@ public class CssBeforeAfterChecker {
 		}
 
 		if (urlContents.length() > 2) {
-			prob = new ProblemItemImpl("C_91" + errorId, "", "");
+			prob = new ProblemItemImpl("C_91" + errorId);
 			prob.setTargetString(targetString + " (content: " + urlContents.subSequence(2, urlContents.length()) + ")");
 			prob.setTargetNode(e);
 			result.add(prob);
