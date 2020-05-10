@@ -13,9 +13,11 @@ package org.eclipse.actf.visualization.eval.problem;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.eclipse.actf.visualization.eval.IEvaluationItem;
+import org.ss_proj.HighlightTargetPathInfo;
 import org.w3c.dom.Node;
 
 import java.awt.*;
+import java.util.List;
 
 /**
  * Interface for problem information
@@ -279,4 +281,7 @@ public interface IProblemItem {
 	 */
 	public void setSubType(int subType);
 
+	List<HighlightTargetPathInfo> getHighlightTargetPaths();
+
+	void setHighlightTargetPaths(List<HighlightTargetPathInfo> highlightTargetPaths);
 }

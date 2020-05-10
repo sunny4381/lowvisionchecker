@@ -263,6 +263,9 @@ public class Checker {
                 if (EvaluationUtil.isOriginalDOM()) {
                     tmpItem.setHighlightTargetSourceInfo(nodeInfo.getHighlightTargetSourceInfo(html2ViewMapV));
                 }
+                if (tmpItem.getHighlightTargetPaths().isEmpty()) {
+                    tmpItem.setHighlightTargetPaths(nodeInfo.getHighlightTargetPaths());
+                }
             }
             if (hasBOM && tmpItem.getId().equals("C_88.1")) { //$NON-NLS-1$
                 hasBOM = false; // do not check from here

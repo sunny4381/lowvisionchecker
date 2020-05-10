@@ -16,9 +16,12 @@ import org.eclipse.actf.visualization.eval.IEvaluationItem;
 import org.eclipse.actf.visualization.eval.guideline.GuidelineHolder;
 import org.eclipse.actf.visualization.internal.eval.EvaluationItemImpl;
 import org.eclipse.actf.visualization.util.html2view.Html2ViewMapData;
+import org.ss_proj.HighlightTargetPathInfo;
 import org.w3c.dom.Node;
 
 import java.awt.*;
+import java.util.Collections;
+import java.util.List;
 
 /**
  * Default implementation of {@link IProblemItem}
@@ -53,6 +56,8 @@ public class ProblemItemImpl implements IProblemItem {
 	protected String targetString = NULL_STRING;
 
 	protected int subType;
+
+	private List<HighlightTargetPathInfo> targetPaths = Collections.emptyList();
 
 	public static IEvaluationItem translateEvaluationItem(String id) {
 		IEvaluationItem item = GUIDELINE_HOLDER.getEvaluationItem(id);
@@ -292,4 +297,13 @@ public class ProblemItemImpl implements IProblemItem {
 		this.subType = subType;
 	}
 
+	@Override
+	public List<HighlightTargetPathInfo> getHighlightTargetPaths() {
+		return this.targetPaths;
+	}
+
+	@Override
+	public void setHighlightTargetPaths(List<HighlightTargetPathInfo> highlightTargetPaths) {
+		this.targetPaths = highlightTargetPaths;
+	}
 }

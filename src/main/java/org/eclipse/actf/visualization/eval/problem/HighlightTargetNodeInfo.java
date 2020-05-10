@@ -11,12 +11,11 @@
 
 package org.eclipse.actf.visualization.eval.problem;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Map;
-import java.util.Vector;
+import java.util.*;
 
 import org.eclipse.actf.visualization.util.html2view.Html2ViewMapData;
+import org.ss_proj.HighlightTargetPathInfo;
+import org.ss_proj.NodeUtil;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
@@ -244,4 +243,32 @@ public class HighlightTargetNodeInfo {
 		return null;
 	}
 
+	public List<HighlightTargetPathInfo> getHighlightTargetPaths() {
+		List<HighlightTargetPathInfo> ret = null;
+
+		switch (mode) {
+		case SINGLE:
+			ret = Collections.singletonList(new HighlightTargetPathInfo(
+					NodeUtil.getCssPath(this.targetNode), NodeUtil.getFullXPath(this.targetNode)));
+			break;
+		case RANGE:
+			ret = new ArrayList<>(2);
+			ret.add(new HighlightTargetPathInfo(
+					NodeUtil.getCssPath(this.startTarget), NodeUtil.getFullXPath(this.startTarget)));
+			ret.add(new HighlightTargetPathInfo(
+					NodeUtil.getCssPath(this.endTarget), NodeUtil.getFullXPath(this.endTarget)));
+			break;
+		case MULTI:
+			ret = new ArrayList<>(targets.length);
+			for (int i = 0; i < targets.length; i++) {
+				Node origNode = targets[i];
+
+				ret.add(new HighlightTargetPathInfo(
+						NodeUtil.getCssPath(origNode), NodeUtil.getFullXPath(origNode)));
+			}
+			break;
+		}
+
+		return ret == null ? Collections.emptyList() : Collections.unmodifiableList(ret);
+	}
 }
