@@ -33,7 +33,8 @@ public class EvaluationUtil {
 	public static boolean isOriginalDOM() {
 		String targetDOM = System.getProperty(IPreferenceConstants.CHECKER_TARGET);
 		if (targetDOM == null || targetDOM.isEmpty()) {
-			targetDOM = IPreferenceConstants.CHECKER_ORG_DOM;
+//			targetDOM = IPreferenceConstants.CHECKER_ORG_DOM;
+			targetDOM = IPreferenceConstants.CHECKER_LIVE_DOM;
 		}
 		return IPreferenceConstants.CHECKER_ORG_DOM.equals(targetDOM);
 	}
