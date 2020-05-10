@@ -76,22 +76,19 @@ import org.xml.sax.SAXException;
  */
 public class HTMLParser extends SGMLParser implements IHTMLParser {
 	static {
-		InputStream is = null;
-		is = HTMLParser.class.getResourceAsStream("public_entities.properties"); //$NON-NLS-1$
-		if (is != null) {
+		try (InputStream is = HTMLParser.class.getResourceAsStream("public_entities.properties");
+			 InputStreamReader isr = new InputStreamReader(is, "UTF-8")) { //$NON-NLS-1$
 			Properties map = new Properties();
-			try {
-				map.load(is);
-				// pubEntityMap.putAll(map);
-				Enumeration<Object> keys = map.keys(); // CRS
-				while (keys.hasMoreElements()) { // CRS
-					String aKey = (String) keys.nextElement(); // CRS
-					String replaceKey = aKey.replace('@', ' '); // CRS
-					pubEntityMap.put(replaceKey, (String) map.get(aKey)); // CRS
-				} // CRS
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
+			map.load(isr);
+			// pubEntityMap.putAll(map);
+			Enumeration<Object> keys = map.keys(); // CRS
+			while (keys.hasMoreElements()) { // CRS
+				String aKey = (String) keys.nextElement(); // CRS
+				String replaceKey = aKey.replace('@', ' '); // CRS
+				pubEntityMap.put(replaceKey, (String) map.get(aKey)); // CRS
+			} // CRS
+		} catch (IOException e) {
+			throw new RuntimeException(e);
 		}
 	}
 

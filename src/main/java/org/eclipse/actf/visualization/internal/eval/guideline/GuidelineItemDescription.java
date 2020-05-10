@@ -17,6 +17,7 @@ import java.util.ResourceBundle;
 import org.eclipse.actf.util.logging.DebugPrintUtil;
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
 import org.eclipse.actf.visualization.internal.eval.CheckerExtension;
+import org.ss_proj.ResourceBundleControlHolder;
 
 public class GuidelineItemDescription {
 
@@ -24,7 +25,8 @@ public class GuidelineItemDescription {
 
 	private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
-	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle.getBundle(BUNDLE_NAME);
+	private static final ResourceBundle RESOURCE_BUNDLE
+			= ResourceBundle.getBundle(BUNDLE_NAME, ResourceBundleControlHolder.getInstance());
 
 	private static GuidelineItemDescription instance;
 

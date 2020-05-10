@@ -12,6 +12,8 @@ package org.eclipse.actf.visualization.internal.engines.blind;
 
 import org.eclipse.osgi.util.NLS;
 
+import java.nio.charset.StandardCharsets;
+
 public final class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "messages";//$NON-NLS-1$
@@ -75,6 +77,6 @@ public final class Messages extends NLS {
 	public static String VisualizeBrowserModeTooltip;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class, StandardCharsets.UTF_8);
 	}
 }

@@ -15,6 +15,7 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceConverter;
 import org.eclipse.jface.resource.StringConverter;
 import org.eclipse.swt.graphics.RGB;
+import org.ss_proj.ResourceBundleControlHolder;
 
 import java.util.ResourceBundle;
 
@@ -86,7 +87,7 @@ public class ParamBlind {
 	}
 
 	private static void setValues(ParamBlind pb) {
-		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, ResourceBundleControlHolder.getInstance());
 
 		String lang = bundle.getString(IBlindPreferenceConstants.BLIND_LANG);
 		if (lang == null || lang.equals(IBlindPreferenceConstants.LANG_JA)) {

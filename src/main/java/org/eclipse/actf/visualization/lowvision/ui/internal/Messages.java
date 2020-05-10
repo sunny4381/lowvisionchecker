@@ -12,6 +12,8 @@ package org.eclipse.actf.visualization.lowvision.ui.internal;
 
 import org.eclipse.osgi.util.NLS;
 
+import java.nio.charset.StandardCharsets;
+
 public final class Messages extends NLS {
 
 	private static final String BUNDLE_NAME = "org.eclipse.actf.visualization.lowvision.ui.internal.messages";//$NON-NLS-1$
@@ -63,6 +65,6 @@ public final class Messages extends NLS {
 	public static String LVSimulationAction_0;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+		NLS.initializeMessages(BUNDLE_NAME, Messages.class, StandardCharsets.UTF_8);
 	}
 }

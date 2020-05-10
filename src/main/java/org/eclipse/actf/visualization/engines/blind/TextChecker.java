@@ -23,6 +23,7 @@ import org.eclipse.core.runtime.Path;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.preference.PreferenceStore;
+import org.ss_proj.ResourceBundleControlHolder;
 
 /**
  * Utility class to check alternative text
@@ -58,7 +59,7 @@ public class TextChecker {
 	// separated from VisualizeEngine
 	private TextChecker() {
 
-		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME);
+		ResourceBundle bundle = ResourceBundle.getBundle(BUNDLE_NAME, ResourceBundleControlHolder.getInstance());
 		for (int i = 0; i < NG_WORD_LIMIT; i++) {
 			try {
 				String value = bundle.getString(INAPP_ALT + i);

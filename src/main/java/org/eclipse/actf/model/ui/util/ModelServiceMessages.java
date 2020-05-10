@@ -12,6 +12,8 @@ package org.eclipse.actf.model.ui.util;
 
 import org.eclipse.osgi.util.NLS;
 
+import java.nio.charset.StandardCharsets;
+
 public final class ModelServiceMessages extends NLS {
 
 	private static final String BUNDLE_NAME = "org.eclipse.actf.model.ui.util.messages";//$NON-NLS-1$
@@ -53,6 +55,6 @@ public final class ModelServiceMessages extends NLS {
 	public static String ImageCreator_ImageTooLarge;
 
 	static {
-		NLS.initializeMessages(BUNDLE_NAME, ModelServiceMessages.class);
+		NLS.initializeMessages(BUNDLE_NAME, ModelServiceMessages.class, StandardCharsets.UTF_8);
 	}
 }

@@ -15,13 +15,14 @@ import java.io.InputStream;
 import java.util.ResourceBundle;
 
 import org.eclipse.actf.visualization.eval.ICheckerInfoProvider;
+import org.ss_proj.ResourceBundleControlHolder;
 
 public class HtmlCheckerInfoProvider implements ICheckerInfoProvider {
 
 	private static final String BUNDLE_NAME = "org/eclipse/actf/examples/adesigner/eval/html/description"; //$NON-NLS-1$
 
 	private static final ResourceBundle RESOURCE_BUNDLE = ResourceBundle
-			.getBundle(BUNDLE_NAME);
+			.getBundle(BUNDLE_NAME, ResourceBundleControlHolder.getInstance());
 
 	public InputStream[] getCheckItemInputStreams() {
 		InputStream is = this.getClass().getClassLoader().getResourceAsStream("org/eclipse/actf/examples/adesigner/eval/html/checkitem.xml");  //$NON-NLS-1$

@@ -11,11 +11,7 @@
 
 package org.eclipse.actf.model.internal.ui;
 
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
 import java.net.URL;
 import java.util.Iterator;
 import java.util.Map;
@@ -41,17 +37,16 @@ public class FavoritesUtil {
 
 	private FavoritesUtil() {
 		plugin = ModelUIPlugin.getDefault();
-		IPath favoritesPath = plugin.getStateLocation().append(
-				"favorites.properties"); //$NON-NLS-1$
+		IPath favoritesPath = plugin.getStateLocation().append("favorites.properties"); //$NON-NLS-1$
 		favoritesProp = new Properties();
 		String targetFileName = favoritesPath.toOSString();
-		try {
-			targetFile = new File(targetFileName);
-			if (targetFile.canRead()) {
-				favoritesProp.load(new FileInputStream(targetFile));
+		targetFile = new File(targetFileName);
+		if (targetFile.canRead()) {
+			try (InputStream is = new FileInputStream(targetFile); InputStreamReader isr = new InputStreamReader(is, "UTF-8")) {
+				favoritesProp.load(isr);
+			} catch (IOException e) {
+				throw new RuntimeException(e);
 			}
-		} catch (Exception e) {
-
 		}
 
 		if (!plugin.getPreferenceStore().getBoolean(
