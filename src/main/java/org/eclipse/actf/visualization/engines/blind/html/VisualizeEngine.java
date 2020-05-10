@@ -175,7 +175,7 @@ public class VisualizeEngine {
 		pageData = new PageData();
 		mapData = new VisualizeMapDataImpl();
 
-		VisualizeMapUtil.createNode2NodeMap(document, result, mapData);
+		VisualizeMapUtil.createNode2NodeMap(orig, result, mapData);
 
 	}
 

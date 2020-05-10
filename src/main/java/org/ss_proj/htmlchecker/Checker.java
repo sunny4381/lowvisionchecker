@@ -115,10 +115,10 @@ public class Checker {
 
             // TODO replace with DomByCom (need clone/write support)
             IHTMLParser tmpHtmlParser = HTMLParserFactory.createHTMLParser();
-            tmpHtmlParser.parse(new FileInputStream(tmpDirS + IE_HTML_FILE));
+            tmpHtmlParser.parse(new FileInputStream(liveFile));
             document = tmpHtmlParser.getDocument();
 
-            tmpHtmlParser.parse(new FileInputStream(tmpDirS + ORIG_HTML_FILE));
+            tmpHtmlParser.parse(new FileInputStream(srcFile));
             originalDocument = tmpHtmlParser.getDocument();
 
             targetFile = liveFile;

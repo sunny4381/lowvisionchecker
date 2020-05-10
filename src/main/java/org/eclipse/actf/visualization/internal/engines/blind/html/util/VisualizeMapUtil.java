@@ -24,8 +24,8 @@ public class VisualizeMapUtil {
 
     // move from VisualizeEngine
 
-    public static void createNode2NodeMap(Document orig, Document dest, VisualizeMapDataImpl mapData) {
-        NodeList bodyNl = dest.getElementsByTagName("body"); //$NON-NLS-1$
+    public static void createNode2NodeMap(Document orig, Document result, VisualizeMapDataImpl mapData) {
+        NodeList bodyNl = result.getElementsByTagName("body"); //$NON-NLS-1$
         NodeList origBodyNl = orig.getElementsByTagName("body"); //$NON-NLS-1$
 
         if (origBodyNl.getLength() > 0) {
