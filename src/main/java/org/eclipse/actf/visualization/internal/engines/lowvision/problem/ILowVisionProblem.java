@@ -79,4 +79,7 @@ public interface ILowVisionProblem extends ILowvisionProblemSubtype{
 
 	void setElement(Element element);
 
+	String getXPath();
+
+	String getCssPath();
 }

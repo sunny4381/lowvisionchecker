@@ -412,4 +412,22 @@ public abstract class LowVisionProblem implements ILowVisionProblem {
 	public void setElement(Element element) {
 		this.element = element;
 	}
+
+	@Override
+	public String getXPath() {
+		if (this.pageElement == null) {
+			return null;
+		}
+
+		return this.pageElement.getXPath();
+	}
+
+	@Override
+	public String getCssPath() {
+		if (this.pageElement == null) {
+			return null;
+		}
+
+		return this.pageElement.getCssPath();
+	}
 }

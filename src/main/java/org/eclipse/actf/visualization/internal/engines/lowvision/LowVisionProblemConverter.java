@@ -37,7 +37,7 @@ public class LowVisionProblemConverter {
 			case ILowVisionProblem.LOWVISION_COLOR_PROBLEM:
 				{
 					ColorProblem cp = (ColorProblem) target.getRepresentative();
-					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cp.getLevel(), cp.getPageElement().getXPath(), cp.getPageElement().getCssPath()); //$NON-NLS-1$
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cp.getLevel(), cp.getXPath(), cp.getCssPath()); //$NON-NLS-1$
 					tmp.setTargetNode(cp.getElement());
 					tmp.setTargetString(cp.getAdditionalDescription());
 				}
@@ -45,13 +45,13 @@ public class LowVisionProblemConverter {
 			case ILowVisionProblem.LOWVISION_COLOR_WITH_ALPHA_WARNING:
 				{
 					ColorWarning cw = (ColorWarning) target.getRepresentative();
-					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cw.getWarningType(), cw.getPageElement().getXPath(), cw.getPageElement().getCssPath()); //$NON-NLS-1$
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType() + "." + cw.getWarningType(), cw.getXPath(), cw.getCssPath()); //$NON-NLS-1$
 				}
 				break;
 			default:
 				{
 					ILowVisionProblem problem = target.getRepresentative();
-					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType(), problem.getPageElement().getXPath(), problem.getPageElement().getCssPath()); //$NON-NLS-1$
+					tmp = new ProblemItemLV("L_" + target.getLowVisionProblemType(), problem.getXPath(), problem.getCssPath()); //$NON-NLS-1$
 				}
 			}
 			tmp.setSubType(type);
