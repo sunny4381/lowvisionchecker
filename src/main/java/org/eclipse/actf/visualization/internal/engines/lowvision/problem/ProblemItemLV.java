@@ -79,7 +79,6 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 		return this.cssPath;
 	}
 
-	@JsonIgnore
 	public int getArea() {
 		return area;
 	}
@@ -91,7 +90,6 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getBackgroundS
 	 * ()
 	 */
-	@JsonIgnore
 	public String getBackground() {
 		return backgroundS;
 	}
@@ -103,7 +101,6 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getForegroundS
 	 * ()
 	 */
-	@JsonIgnore
 	public String getForeground() {
 		return foregroundS;
 	}
@@ -202,7 +199,6 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * @see org.eclipse.actf.visualization.eval.problem.IProblemItemImage#
 	 * getImageIconTooltip()
 	 */
-	@JsonIgnore
 	public String getIconTooltip() {
 		// return imageIcon;
 		if (isCanHighlight()) {
@@ -236,22 +232,18 @@ public class ProblemItemLV extends ProblemItemImpl implements IProblemItemImage 
 	 * org.eclipse.actf.visualization.eval.problem.IProblemItemImage#getSeverityLV
 	 * ()
 	 */
-	@JsonIgnore
 	public int getSeverityLV() {
 		return severityLV;
 	}
 
-	@JsonIgnore
 	public int getWidth() {
 		return width;
 	}
 
-	@JsonIgnore
 	public int getX() {
 		return x;
 	}
 
-	@JsonIgnore
 	public int getY() {
 		return y;
 	}
