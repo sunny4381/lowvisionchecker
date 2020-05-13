@@ -424,171 +424,175 @@ public class PageElement {
 	private static final String[] FIXED_FONT_STRINGS = { "in", "cm", "mm", "pc", "px" };
 
 	private FixedSizeFontProblem checkFixedSizeFont(LowVisionType _lvType) throws LowVisionException {
-		// if (!(_lvType.doBlur())) {
-		// return (null);
-		// }
+//		// if (!(_lvType.doBlur())) {
+//		// return (null);
+//		// }
+//
+//		if (!isTextTag()) {
+//			return (null);
+//		}
+//
+//		if (!style.hasChildText()) {
+//			return (null);
+//		}
+//
+//		// difficult to change font size
+//		// if (isAlwaysFixedSizeFontTag(tagName)) {
+//		// return (null);
+//		// }
+//
+//		String fontStr = style.getFontSize().toLowerCase();
+//
+//		// System.out.println(fontStr);
+//
+//		// directly under the <BODY>
+//		if (fontStr.indexOf(DELIM) == -1) {
+//			fontStr = digitToFontSetting(fontStr);
+//			short type = fontSizeType(fontStr);
+//
+//			if (type == FONT_SIZE_FIXED) {
+//				// not include "pt" because IE usually returns "pt"
+//				String typeS = null;
+//
+//				for (String tmpS : FIXED_FONT_STRINGS) {
+//					if (fontStr.endsWith(tmpS)) {
+//						typeS = tmpS;
+//					}
+//				}
+//
+//				try {
+//					FixedSizeFontProblem problem;
+//					problem = new FixedSizeFontProblem(ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_PROBLEM, this,
+//							_lvType);
+//					if (typeS != null) {
+//						problem.setAttrName(typeS);
+//					}
+//					problem.setElement(style.getElement());
+//					return (problem);
+//				} catch (LowVisionProblemException e) {
+//					e.printStackTrace();
+//					return (null);
+//				}
+//			} else if (type == FONT_SIZE_PT) {
+//				FixedSizeFontProblem problem;
+//				try {
+//					problem = new FixedSizeFontProblem(ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_WARNING, this,
+//							_lvType);
+//					problem.setAttrName("pt");
+//					problem.setElement(style.getElement());
+//					return (problem);
+//				} catch (LowVisionProblemException e) {
+//					e.printStackTrace();
+//					return (null);
+//				}
+//			} else {
+//				return (null);
+//			}
+//		}
+//
+//		boolean fixedFlag = false;
+//		StringTokenizer st = new StringTokenizer(fontStr, DELIM);
+//		int tokenCount = st.countTokens();
+//		String myFont = digitToFontSetting(st.nextToken());
+//		short myType = fontSizeType(myFont);
+//		if (myType == FONT_SIZE_FIXED) {
+//			fixedFlag = true;
+//		} else if (myType == FONT_SIZE_RELATIVE || myType == FONT_SIZE_ABSOLUTE) {
+//			// fixedFlag = false;
+//		} else { // "pt", "em", "ex", "%"
+//			String[] fontSequence = new String[tokenCount];
+//			fontSequence[tokenCount - 1] = myFont;
+//			for (int i = tokenCount - 2; i >= 0; i--) {
+//				fontSequence[i] = digitToFontSetting(st.nextToken());
+//			}
+//			StringTokenizer stTag = new StringTokenizer(tagName, DELIM);
+//			if (stTag.countTokens() != tokenCount) {
+//				throw new LowVisionException("# of tagNames and fontSizes did not match."); //$NON-NLS-1$
+//			}
+//			String[] tagNameSequence = new String[tokenCount];
+//			for (int i = tokenCount - 1; i >= 0; i--) {
+//				tagNameSequence[i] = stTag.nextToken();
+//			}
+//
+//			// fixedFlag = false;
+//			String curFont = fontSequence[0]; // <BODY>
+//			short curType = fontSizeType(curFont);
+//			boolean firstPtFlag = true;
+//
+//			// if( curType == FONT_SIZE_PARENT ){
+//			// firstPtFlag = false;
+//			// }else if( curType == FONT_SIZE_FIXED ){
+//			// fixedFlag = true;
+//			// }
+//			if (curType != FONT_SIZE_PT) {
+//				firstPtFlag = false;
+//			}
+//			if (curType == FONT_SIZE_FIXED) {
+//				fixedFlag = true;
+//			}
+//
+//			for (int i = 1; i < tokenCount; i++) {
+//				String tmpFont = fontSequence[i];
+//				String tmpTag = tagNameSequence[i];
+//				// <TD>,<TH> -> same initialization at <BODY>
+//				if (tmpTag.equals("td") || tmpTag.equals("th")) { //$NON-NLS-1$ //$NON-NLS-2$
+//					firstPtFlag = true;
+//					if (curType != FONT_SIZE_PT) {
+//						firstPtFlag = false;
+//					}
+//					if (curType == FONT_SIZE_FIXED) {
+//						fixedFlag = true;
+//					}
+//				} else {
+//					if (curFont.equals(tmpFont)) { // not defined by user
+//						continue;
+//					} else {
+//						short tmpType = fontSizeType(tmpFont);
+//						if (tmpType == FONT_SIZE_FIXED) {
+//							fixedFlag = true;
+//							firstPtFlag = true;
+//						} else if (tmpType == FONT_SIZE_RELATIVE || tmpType == FONT_SIZE_ABSOLUTE) {
+//							fixedFlag = false;
+//							firstPtFlag = true;
+//						} else if (tmpType == FONT_SIZE_PT) {
+//							if (!firstPtFlag) {
+//								firstPtFlag = true;
+//								fixedFlag = false; // need check
+//							} else if (curType != FONT_SIZE_PT || fixedFlag == true || !isFontSizeChangeTag(tmpTag)) {
+//								fixedFlag = true;
+//							}
+//							// else{
+//							// // "pt" & parent "pt" & variable & <PRE> etc. ->
+//							// variable
+//							// }
+//						}
+//						// else{
+//						// // "em", "ex", "%"-> same as parent
+//						// }
+//						curFont = tmpFont;
+//						curType = tmpType;
+//					}
+//				}
+//			}
+//		}
+//
+//		if (fixedFlag) {
+//			try {
+//				FixedSizeFontProblem problem = new FixedSizeFontProblem(
+//						ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_PROBLEM, this, _lvType);
+//				problem.setElement(style.getElement());
+//				return (problem);
+//			} catch (LowVisionProblemException e) {
+//				e.printStackTrace();
+//				return (null);
+//			}
+//		} else {
+//			return (null);
+//		}
 
-		if (!isTextTag()) {
-			return (null);
-		}
-
-		if (!style.hasChildText()) {
-			return (null);
-		}
-
-		// difficult to change font size
-		// if (isAlwaysFixedSizeFontTag(tagName)) {
-		// return (null);
-		// }
-
-		String fontStr = style.getFontSize().toLowerCase();
-
-		// System.out.println(fontStr);
-
-		// directly under the <BODY>
-		if (fontStr.indexOf(DELIM) == -1) {
-			fontStr = digitToFontSetting(fontStr);
-			short type = fontSizeType(fontStr);
-
-			if (type == FONT_SIZE_FIXED) {
-				// not include "pt" because IE usually returns "pt"
-				String typeS = null;
-
-				for (String tmpS : FIXED_FONT_STRINGS) {
-					if (fontStr.endsWith(tmpS)) {
-						typeS = tmpS;
-					}
-				}
-
-				try {
-					FixedSizeFontProblem problem;
-					problem = new FixedSizeFontProblem(ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_PROBLEM, this,
-							_lvType);
-					if (typeS != null) {
-						problem.setAttrName(typeS);
-					}
-					problem.setElement(style.getElement());
-					return (problem);
-				} catch (LowVisionProblemException e) {
-					e.printStackTrace();
-					return (null);
-				}
-			} else if (type == FONT_SIZE_PT) {
-				FixedSizeFontProblem problem;
-				try {
-					problem = new FixedSizeFontProblem(ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_WARNING, this,
-							_lvType);
-					problem.setAttrName("pt");
-					problem.setElement(style.getElement());
-					return (problem);
-				} catch (LowVisionProblemException e) {
-					e.printStackTrace();
-					return (null);
-				}
-			} else {
-				return (null);
-			}
-		}
-
-		boolean fixedFlag = false;
-		StringTokenizer st = new StringTokenizer(fontStr, DELIM);
-		int tokenCount = st.countTokens();
-		String myFont = digitToFontSetting(st.nextToken());
-		short myType = fontSizeType(myFont);
-		if (myType == FONT_SIZE_FIXED) {
-			fixedFlag = true;
-		} else if (myType == FONT_SIZE_RELATIVE || myType == FONT_SIZE_ABSOLUTE) {
-			// fixedFlag = false;
-		} else { // "pt", "em", "ex", "%"
-			String[] fontSequence = new String[tokenCount];
-			fontSequence[tokenCount - 1] = myFont;
-			for (int i = tokenCount - 2; i >= 0; i--) {
-				fontSequence[i] = digitToFontSetting(st.nextToken());
-			}
-			StringTokenizer stTag = new StringTokenizer(tagName, DELIM);
-			if (stTag.countTokens() != tokenCount) {
-				throw new LowVisionException("# of tagNames and fontSizes did not match."); //$NON-NLS-1$
-			}
-			String[] tagNameSequence = new String[tokenCount];
-			for (int i = tokenCount - 1; i >= 0; i--) {
-				tagNameSequence[i] = stTag.nextToken();
-			}
-
-			// fixedFlag = false;
-			String curFont = fontSequence[0]; // <BODY>
-			short curType = fontSizeType(curFont);
-			boolean firstPtFlag = true;
-
-			// if( curType == FONT_SIZE_PARENT ){
-			// firstPtFlag = false;
-			// }else if( curType == FONT_SIZE_FIXED ){
-			// fixedFlag = true;
-			// }
-			if (curType != FONT_SIZE_PT) {
-				firstPtFlag = false;
-			}
-			if (curType == FONT_SIZE_FIXED) {
-				fixedFlag = true;
-			}
-
-			for (int i = 1; i < tokenCount; i++) {
-				String tmpFont = fontSequence[i];
-				String tmpTag = tagNameSequence[i];
-				// <TD>,<TH> -> same initialization at <BODY>
-				if (tmpTag.equals("td") || tmpTag.equals("th")) { //$NON-NLS-1$ //$NON-NLS-2$
-					firstPtFlag = true;
-					if (curType != FONT_SIZE_PT) {
-						firstPtFlag = false;
-					}
-					if (curType == FONT_SIZE_FIXED) {
-						fixedFlag = true;
-					}
-				} else {
-					if (curFont.equals(tmpFont)) { // not defined by user
-						continue;
-					} else {
-						short tmpType = fontSizeType(tmpFont);
-						if (tmpType == FONT_SIZE_FIXED) {
-							fixedFlag = true;
-							firstPtFlag = true;
-						} else if (tmpType == FONT_SIZE_RELATIVE || tmpType == FONT_SIZE_ABSOLUTE) {
-							fixedFlag = false;
-							firstPtFlag = true;
-						} else if (tmpType == FONT_SIZE_PT) {
-							if (!firstPtFlag) {
-								firstPtFlag = true;
-								fixedFlag = false; // need check
-							} else if (curType != FONT_SIZE_PT || fixedFlag == true || !isFontSizeChangeTag(tmpTag)) {
-								fixedFlag = true;
-							}
-							// else{
-							// // "pt" & parent "pt" & variable & <PRE> etc. ->
-							// variable
-							// }
-						}
-						// else{
-						// // "em", "ex", "%"-> same as parent
-						// }
-						curFont = tmpFont;
-						curType = tmpType;
-					}
-				}
-			}
-		}
-
-		if (fixedFlag) {
-			try {
-				FixedSizeFontProblem problem = new FixedSizeFontProblem(
-						ILowvisionProblemSubtype.LOWVISION_FIXED_SIZE_FONT_PROBLEM, this, _lvType);
-				problem.setElement(style.getElement());
-				return (problem);
-			} catch (LowVisionProblemException e) {
-				e.printStackTrace();
-				return (null);
-			}
-		} else {
-			return (null);
-		}
+		// Sorry that checkFixedSizeFont is unable to get worked because fontSize always gets in "px" on common browsers
+		// see: https://stackoverflow.com/questions/2664045/how-to-get-an-html-elements-style-values-in-javascript
+		return null;
 	}
 
 	@SuppressWarnings("nls")
