@@ -96,17 +96,32 @@
   }
 
   const descendantTextsWithBGImage = function(el) {
-    const isBackgroundImageNone = function(el) {
-      const backgroudImage = el.style.backgroundImage;
-      return (backgroudImage == null || "" === backgroudImage || "none" === backgroudImage.toLowerCase());
+    const isBackgroundImageNone = function(style) {
+      let backgroundImage = style.backgroundImage;
+      if (backgroundImage == null || "" === backgroundImage) {
+        // backgroudImage's default is "none"
+        return true;
+      }
+
+      backgroundImage = backgroundImage.toLowerCase();
+      return ("none" === backgroundImage);
     }
 
-    const isBackgroundColorTransparent = function(el) {
-      const backgroundColor = el.style.backgroundColor;
-      return (backgroundColor == null || "" === backgroundColor || "transparent" === backgroundColor.toLowerCase());
+    const isBackgroundColorTransparent = function(style) {
+      let backgroundColor = style.backgroundColor;
+      if (backgroundColor == null || "" === backgroundColor) {
+        // backgroundColor's default is "transparent"
+        return true;
+      }
+
+      backgroundColor = backgroundColor.toLowerCase();
+      if ("transparent" === backgroundColor || "rgba(0, 0, 0, 0)" === backgroundColor) {
+        return true;
+      }
     }
 
-    if (isBackgroundImageNone(el)) {
+    const computedStyle = getComputedStyle(el);
+    if (isBackgroundImageNone(computedStyle)) {
       return null;
     }
 
@@ -115,13 +130,17 @@
       {
         acceptNode: (n) => {
           if (n instanceof Text) {
-            return NodeFilter.FILTER_ACCEPT;
-          } else {
-            return NodeFilter.FILTER_SKIP;
+            if (n.nodeValue && n.nodeValue.trim().length > 0) {
+              return NodeFilter.FILTER_ACCEPT;
+            } else {
+              return NodeFilter.FILTER_SKIP;
+            }
           }
-
-          if (!isBackgroundImageNone(n) || !isBackgroundColorTransparent(n)) {
-            return NodeFilter.FILTER_REJECT;
+          if (n instanceof Element) {
+            const computedStyle = getComputedStyle(n);
+            if (!isBackgroundImageNone(computedStyle) || !isBackgroundColorTransparent(computedStyle)) {
+              return NodeFilter.FILTER_REJECT;
+            }
           }
           return NodeFilter.FILTER_SKIP;
         }
