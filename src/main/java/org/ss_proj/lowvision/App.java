@@ -114,6 +114,7 @@ public class App implements Callable<Integer> {
             argumentsBuilder.additionalArguments("enable-features", "NetworkService,NetworkServiceInProcess");
             argumentsBuilder.additionalArguments("force-color-profile", "srgb");
             argumentsBuilder.additionalArguments("keep-alive-for-test", true);
+            argumentsBuilder.additionalArguments("lang", this.lang.toLanguageTag());
             argumentsBuilder.additionalArguments("password-store", "basic");
             argumentsBuilder.additionalArguments("use-mock-keychain", true);
             if (this.windowSize != null && !this.windowSize.isEmpty()) {
