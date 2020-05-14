@@ -21,6 +21,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
+@CommandLine.Command(name = "lowvision", description = "low-vision checker")
 public class App implements Callable<Integer> {
     private static final ObjectMapper Mapper = new ObjectMapper();
 
@@ -122,7 +123,7 @@ public class App implements Callable<Integer> {
             }
             final ChromeService chromeService = launcher.launch(argumentsBuilder.build());
             final ChromeTab tab;
-            if (chromeService.getTabs().size() > 0) {
+            if (this.headless && chromeService.getTabs().size() > 0) {
                 tab = chromeService.getTabs().get(0);
                 chromeService.activateTab(tab);
             } else {

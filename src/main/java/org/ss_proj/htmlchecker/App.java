@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.Callable;
 
+@CommandLine.Command(name = "htmlchecker", description = "html accessibility checker")
 public class App implements Callable<Integer> {
     private static final ObjectMapper Mapper = new ObjectMapper();
 

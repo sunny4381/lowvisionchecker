@@ -101,7 +101,7 @@
                         <manifest>
                             <addClasspath>true</addClasspath>
                             <classpathPrefix>libs/</classpathPrefix>
-                            <mainClass>org.ss_proj.lowvision.App</mainClass>
+                            <mainClass>org.ss_proj.App</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
